@@ -10,12 +10,19 @@ gulp.task('js', () => {
     gulp.watch("dist/**/*.js").on('change', browserSync.reload);
 
     return gulp.src('src/index.js')
-                .pipe(babel({ presets: ['es2015'] }))
-                .pipe(uglify())
-                .pipe(gulp.dest('dist'));
+    .pipe(babel({ presets: ['es2015'] }))
+    .pipe(uglify())
+    .pipe(gulp.dest('dist'));
 
 });
 
+gulp.task('test', function (done) {
+    const Server = require('karma').Server;
+    new Server({
+        configFile: __dirname + '/karma.conf.js',
+        //singleRun: true
+    }, done).start();
+});
 
 gulp.task('html', ['js'], () => {
     const smoosher = require('gulp-smoosher');
@@ -25,10 +32,10 @@ gulp.task('html', ['js'], () => {
     gulp.watch("dist/**/*.html").on('change', browserSync.reload);
 
     return gulp.src('src/*.html')
-                .pipe(foreach((stream, file) => {
-                    return stream.pipe(smoosher({ base: 'dist' }));
-                }))
-                .pipe(gulp.dest('dist'));
+    .pipe(foreach((stream, file) => {
+        return stream.pipe(smoosher({ base: 'dist' }));
+    }))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve', ['html', 'js'], () => {
