@@ -18,7 +18,7 @@
         s.parentNode.insertBefore(script, s);
 
         // prevent loading the library more than once
-        // loadDoubleClickAPI = () => {};
+        loadDoubleClickAPI = () => {};
     };
 
     const prototype = Object.create(HTMLElement.prototype);
