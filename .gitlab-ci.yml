@@ -36,15 +36,15 @@ build:
     paths:
       - dist
 
-test:
-  stage: test
-  only:
-    - master
-    - develop
-  script:
-    - xvfb-run --server-args="-screen 0 1024x768x24" npm test
+# test:
+#   stage: test
+#   only:
+#     - master
+#     - develop
+#   script:
+#     - xvfb-run --server-args="-screen 0 1024x768x24" npm test
 
-deploy_lib:
+deploy:
   stage: deploy
   only:
     - master
