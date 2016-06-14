@@ -24,11 +24,18 @@ gulp.task('watch', () => {
 });
 
 gulp.task('test', function (done) {
+    const Xvfb = require('xvfb');
+    const xvfb = new Xvfb();
+    xvfb.startSync();
+
     const Server = require('karma').Server;
     new Server({
         configFile: __dirname + '/karma.conf.js',
         singleRun: !shouldWatch
-    }, done).start();
+    }, () => {
+        xvfb.stopSync();
+        done();
+    }).start();
 });
 
 gulp.task('html', ['js'], () => {
