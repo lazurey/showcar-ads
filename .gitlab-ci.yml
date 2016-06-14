@@ -53,7 +53,7 @@ deploy:
     - cd deploy
     - npm install -s
     - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF showcar-ads.html
-    - node ./deploy_to_s3.js ../dist showcar-ui/$CI_BUILD_REF_NAME/latest showcar-ads.html
+    - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/latest showcar-ads.html
     # - node ./deploy_to_s3.js ../src/html showcar-ui showcar-ui-fragment.html
 
     # - node ./deploy_to_s3.js "../dist/+(showcar-ads.html|index.js)" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
