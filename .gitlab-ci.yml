@@ -7,7 +7,7 @@ cache:
 stages:
   - test
   - build
-  # - deploy
+  - deploy
   # - documentation
 
 before_script:
@@ -44,12 +44,12 @@ test:
   script:
     - xvfb-run --server-args="-screen 0 1024x768x24" npm test
 
-# deploy_lib:
-#   stage: deploy
-#   only:
-#     - master
-#     - develop
-#   script:
-#     - node deploy/deploy_to_s3.js "dist/+(index.html|showcar-ui.css|showcar-ui.js|showcar-ui.js.map)" showcar-ui/$CI_BUILD_REF_NAME/$CI_BUILD_REF
-#     - node deploy/deploy_to_s3.js "dist/index.html" showcar-ui/$CI_BUILD_REF_NAME/latest
-#     - node deploy/deploy_to_s3.js "src/html/showcar-ui-fragment.html" showcar-ui
+deploy_lib:
+  stage: deploy
+  only:
+    - master
+    - develop
+  script:
+    - node deploy/deploy_to_s3.js "dist/+(showcar-ads.html|index.js)" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
+    - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/latest
+    # - node deploy/deploy_to_s3.js "src/html/showcar-ui-fragment.html" showcar-ui
