@@ -1,0 +1,55 @@
+image: bdadamas24/node-xvfb
+
+cache:
+  paths:
+    - node_modules
+
+stages:
+  - test
+  - build
+  # - deploy
+  # - documentation
+
+before_script:
+  - npm install -s
+
+# pages:
+#   stage: documentation
+#   script:
+#     - npm run grunt docs
+#   artifacts:
+#     paths:
+#       - public
+#   only:
+#     - master
+#     - develop
+#
+
+build:
+  stage: build
+  only:
+    - master
+    - develop
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist
+
+test:
+  stage: test
+  only:
+    - master
+    - develop
+  script:
+    - npm test
+
+# deploy_lib:
+#   stage: deploy
+#   only:
+#     - master
+#     - develop
+#   script:
+#     - node deploy/deploy_to_s3.js "dist/+(index.html|showcar-ui.css|showcar-ui.js|showcar-ui.js.map)" showcar-ui/$CI_BUILD_REF_NAME/$CI_BUILD_REF
+#     - node deploy/deploy_to_s3.js "dist/index.html" showcar-ui/$CI_BUILD_REF_NAME/latest
+#     - node deploy/deploy_to_s3.js "src/html/showcar-ui-fragment.html" showcar-ui

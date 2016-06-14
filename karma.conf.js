@@ -1,22 +1,26 @@
 module.exports = function(config) {
     config.set({
 
-        browsers: ['Electron'],
-        electronOpts: { show: false },
-        frameworks: ['mocha'],
         files: [
-            'test/**/*.js'
+            { pattern: 'src/**/*.js', included: false, served: true, watched: true },
+            { pattern: 'test/**/*.js', included: true, served: true, watched: true }
         ],
 
-        preprocessors: {
-  '**/*.js': ['electron']
-},
+        browsers: ['Electron'],
+        electronOpts: { show: false },
 
-        // plugins: [
-        //     'karma-mocha',
-        //     'karma-mocha-reporter',
-        //     'karma-electron-launcher'
-        // ],
+        frameworks: ['mocha'],
+
+        preprocessors: {
+            '**/*.js': ['electron']
+        },
+
+        reporters: ["mocha"],
+        plugins: [
+            "karma-mocha-reporter",
+            "karma-mocha",
+            "karma-electron"
+        ],
 
         client: {
             mocha: {

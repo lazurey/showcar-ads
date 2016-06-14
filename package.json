@@ -4,7 +4,8 @@
   "description": "Ad library for DoubleClick (GPT) and other ad servers",
   "main": "index.js",
   "scripts": {
-    "test": "karma start && karma run"
+    "build": "gulp build",
+    "test": "gulp test"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "karma": "^0.13.22",
     "karma-electron": "^3.2.1",
     "karma-mocha": "^1.0.1",
+    "karma-mocha-reporter": "^2.0.4",
     "mocha": "^2.5.3"
   }
 }
