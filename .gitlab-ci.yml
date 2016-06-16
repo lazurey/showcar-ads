@@ -47,10 +47,7 @@ test:
     # - apt-get install -y libgtkextra-dev libgconf2-dev libnss3 libasound2 libxtst-dev
     # - export DISPLAY=':99:0'
     # - xvfb-run npm run test2
-    - Xvfb :10 -ac
-    - export DISPLAY=:10
-    - sleep 5
-    - npm run test
+    - xvfb-run --server-num=10 npm run test
 
 deploy:
   stage: deploy
