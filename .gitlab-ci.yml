@@ -5,7 +5,7 @@ cache:
     - node_modules
 
 stages:
-  # - test
+  - test
   - build
   - deploy
   # - documentation
@@ -36,13 +36,15 @@ build:
     paths:
       - dist
 
-# test:
-#   stage: test
-#   only:
-#     - master
-#     - develop
-#   script:
-#     - xvfb-run --server-args="-screen 0 1024x768x24" npm test
+test:
+  stage: test
+  only:
+    - master
+    - develop
+  script:
+    - sh -e /etc/init.d/xvfb start
+    - sleep 3 # give xvfb some time to start
+    - npm test
 
 deploy:
   stage: deploy
