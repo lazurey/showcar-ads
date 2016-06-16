@@ -42,9 +42,9 @@ test:
     - master
     - develop
   script:
-    - sh -e /etc/init.d/xvfb start
-    - sleep 3 # give xvfb some time to start
-    - npm test
+    # - sh -e /etc/init.d/xvfb start
+    # - sleep 3 # give xvfb some time to start
+    - xvfb-run npm test
 
 deploy:
   stage: deploy
