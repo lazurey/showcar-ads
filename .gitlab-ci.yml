@@ -49,7 +49,7 @@ test:
     # - apt-get install libxss1
     # - xvfb-run npm run test2
     # - xvfb-run --server-num=10 npm run test
-    - npm run test
+    - xvfb-run npm run test
 
 deploy:
   stage: deploy
