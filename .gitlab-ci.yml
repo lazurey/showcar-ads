@@ -1,4 +1,4 @@
-image: bdadamas24/node-xvfb
+image: bdadamas24/node-xvfb:latest
 
 cache:
   paths:
