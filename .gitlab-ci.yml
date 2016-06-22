@@ -1,8 +1,8 @@
 image: bdadamas24/node-xvfb:latest
 
-# cache:
-#   paths:
-#     - node_modules/
+cache:
+  paths:
+    - node_modules/
 
 stages:
   # - install
@@ -30,10 +30,6 @@ before_script:
 
 build:
   stage: build
-  cache:
-    key: "$CI_BUILD_REF_NAME"
-    paths:
-      - node_modules/
   only:
     - master
     - develop
@@ -45,10 +41,6 @@ build:
 
 test:
   stage: test
-  cache:
-    key: "$CI_BUILD_REF_NAME"
-    paths:
-      - node_modules/
   only:
     - master
     - develop
