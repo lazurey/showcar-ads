@@ -1,4 +1,4 @@
-image: bluemixcode/node-xvfb:latest
+image: bdadamas24/node-xvfb:latest
 
 cache:
   paths:
@@ -11,19 +11,8 @@ stages:
   # - documentation
 
 before_script:
+  - apt-get install libxss1
   - npm install -s
-
-# pages:
-#   stage: documentation
-#   script:
-#     - npm run grunt docs
-#   artifacts:
-#     paths:
-#       - public
-#   only:
-#     - master
-#     - develop
-#
 
 build:
   stage: build
@@ -42,13 +31,6 @@ test:
     - master
     - develop
   script:
-    # - sh -e /etc/init.d/xvfb start
-    # - sleep 3 # give xvfb some time to start
-    # - apt-get install -y libgtkextra-dev libgconf2-dev libnss3 libasound2 libxtst-dev
-    # - export DISPLAY=':99:0'
-    # - apt-get install libxss1
-    # - xvfb-run npm run test2
-    # - xvfb-run --server-num=10 npm run test
     - xvfb-run npm run test
 
 deploy:
@@ -61,8 +43,3 @@ deploy:
     - npm install -s
     - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF showcar-ads.html
     - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/latest showcar-ads.html
-    # - node ./deploy_to_s3.js ../src/html showcar-ui showcar-ui-fragment.html
-
-    # - node ./deploy_to_s3.js "../dist/+(showcar-ads.html|index.js)" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
-    # - node ./deploy_to_s3.js "../dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/latest
-    # - node deploy/deploy_to_s3.js "src/html/showcar-ui-fragment.html" showcar-ui
