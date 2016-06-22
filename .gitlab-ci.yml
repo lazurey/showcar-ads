@@ -11,11 +11,11 @@ stages:
   - deploy
   # - documentation
 
-before_script:
+# before_script:
   # - apt-get install libxss1
   # - npm install -s
 
-npm_install:
+install:
   stage: install
   cache:
     key: "$CI_BUILD_REF_NAME"
