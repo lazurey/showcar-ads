@@ -46,7 +46,7 @@ test:
     # - sleep 3 # give xvfb some time to start
     # - apt-get install -y libgtkextra-dev libgconf2-dev libnss3 libasound2 libxtst-dev
     # - export DISPLAY=':99:0'
-    - apt-get install libxss1
+    # - apt-get install libxss1
     # - xvfb-run npm run test2
     # - xvfb-run --server-num=10 npm run test
     - xvfb-run npm run test
