@@ -11,7 +11,7 @@ stages:
   # - documentation
 
 before_script:
-  - apt-get install libxss1
+  # - apt-get install libxss1
   - npm install -s
 
 build:
