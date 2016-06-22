@@ -5,28 +5,20 @@ cache:
     - node_modules/
 
 stages:
-  # - install
   - test
   - build
   - deploy
-  # - documentation
 
 before_script:
-  # - apt-get install libxss1
   - npm install -s
 
-# install:
-#   stage: install
-#   cache:
-#     key: "$CI_BUILD_REF_NAME"
-#     paths:
-#       - node_modules/
-#   only:
-#     - master
-#     - develop
-#   script:
-#     - npm install -s
-
+test:
+  stage: test
+  only:
+    - master
+    - develop
+  script:
+    - xvfb-run npm run test
 
 build:
   stage: build
@@ -38,14 +30,6 @@ build:
   artifacts:
     paths:
       - dist
-
-test:
-  stage: test
-  only:
-    - master
-    - develop
-  script:
-    - xvfb-run npm run test
 
 deploy:
   stage: deploy
