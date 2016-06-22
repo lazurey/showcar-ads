@@ -1,10 +1,11 @@
 image: bdadamas24/node-xvfb:latest
 
-cache:
-  paths:
-    - node_modules/
+# cache:
+#   paths:
+#     - node_modules/
 
 stages:
+  - install
   - test
   - build
   - deploy
@@ -12,10 +13,25 @@ stages:
 
 before_script:
   # - apt-get install libxss1
-  - npm install -s
+  # - npm install -s
+
+npm install:
+  stage: install
+  cache:
+    key: "$CI_BUILD_REF_NAME"
+    paths:
+      - node_modules/
+  only:
+    - master
+    - develop
+
 
 build:
   stage: build
+  cache:
+    key: "$CI_BUILD_REF_NAME"
+    paths:
+      - node_modules/
   only:
     - master
     - develop
@@ -27,6 +43,10 @@ build:
 
 test:
   stage: test
+  cache:
+    key: "$CI_BUILD_REF_NAME"
+    paths:
+      - node_modules/
   only:
     - master
     - develop
