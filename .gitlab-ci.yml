@@ -1,4 +1,4 @@
-image: bdadamas24/node-xvfb:latest
+image: bluemixcode/node-xvfb:latest
 
 cache:
   paths:
