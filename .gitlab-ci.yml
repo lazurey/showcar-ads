@@ -24,6 +24,8 @@ install:
   only:
     - master
     - develop
+  script:
+    - npm install -s
 
 
 build:
