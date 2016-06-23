@@ -7,19 +7,38 @@ module.exports = function(config) {
         ],
 
         browsers: ['Electron'],
-        electronOpts: { show: false },
+        // browsers: ['Chrome'],
+
+        // electronOpts: { show: false },
 
         frameworks: ['mocha'],
 
         preprocessors: {
-            '**/*.js': ['electron']
+            // '**/*.js': ['babel', 'electron']
+            // '**/*.js': ['electron']
+            'test/**/*.js': ['webpack']
         },
+
+        // babelPreprocessor: {
+        //     options: {
+        //         presets: ['es2015'],
+        //         sourceMap: 'inline'
+        //     },
+        //       filename: function (file) {
+        //         return file.originalPath.replace(/\.js$/, '.es5.js');
+        //       },
+        //       sourceFileName: function (file) {
+        //         return file.originalPath;
+        //       }
+        // },
 
         reporters: ["mocha"],
         plugins: [
             "karma-mocha-reporter",
             "karma-mocha",
-            "karma-electron"
+            "karma-electron",
+            "karma-webpack"
+            // "karma-babel"
         ],
 
         client: {
