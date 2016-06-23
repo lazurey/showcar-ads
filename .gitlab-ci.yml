@@ -1,29 +1,25 @@
-image: bdadamas24/node-xvfb
+image: bdadamas24/node-xvfb:latest
 
 cache:
   paths:
-    - node_modules
+    - node_modules/
+    - deploy/node_modules/
 
 stages:
-  # - test
+  - test
   - build
   - deploy
-  # - documentation
 
 before_script:
   - npm install -s
 
-# pages:
-#   stage: documentation
-#   script:
-#     - npm run grunt docs
-#   artifacts:
-#     paths:
-#       - public
-#   only:
-#     - master
-#     - develop
-#
+test:
+  stage: test
+  only:
+    - master
+    - develop
+  script:
+    - xvfb-run npm run test
 
 build:
   stage: build
@@ -36,14 +32,6 @@ build:
     paths:
       - dist
 
-# test:
-#   stage: test
-#   only:
-#     - master
-#     - develop
-#   script:
-#     - xvfb-run --server-args="-screen 0 1024x768x24" npm test
-
 deploy:
   stage: deploy
   only:
@@ -54,8 +42,3 @@ deploy:
     - npm install -s
     - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF showcar-ads.html
     - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/latest showcar-ads.html
-    # - node ./deploy_to_s3.js ../src/html showcar-ui showcar-ui-fragment.html
-
-    # - node ./deploy_to_s3.js "../dist/+(showcar-ads.html|index.js)" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
-    # - node ./deploy_to_s3.js "../dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/latest
-    # - node deploy/deploy_to_s3.js "src/html/showcar-ui-fragment.html" showcar-ui

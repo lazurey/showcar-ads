@@ -7,19 +7,20 @@ module.exports = function(config) {
         ],
 
         browsers: ['Electron'],
-        electronOpts: { show: false },
-
         frameworks: ['mocha'],
-
         preprocessors: {
-            '**/*.js': ['electron']
+            'test/**/*.js': ['webpack']
         },
 
+        webpackMiddleware: {
+            noInfo: true
+        },
         reporters: ["mocha"],
         plugins: [
             "karma-mocha-reporter",
             "karma-mocha",
-            "karma-electron"
+            "karma-electron",
+            "karma-webpack"
         ],
 
         client: {
