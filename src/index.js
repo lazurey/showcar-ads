@@ -28,8 +28,10 @@
 
         const minX = this.getAttribute('min-x-resolution') || 0;
         const maxX = this.getAttribute('max-x-resolution') || 1000000;
+        const minY = this.getAttribute('min-y-resolution') || 0;
+        const maxY = this.getAttribute('max-y-resolution') || 1000000;
 
-        if (minX > pageResolution.x || maxX < pageResolution.x) { return; }
+        if (minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y) { return; }
 
         const type = getAttribute(this, 'type', 'doubleclick');
         if (type !== 'doubleclick') { return; }
