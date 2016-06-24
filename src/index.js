@@ -27,7 +27,9 @@
         loadDoubleClickAPI();
 
         const minX = this.getAttribute('min-x-resolution') || 0;
-        if (minX > pageResolution.x) { return; }
+        const maxX = this.getAttribute('max-x-resolution') || 1000000;
+
+        if (minX > pageResolution.x || maxX < pageResolution.x) { return; }
 
         const type = getAttribute(this, 'type', 'doubleclick');
         if (type !== 'doubleclick') { return; }
