@@ -39,97 +39,90 @@ describe('When script included on the page', () => {
 
     describe('Resolution checks (X)', () => {
 
-        it('If screen x-resolution greater than min-x-resolution then ad slot is filled', done => {
+        it('If screen x-resolution greater than min-x-resolution then ad slot is filled', () => {
             const xres = window.innerWidth;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-x-resolution="${xres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
 
-        it('If screen x-resolution less than min-x-resolution then ad slot is NOT filled', done => {
+        it('If screen x-resolution less than min-x-resolution then ad slot is NOT filled', () => {
             const xres = window.innerWidth;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-x-resolution="${xres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
-        it('If screen x-resolution greater than max-x-resolution then ad slot is NOT filled', done => {
+        it('If screen x-resolution greater than max-x-resolution then ad slot is NOT filled', () => {
             const xres = window.innerWidth;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-x-resolution="${xres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
-        it('If screen x-resolution less than max-x-resolution then ad slot is filled', done => {
+        it('If screen x-resolution less than max-x-resolution then ad slot is filled', () => {
             const xres = window.innerWidth;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-x-resolution="${xres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
     });
 
     describe('Resolution checks (Y)', () => {
 
-        it('If screen y-resolution greater than min-y-resolution then ad slot is filled', done => {
+        it('If screen y-resolution greater than min-y-resolution then ad slot is filled', () => {
             const yres = window.innerHeight;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-y-resolution="${yres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
 
-        it('If screen y-resolution less than min-y-resolution then ad slot is NOT filled', done => {
+        it('If screen y-resolution less than min-y-resolution then ad slot is NOT filled', () => {
             const yres = window.innerHeight;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-y-resolution="${yres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
-        it('If screen y-resolution greater than max-y-resolution then ad slot is NOT filled', done => {
+        it('If screen y-resolution greater than max-y-resolution then ad slot is NOT filled', () => {
             const yres = window.innerHeight;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-y-resolution="${yres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
-        it('If screen y-resolution less than max-y-resolution then ad slot is filled', done => {
+        it('If screen y-resolution less than max-y-resolution then ad slot is filled', () => {
             const yres = window.innerHeight;
             document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-y-resolution="${yres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
-            setTimeout(() => {
-                expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
-                done();
-            }, 100);
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
     });
 
     describe('When ads-off is in URL', () => {
-        before(() =>{
-            window.location.hash = 'ads-off';
-        });
+        before(() => window.location.hash = 'ads-off');
 
-        after(() => {
-            window.location.hash = '';
-        });
+        after(() => window.location.hash = '');
 
-        it('it should not display any ads', done => {
+        it('it should not display any ads', () => {
             document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
             const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
             expect(script).to.be.null;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
-            done();
         });
     });
+
+    describe('When ads slot type not supported', () => {
+        it('it should not display any ads', () => {
+            document.body.innerHTML += '<as24-ad-slot type="super-ads"></as24-ad-slot>';
+            const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
+            expect(script).to.be.null;
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
+        });
+    });
+
+    describe('When user is a dealer', () => {
+        before(() => document.cookie = 'User=CustomerType=D;');
+        after(() => document.cookie = 'User=;expires=0');
+
+        it('it should not display any ads', () => {
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick"></as24-ad-slot>';
+            const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
+            expect(script).to.be.null;
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
+        });
+    });
+
 });

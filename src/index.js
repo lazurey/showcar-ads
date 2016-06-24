@@ -4,11 +4,6 @@
     const googletag = window.googletag = window.googletag || {};
     googletag.cmd = googletag.cmd || [];
 
-    const pageResolution = {
-        x: window.innerWidth,
-        y: window.innerHeight
-    };
-
     const getAttribute = (el, attr, fallback) => HTMLElement.prototype.getAttribute.call(el, attr) || fallback;
 
     var loadDoubleClickAPI = _ => {
@@ -28,17 +23,11 @@
         // e.g. example.com/list#ads-off OR example.com/details?ads-off
         if (window.location.href.indexOf('ads-off') >= 0) { return; }
 
+        if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
+        if (!isAdSlotTypeSupported(this)) { return; }
+        if (isUserDealer()) { return; }
+
         loadDoubleClickAPI();
-
-        const minX = this.getAttribute('min-x-resolution') || 0;
-        const maxX = this.getAttribute('max-x-resolution') || 1000000;
-        const minY = this.getAttribute('min-y-resolution') || 0;
-        const maxY = this.getAttribute('max-y-resolution') || 1000000;
-
-        if (minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y) { return; }
-
-        const type = getAttribute(this, 'type', 'doubleclick');
-        if (type !== 'doubleclick') { return; }
 
         const elementId = getAttribute(this, 'element-id', `${Math.random()}`);
         const slotId = getAttribute(this, 'slot-id');
@@ -56,6 +45,27 @@
             googletag.display(elementId);
         });
     };
+
+    const doesScreenResolutionProhibitFillingTheAdSlot = el => {
+        const pageResolution = {
+            x: window.innerWidth,
+            y: window.innerHeight
+        };
+
+        const minX = el.getAttribute('min-x-resolution') || 0;
+        const maxX = el.getAttribute('max-x-resolution') || 1000000;
+        const minY = el.getAttribute('min-y-resolution') || 0;
+        const maxY = el.getAttribute('max-y-resolution') || 1000000;
+
+        return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
+    };
+
+    const isAdSlotTypeSupported = el => {
+        const type = getAttribute(el, 'type', 'doubleclick');
+        return type === 'doubleclick';
+    };
+
+    const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
 
     const setTargeting = pubads => {
         const targeting = JSON.parse(document.querySelector('[type="adtargeting/json"]').textContent || '{}');
