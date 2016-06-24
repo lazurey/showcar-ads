@@ -24,6 +24,10 @@
     const prototype = Object.create(HTMLElement.prototype);
 
     prototype.attachedCallback = function() {
+        // Simple check to disable ads when ads-off is in the URL
+        // e.g. example.com/list#ads-off OR example.com/details?ads-off
+        if (window.location.href.indexOf('ads-off') >= 0) { return; }
+
         loadDoubleClickAPI();
 
         const minX = this.getAttribute('min-x-resolution') || 0;

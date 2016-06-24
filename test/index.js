@@ -114,4 +114,22 @@ describe('When script included on the page', () => {
             }, 100);
         });
     });
+
+    describe('When ads-off is in URL', () => {
+        before(() =>{
+            window.location.hash = 'ads-off';
+        });
+
+        after(() => {
+            window.location.hash = '';
+        });
+
+        it('it should not display any ads', done => {
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
+            const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
+            expect(script).to.be.null;
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
+            done();
+        });
+    });
 });
