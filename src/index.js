@@ -54,7 +54,7 @@
             sizes = JSON.parse(rawSizes || '[]');
             sizeMapping = JSON.parse(rawSizeMapping || '[]');
         } catch(ex) {
-            console.warn('Invalid attribute: either sizes or size-mappings attribute cannote be JSON-parsed.');
+            console.warn('Invalid attribute: either sizes or size-mappings attribute cannot be JSON-parsed.');
             return;
         }
 
