@@ -13,6 +13,7 @@ const loadScript = () => {
 
 const cleanupAfterAdScript = () => {
     delete require.cache[require.resolve('../src/index.js')];
+    window.googletag = undefined;
     delete window.googletag;
     const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
     if (script) { script.remove(); }
@@ -156,31 +157,28 @@ describe('When script included on the page', () => {
         });
     });
 
-    describe.skip('Targeting', () => {
-        it('When script[type=adtargeting/json] present, targeting params should be set accordingly', (done) => {
-
-            var spy;
-
-            window.googletag = window.googletag || [];
-            window.googletag.cmd = window.googletag.cmd || [];
+    describe('Targeting', () => {
+        var spy;
+        before(() => {
+            window.googletag = { cmd: [] };
             window.googletag.cmd.push(() => {
-                // console.log(window.googletag.pubads().setTargeting.toString());
                 spy = sinon.spy(window.googletag.pubads(), 'setTargeting');
-                // var pa = window.googletag.pubads();
-                // pa.setTargeting('a', 'B');
-                // pa.setTargeting('a', 'B');
             });
+        });
 
+        it('When script[type=adtargeting/json] present, targeting params should be set accordingly', (done) => {
             document.body.innerHTML += '<script type="adtargeting/json">{ "a": 1, "b": 2 }</script>';
             document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
 
-            setTimeout(() => {
-                window.googletag.cmd.push(() => {
-                    console.log(spy.callCount);
+            window.googletag.cmd.push(() => {
+                setTimeout(() => {
+                    // In setTimeout so that the exceotion of expect are not caught by doubleclick code
+                    expect(spy.callCount).to.equal(2);
+                    expect(spy.calledWithExactly('a', ['1'])).to.be.true;
+                    expect(spy.calledWithExactly('b', ['2'])).to.be.true;
+                    done();
                 });
-
-                done();
-            }, 1000);
+            });
         });
     });
 });

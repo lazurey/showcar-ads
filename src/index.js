@@ -1,19 +1,51 @@
 (() => {
     'use strict';
 
-    const googletag = window.googletag = window.googletag || {};
-    googletag.cmd = googletag.cmd || [];
+    const googletag = window.googletag = window.googletag || { cmd: [] };
 
-    const getAttribute = (el, attr, fallback) => HTMLElement.prototype.getAttribute.call(el, attr) || fallback;
+    const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
+
+    const queue = [];
+
+    queue.push = slot => {
+        Array.prototype.push.call(queue, slot);
+    }
+
+    window.googletag.cmd.push(() => {
+        const pubads = window.googletag.pubads();
+        pubads.enableSingleRequest();
+        pubads.collapseEmptyDivs(true);
+        window.googletag.enableServices();
+    });
+
+    window.googletag.cmd.push(() => {
+        const pubads = window.googletag.pubads();
+
+        setTargeting(pubads);
+
+        queue.forEach(s => {
+            console.log('defineSlot', s.slotId);
+            window.googletag.defineSlot(s.slotId, s.sizes, s.elementId).defineSizeMapping(s.sizeMapping).addService(window.googletag.pubads());
+        });
+
+        queue.forEach(s => {
+            console.log('display', s.slotId);
+            window.googletag.display(s.elementId);
+        });
+    });
 
     var loadDoubleClickAPI = () => {
+        const doubleclickApiUrl = 'https://www.googletagservices.com/tag/js/gpt.js';
+        const scriptTag = document.querySelector(`script[src="${doubleclickApiUrl}"]`);
+
+        // early return if script alredy loaded
+        if (scriptTag) { return; }
+
         var script = document.createElement('script');
         var s = document.getElementsByTagName('script')[0];
-        script.src = 'https://www.googletagservices.com/tag/js/gpt.js';
+        script.src = doubleclickApiUrl;
         s.parentNode.insertBefore(script, s);
-
-        // prevent loading the library more than once
-        loadDoubleClickAPI = () => {};
+        // loadDoubleClickAPI = () => {};
     };
 
     const prototype = Object.create(HTMLElement.prototype);
@@ -46,7 +78,7 @@
         const rawSizeMapping = getAttribute(element, 'size-mapping');
 
         if (!slotId) { console.warn('Missing attribute: slot-id parameter must be provided.'); return; }
-        if (!rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mappings must be provided.'); return; }
+        if (!rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
 
         var sizes, sizeMapping;
 
@@ -54,7 +86,7 @@
             sizes = JSON.parse(rawSizes || '[]');
             sizeMapping = JSON.parse(rawSizeMapping || '[]');
         } catch(ex) {
-            console.warn('Invalid attribute: either sizes or size-mappings attribute cannot be JSON-parsed.');
+            console.warn('Invalid attribute: either sizes or size-mapping attribute cannot be JSON-parsed.');
             return;
         }
 
@@ -69,13 +101,20 @@
 
         element.innerHTML = `<div id="${elementId}"></div>`;
 
-        googletag.cmd.push(() => {
-            console.log(11111111111111);
-            const adslot = googletag.defineSlot(slotId, sizes, elementId);
-            adslot.defineSizeMapping(sizeMapping);
-            adslot.addService(googletag.pubads());
-            googletag.display(elementId);
+        queue.push({
+            slotId,
+            elementId,
+            sizes,
+            sizeMapping
         });
+
+        // googletag.cmd.push(() => {
+        //     console.log('defineSlot', elementId);
+        //     const adslot = googletag.defineSlot(slotId, sizes, elementId);
+        //     adslot.defineSizeMapping(sizeMapping);
+        //     adslot.addService(googletag.pubads());
+        //     // googletag.display(elementId);
+        // });
     };
 
     const doesScreenResolutionProhibitFillingTheAdSlot = el => {
@@ -95,7 +134,6 @@
     const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
 
     const setTargeting = pubads => {
-        console.log('TRG');
         const targeting = JSON.parse(document.querySelector('[type="adtargeting/json"]').textContent || '{}');
 
         const matches = location.search.match(/test=([^&]*)/);
@@ -109,15 +147,20 @@
         }
     };
 
-    googletag.cmd.push(() => {
-        const pubads = window.googletag.pubads();
-        setTargeting(pubads);
-        pubads.enableSingleRequest();
-        pubads.collapseEmptyDivs(true);
-        googletag.enableServices();
-    });
+    // googletag.cmd.push(() => {
+    //     console.log('push');
+    //     const pubads = window.googletag.pubads();
+    //     setTimeout(() => setTargeting(pubads));
+    //     pubads.enableSingleRequest();
+    //     pubads.collapseEmptyDivs(true);
+    //     googletag.enableServices();
+    // });
 
-    document.registerElement('as24-ad-slot', { prototype });
+    try {
+        document.registerElement('as24-ad-slot', { prototype });
+    } catch(ex) {
+        console.warn('Custom element already registered: "as24-ad-slot".')
+    }
 
     const domready = fn => {
         if (document.readyState !== 'loading') {
@@ -127,5 +170,4 @@
         document.addEventListener("DOMContentLoaded", fn);
     };
 
-    // domready(x => console.log('ready'));
 })();
