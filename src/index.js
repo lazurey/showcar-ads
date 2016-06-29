@@ -8,7 +8,6 @@
     const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
     if (isUserDealer()) { return; }
 
-
     const cookieConsentNeededAndNotGivenYet = () => {
         const host = location.hostname;
         const cookieConsentNeeded = /\.nl$/.test(host) || /\.it$/.test(host) || (location.hash.indexOf('cookie-consent-needed') >= 0);
@@ -64,6 +63,10 @@
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
+            if (window.location.href.indexOf('ads-off') >= 0) { return; }
+
+            const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
+            if (isUserDealer()) { return; }
 
             if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
 

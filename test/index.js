@@ -181,4 +181,33 @@ describe('When script included on the page', () => {
             });
         });
     });
+
+});
+
+describe('Cookie consent in NL and IT', () => {
+    beforeEach(() => {
+        location.hash = 'cookie-consent-needed';
+        loadScript();
+    });
+
+    afterEach(() => {
+        location.hash = '';
+        cleanupAfterAdScript();
+        document.cookie = "cookieConsent=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    });
+
+    it ('hash includes cookie-consent-needed and NO cookie is present, ads should not be loaded', () => {
+        const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
+        expect(script).to.be.null;
+    });
+
+    it ('hash includes cookie-consent-needed and cookie-consent-given event is fired, ads should be loaded', done => {
+        window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }));
+
+        setTimeout(() => {
+            const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
+            expect(script).to.be.null;
+            done();
+        });
+    });
 });
