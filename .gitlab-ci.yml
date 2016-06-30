@@ -38,7 +38,6 @@ deploy:
     - master
     - develop
   script:
-    - cd deploy
-    - npm install -s
-    - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF showcar-ads.html
-    - node ./deploy_to_s3.js ../dist showcar-ads/$CI_BUILD_REF_NAME/latest showcar-ads.html
+    - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
+    - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/latest
+    - node deploy/deploy_to_s3.js "src/showcar-ads-fragment.html" showcar-ads
