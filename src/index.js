@@ -23,6 +23,11 @@
         return;
     }
 
+    // creating styles to hide
+    const style = document.createElement('style');
+    style.innerHTML = 'as24-ad-targeting{display:none}';
+    document.head.appendChild(style);
+
     start();
 
     function start() {
@@ -69,10 +74,10 @@
 
             switch(slotType) {
                 case 'doubleclick':
-                    loadDoubleClickAdSlot(this);
-                    break;
+                loadDoubleClickAdSlot(this);
+                break;
                 default:
-                    return;
+                return;
             }
         };
 
@@ -132,8 +137,18 @@
             return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
         };
 
+        const extend = (target, source) => {
+            for (var key in source) {
+                target[key] = source[key];
+            }
+            return target;
+        };
+
         const setTargeting = pubads => {
-            const targeting = JSON.parse(document.querySelector('[type="adtargeting/json"]').textContent || '{}');
+
+            const targetingElements = Array.prototype.slice.call(document.querySelectorAll('as24-ad-targeting'));
+
+            const targeting = targetingElements.map(el => JSON.parse(el.innerHTML || '{}')).reduce(extend, {});
 
             const matches = location.search.match(/test=([^&]*)/);
             if (matches && matches.length >= 2) {
