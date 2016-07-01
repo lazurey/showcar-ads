@@ -1,6 +1,8 @@
 (() => {
     'use strict';
 
+    window.googletag = window.googletag || { cmd: [] };
+
     // Simple check to disable ads when ads-off is in the URL
     // e.g. example.com/list#ads-off OR example.com/details?ads-off
     if (window.location.href.indexOf('ads-off') >= 0) { return; }
@@ -17,33 +19,13 @@
 
     if (cookieConsentNeededAndNotGivenYet()) {
         // window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
-        window.addEventListener('cookie-consent-given', () => {
-            start();
-        });
-
+        window.addEventListener('cookie-consent-given', start);
         return;
     }
 
     start();
 
     function start() {
-        window.googletag = window.googletag || { cmd: [] };
-        const googletag = () => window.googletag;
-
-        const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
-
-        googletag().cmd.push(() => {
-            const pubads = googletag().pubads();
-            pubads.enableSingleRequest();
-            pubads.collapseEmptyDivs(true);
-            googletag().enableServices();
-        });
-
-        googletag().cmd.push(() => {
-            const pubads = googletag().pubads();
-            setTargeting(pubads);
-        });
-
         const loadDoubleClickAPI = () => {
             // if (loadDoubleClickAPI.done) { return; }
             // loadDoubleClickAPI.done = true;
@@ -60,14 +42,27 @@
             // loadDoubleClickAPI = () => {};
         };
 
+        loadDoubleClickAPI();
+
+        const googletag = () => window.googletag;
+
+        const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
+
+        googletag().cmd.push(() => {
+            const pubads = googletag().pubads();
+            pubads.enableSingleRequest();
+            pubads.collapseEmptyDivs(true);
+            googletag().enableServices();
+        });
+
+        googletag().cmd.push(() => {
+            const pubads = googletag().pubads();
+            setTargeting(pubads);
+        });
+
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
-            if (window.location.href.indexOf('ads-off') >= 0) { return; }
-
-            const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
-            if (isUserDealer()) { return; }
-
             if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
 
             const slotType = getAttribute(this, 'type', 'doubleclick');
@@ -82,8 +77,6 @@
         };
 
         const loadDoubleClickAdSlot = element => {
-            loadDoubleClickAPI();
-
             const elementId = `${Math.random()}`;
             const slotId = getAttribute(element, 'slot-id');
             const rawSizes = getAttribute(element, 'sizes');

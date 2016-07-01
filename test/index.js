@@ -13,7 +13,6 @@ const loadScript = () => {
 
 const cleanupAfterAdScript = () => {
     delete require.cache[require.resolve('../src/index.js')];
-    window.googletag = undefined;
     delete window.googletag;
     const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
     if (script) { script.remove(); }
@@ -32,11 +31,6 @@ describe('When script included on the page', () => {
         document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
         const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
         expect(script).to.not.be.null;
-    });
-
-    it('If there is no ad slot, GPT does not get loaded either', () => {
-        const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
-        expect(script).to.be.null;
     });
 
     describe('Resolution checks (X)', () => {
@@ -93,36 +87,10 @@ describe('When script included on the page', () => {
         });
     });
 
-    describe('When ads-off is in URL', () => {
-        before(() => window.location.hash = 'ads-off');
-
-        after(() => window.location.hash = '');
-
-        it('it should not display any ads', () => {
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
-            const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
-            expect(script).to.be.null;
-            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
-        });
-    });
-
     describe('When ads slot type not supported', () => {
         it('it should not display any ads', () => {
             document.body.innerHTML += '<as24-ad-slot type="super-ads"></as24-ad-slot>';
             const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
-            expect(script).to.be.null;
-            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
-        });
-    });
-
-    describe('When user is a dealer', () => {
-        before(() => document.cookie = 'User=CustomerType=D;');
-        after(() => document.cookie = 'User=;expires=0');
-
-        it('it should not display any ads', () => {
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"></as24-ad-slot>';
-            const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
-            expect(script).to.be.null;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
     });
@@ -184,6 +152,43 @@ describe('When script included on the page', () => {
 
 });
 
+describe('When user is a dealer', () => {
+    beforeEach(() => {
+        document.cookie = 'User=CustomerType=D;';
+        loadScript();
+    });
+
+    afterEach(() => {
+        document.cookie = 'User=;expires=0';
+        cleanupAfterAdScript();
+    });
+
+    it('it should not display any ads', () => {
+        document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"></as24-ad-slot>';
+        const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
+        expect(script).to.be.null;
+    });
+});
+
+describe('When ads-off is in URL', () => {
+    beforeEach(() => {
+        window.location.hash = 'ads-off';
+        loadScript();
+    });
+
+    afterEach(() => {
+        window.location.hash = '';
+        cleanupAfterAdScript();
+    });
+
+    it('it should not display any ads', () => {
+        document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
+        const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
+        expect(script).to.be.null;
+    });
+});
+
+
 describe('Cookie consent in NL and IT', () => {
     beforeEach(() => {
         location.hash = 'cookie-consent-needed';
@@ -201,12 +206,12 @@ describe('Cookie consent in NL and IT', () => {
         expect(script).to.be.null;
     });
 
-    it ('hash includes cookie-consent-needed and cookie-consent-given event is fired, ads should be loaded', done => {
+    it ('hash includes cookie-consent-needed and cookie-consent-given event is fired then ads should be loaded', done => {
         window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }));
 
         setTimeout(() => {
             const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
-            expect(script).to.be.null;
+            expect(script).not.to.be.null;
             done();
         });
     });
