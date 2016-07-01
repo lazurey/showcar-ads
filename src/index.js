@@ -82,7 +82,7 @@
         };
 
         const loadDoubleClickAdSlot = element => {
-            const elementId = `${Math.random()}`;
+            const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
             const slotId = getAttribute(element, 'slot-id');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
