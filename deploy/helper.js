@@ -5,6 +5,7 @@ var path = require('path');
 var chalk = require('chalk');
 var fs = require('fs');
 var mime = require('mime');
+var glob = require('glob');
 
 Q.longStackSupport = true;
 
@@ -13,16 +14,17 @@ var logGreen = R.compose(console.log.bind(console), chalk.green.bind(chalk));
 var logRed = R.compose(console.log.bind(console), chalk.red.bind(chalk));
 
 var doLog = R.curry(function(msg, data) {
-    logCyan(msg);
+    logCyan(msg + ' > ', data);
     return data;
 });
 
+
+/// readPattern :: String -> Promise [String]
+var readPattern = R.curryN(2, Q.nfcall)(glob);
+
+
 /// joinPath :: String -> String -> String
 var joinPath = R.curryN(2, path.join);
-
-
-/// appendFullPathToFiles :: String -> [String] -> [String]
-var appendFullPathToFiles = R.compose(R.map, joinPath);
 
 
 /// mapFilesToStreams :: [String] -> [{stream: FileStream, fileName: String}]
@@ -47,8 +49,9 @@ var getUploadParams = function(bucketName, remotePath, fileName) {
     var base = {Bucket: bucketName, ContentType: mimeType, Key: remotePath + '/' + fileName};
     if (extName === '.html') {
         return R.merge({CacheControl: 'max-age=60'}, base);
+    } else {
+        return R.merge({CacheControl: 'max-age=2592000'}, base); // cache everything but html fragment for 30 days
     }
-    return base;
 };
 
 var uploadFile = R.curry(function(bucketName, remotePath, payload) {
@@ -58,13 +61,25 @@ var uploadFile = R.curry(function(bucketName, remotePath, payload) {
         .send(uploadFinished);
 });
 
+var listObjects = R.curry(function(bucketName, remotePath) {
+    var S3 = new AWS.S3();
+    return Q.ninvoke(S3, 'listObjects', {Bucket: bucketName, Prefix: remotePath});
+});
+
+var deleteObject = R.curry(function(bucketName, s3ObjectKey) {
+    var S3 = new AWS.S3();
+    return Q.ninvoke(S3, 'deleteObject', {Bucket: bucketName, Key: s3ObjectKey});
+});
+
 module.exports = {
     logCyan:logCyan,
     logGreen:logGreen,
     logRed: logRed,
     doLog: doLog,
+    readPattern: readPattern,
     joinPath: joinPath,
     uploadFile: uploadFile,
     mapFilesToStreams: mapFilesToStreams,
-    appendFullPathToFiles: appendFullPathToFiles
+    deleteObject: deleteObject,
+    listObjects: listObjects
 };

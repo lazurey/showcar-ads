@@ -7,7 +7,7 @@ module.exports = function(config) {
         ],
 
         browsers: ['Electron'],
-        frameworks: ['mocha'],
+        frameworks: ['mocha', 'sinon'],
         preprocessors: {
             'test/**/*.js': ['webpack']
         },
@@ -19,6 +19,7 @@ module.exports = function(config) {
         plugins: [
             "karma-mocha-reporter",
             "karma-mocha",
+            "karma-sinon",
             "karma-electron",
             "karma-webpack"
         ],
