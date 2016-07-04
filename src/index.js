@@ -109,7 +109,9 @@
                 element.setAttribute('sizes', JSON.stringify(sizes));
             }
 
-            element.innerHTML = `<div id="${elementId}"></div>`;
+            var adContainer = document.createElement('div');
+            adContainer.id = elementId;
+            element.appendChild(adContainer);
 
             googletag().cmd.push(() => {
                 const pubads = googletag().pubads();
