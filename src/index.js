@@ -117,7 +117,6 @@
                 const pubads = googletag().pubads();
 
                 // pubads.enableSingleRequest();
-                console.log('AdTag ' + elementId + ': ' + document.getElementById(elementId));
                 googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
                 setTimeout(() => {
