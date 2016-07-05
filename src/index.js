@@ -115,12 +115,14 @@
             if(cssClass.length > 0) {
                 adContainer.className = cssClass;
             }
-
+            console.log('Append ' + new Date().getMilliseconds());
             element.appendChild(adContainer);
             setTimeout(() => {
                 googletag().cmd.push(() => {
                     const pubads = googletag().pubads();
 
+                    console.log('Define slot ' + new Date().getMilliseconds());
+                    console.log('Element available ' + document.getElementById(elementId));
                     // pubads.enableSingleRequest();
                     googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
