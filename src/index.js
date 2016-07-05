@@ -69,7 +69,7 @@
 
         prototype.attachedCallback = function() {
             if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
-            console.log('EXECUTE');
+
             const slotType = getAttribute(this, 'type', 'doubleclick');
 
             switch(slotType) {
@@ -84,6 +84,7 @@
         const loadDoubleClickAdSlot = element => {
             const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
             const slotId = getAttribute(element, 'slot-id');
+            const cssClass = getAttribute(element, 'css-class', '');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
 
@@ -111,6 +112,10 @@
 
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
+            if(cssClass.length > 0) {
+                adContainer.className = cssClass;
+            }
+
             element.appendChild(adContainer);
 
             googletag().cmd.push(() => {
