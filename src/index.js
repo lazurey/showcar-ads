@@ -127,7 +127,7 @@
                     setTimeout(() => {
                         googletag().display(elementId);
                     });
-                });
+                }, 20);
             });
         };
 
