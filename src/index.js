@@ -153,14 +153,10 @@
                     var min = rangeArray[i][0] || 0;
                     var max = rangeArray[i][1] || 8192;
                     if ((min <= pageResolution.x) && (pageResolution.x <= max)) {
-                        console.log('ALLOW RENDER');
-                        console.log('WINDOW WIDTH ' + pageResolution.x);
-                        console.log('min ' + min + ' - max ' + max);
                         return false;
                         break;
                     }
                 }
-                console.log('DONT ALLOW RENDER');
                 return true;
             }
 
