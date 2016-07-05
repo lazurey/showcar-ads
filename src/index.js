@@ -68,8 +68,8 @@
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
-            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
-
+            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
+            console.log('EXECUTE');
             const slotType = getAttribute(this, 'type', 'doubleclick');
 
             switch(slotType) {
