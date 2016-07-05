@@ -148,15 +148,18 @@
             const resolutionRanges = el.getAttribute('resolution-ranges') || [];
 
             if(resolutionRanges.length > 0) {
+                console.log('RESOLUTION RANGES ' + resolutionRanges )
                 for(var i = 0; i < resolutionRanges.length; i++){
                     var min = resolutionRanges[i][0] || 0;
                     var max = resolutionRanges[i][1] || 8192;
                     if ((min <= pageResolution.x) && (pageResolution.x <= max)) {
-                        return true;
+                        console.log('ALLOW RENDER');
+                        return false;
                         break;
                     }
                 }
-                return false;
+                console.log('DONT ALLOW RENDER');
+                return true;
             }
 
             return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
