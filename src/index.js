@@ -145,6 +145,19 @@
             const maxX = el.getAttribute('max-x-resolution') || 1000000;
             const minY = el.getAttribute('min-y-resolution') || 0;
             const maxY = el.getAttribute('max-y-resolution') || 1000000;
+            const resolutionRanges = el.getAttribute('resolution-ranges') || [];
+
+            if(resolutionRanges.length > 0) {
+                for(var i = 0; i < resolutionRanges.length; i++){
+                    var min = resolutionRanges[i][0] || 0;
+                    var max = resolutionRanges[i][1] || 8192;
+                    if ((min <= pageResolution.x) && (pageResolution.x <= max)) {
+                        return true;
+                        break;
+                    }
+                }
+                return false;
+            }
 
             return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
         };
