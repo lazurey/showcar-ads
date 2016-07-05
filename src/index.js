@@ -145,13 +145,13 @@
             const maxX = el.getAttribute('max-x-resolution') || 1000000;
             const minY = el.getAttribute('min-y-resolution') || 0;
             const maxY = el.getAttribute('max-y-resolution') || 1000000;
-            const resolutionRanges = el.getAttribute('resolution-ranges') || [];
+            const resolutionRanges = el.getAttribute('resolution-ranges') || '';
 
             if(resolutionRanges.length > 0) {
-                console.log('RESOLUTION RANGES ' + resolutionRanges )
-                for(var i = 0; i < resolutionRanges.length; i++){
-                    var min = resolutionRanges[i][0] || 0;
-                    var max = resolutionRanges[i][1] || 8192;
+                const rangeArray = JSON.parse(resolutionRanges);
+                for(var i = 0; i < rangeArray.length; i++){
+                    var min = rangeArray[i][0] || 0;
+                    var max = rangeArray[i][1] || 8192;
                     if ((min <= pageResolution.x) && (pageResolution.x <= max)) {
                         console.log('ALLOW RENDER');
                         console.log('WINDOW WIDTH ' + pageResolution.x);
