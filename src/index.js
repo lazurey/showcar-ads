@@ -117,22 +117,22 @@
             }
             element.appendChild(adContainer);
 
-            let adInterval = setInterval(() => {
-                if(!document.getElementById(elementId))
+            googletag().cmd.push(() => {
+                const pubads = googletag().pubads();
+
+                if(!document.getElementById(elementId)) {
+                    console.warn('Ad container div was not available.');
+                    element.style.display = 'none';
                     return;
+                }
 
-                clearInterval(adInterval);
-                googletag().cmd.push(() => {
-                    const pubads = googletag().pubads();
+                // pubads.enableSingleRequest();
+                googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
-                    // pubads.enableSingleRequest();
-                    googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
-
-                    setTimeout(() => {
-                        googletag().display(elementId);
-                    });
+                setTimeout(() => {
+                    googletag().display(elementId);
                 });
-            }, 50);
+            });
         };
 
         const doesScreenResolutionProhibitFillingTheAdSlot = el => {
