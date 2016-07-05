@@ -152,7 +152,7 @@
                 for(var i = 0; i < rangeArray.length; i++){
                     var min = rangeArray[i][0] || 0;
                     var max = rangeArray[i][1] || 8192;
-                    if ((min <= pageResolution.x) && (pageResolution.x <= max)) {
+                    if ((pageResolution.x >= min) && (pageResolution.x <= max)) {
                         return false;
                         break;
                     }
