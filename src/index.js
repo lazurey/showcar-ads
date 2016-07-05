@@ -154,6 +154,8 @@
                     var max = resolutionRanges[i][1] || 8192;
                     if ((min <= pageResolution.x) && (pageResolution.x <= max)) {
                         console.log('ALLOW RENDER');
+                        console.log('WINDOW WIDTH ' + pageResolution.x);
+                        console.log('min ' + min + ' - max ' + max);
                         return false;
                         break;
                     }
