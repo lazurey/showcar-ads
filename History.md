@@ -1,4 +1,10 @@
 
+1.0.4 / 2016-07-05
+==================
+
+  * Made check for resolution range check more readable.
+  * added additional stuff to documentation
+
 1.0.3 / 2016-07-05
 ==================
 
