@@ -2,6 +2,10 @@
 
 This library provides a unified solution for integrating advertisements (ads) on all AS24 Tatsu web pages.
 
+## Prerequisites:
+
+This library uses custom-elements which come with the showcar-ui library. In order to use showcar-ads you need to include showcar-ui on your web page.
+
 ## How to include:
 
 To include the showcar-ads library you can use our jigsaw fragment:
@@ -57,7 +61,7 @@ The following attributes can be specified in an ad-slot:
 * max-y-resolution: Maximum viewport height in pixels. Ads are only shown if the viewport height < max-y-resolution value.
 * resolution-ranges: Ad is only visible for specific viewport ranges.
   Example values: [[320,512],[768]].
-  This means that the ad is only shown if the viewport is >= 320x512 and <= 768.
+  This means that the ad is only shown if the viewport is >= 320 AND <= 512 OR >= 768.
 
 
 *These attributes are mandatory.
