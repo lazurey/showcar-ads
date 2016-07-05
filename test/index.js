@@ -60,6 +60,34 @@ describe('When script included on the page', () => {
         });
     });
 
+    describe('Resolution checks (Ranges)', () => {
+
+        it('If screen x-resolution within specified ad slot is filled', () => {
+            const xres = window.innerWidth;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-1}, ${xres+1}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
+        });
+
+        it('If screen x-resolution below specified range ad slot is NOT filled', () => {
+            const xres = window.innerWidth;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres+1}, ${xres+2}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
+        });
+
+        it('If screen x-resolution between specified ranges then ad slot is NOT filled', () => {
+            const xres = window.innerWidth;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-2}, ${xres-1}], [${xres+1}, ${xres+2}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
+        });
+
+        it('If screen x-resolution within max open range then ad slot is filled', () => {
+            const xres = window.innerWidth;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-2}, ${xres-1}], [${xres}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
+        });
+    });
+
+
     describe('Resolution checks (Y)', () => {
 
         it('If screen y-resolution greater than min-y-resolution then ad slot is filled', () => {

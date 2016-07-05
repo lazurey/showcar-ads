@@ -68,7 +68,7 @@
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
-            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
+            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
 
             const slotType = getAttribute(this, 'type', 'doubleclick');
 
@@ -82,8 +82,9 @@
         };
 
         const loadDoubleClickAdSlot = element => {
-            const elementId = `${Math.random()}`;
+            const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
             const slotId = getAttribute(element, 'slot-id');
+            const cssClass = getAttribute(element, 'css-class', '');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
 
@@ -109,10 +110,21 @@
                 element.setAttribute('sizes', JSON.stringify(sizes));
             }
 
-            element.innerHTML = `<div id="${elementId}"></div>`;
+            var adContainer = document.createElement('div');
+            adContainer.id = elementId;
+            if(cssClass.length > 0) {
+                adContainer.className = cssClass;
+            }
+            element.appendChild(adContainer);
 
             googletag().cmd.push(() => {
                 const pubads = googletag().pubads();
+
+                if(!document.getElementById(elementId)) {
+                    console.warn('Ad container div was not available.');
+                    element.style.display = 'none';
+                    return;
+                }
 
                 // pubads.enableSingleRequest();
                 googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
@@ -133,6 +145,20 @@
             const maxX = el.getAttribute('max-x-resolution') || 1000000;
             const minY = el.getAttribute('min-y-resolution') || 0;
             const maxY = el.getAttribute('max-y-resolution') || 1000000;
+            const resolutionRanges = el.getAttribute('resolution-ranges') || '';
+
+            if(resolutionRanges.length > 0) {
+                const rangeArray = JSON.parse(resolutionRanges);
+                for(var i = 0; i < rangeArray.length; i++){
+                    var min = rangeArray[i][0] || 0;
+                    var max = rangeArray[i][1] || 8192;
+                    if ((min <= pageResolution.x) && (pageResolution.x <= max)) {
+                        return false;
+                        break;
+                    }
+                }
+                return true;
+            }
 
             return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
         };
