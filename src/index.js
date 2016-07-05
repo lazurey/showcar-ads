@@ -117,15 +117,16 @@
             }
 
             element.appendChild(adContainer);
+            setTimeout(() => {
+                googletag().cmd.push(() => {
+                    const pubads = googletag().pubads();
 
-            googletag().cmd.push(() => {
-                const pubads = googletag().pubads();
+                    // pubads.enableSingleRequest();
+                    googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
-                // pubads.enableSingleRequest();
-                googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
-
-                setTimeout(() => {
-                    googletag().display(elementId);
+                    setTimeout(() => {
+                        googletag().display(elementId);
+                    });
                 });
             });
         };
