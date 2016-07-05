@@ -115,21 +115,24 @@
             if(cssClass.length > 0) {
                 adContainer.className = cssClass;
             }
-            console.log('Append ' + new Date().getMilliseconds());
             element.appendChild(adContainer);
 
-            googletag().cmd.push(() => {
-                const pubads = googletag().pubads();
+            let adInterval = setInterval(() => {
+                if(!document.getElementById(elementId))
+                    return;
 
-                console.log('Define slot ' + new Date().getMilliseconds());
-                console.log('Element available ' + document.getElementById(elementId));
-                // pubads.enableSingleRequest();
-                googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
+                clearInterval(adInterval);
+                googletag().cmd.push(() => {
+                    const pubads = googletag().pubads();
 
-                setTimeout(() => {
-                    googletag().display(elementId);
+                    // pubads.enableSingleRequest();
+                    googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
+
+                    setTimeout(() => {
+                        googletag().display(elementId);
+                    });
                 });
-            });
+            }, 50);
         };
 
         const doesScreenResolutionProhibitFillingTheAdSlot = el => {
