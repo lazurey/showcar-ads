@@ -1,14 +1,12 @@
 (() => {
     'use strict';
 
-console.log('ADS INITIALIZATION');
     window.googletag = window.googletag || { cmd: [] };
 
     // Simple check to disable ads when ads-off is in the URL
     // e.g. example.com/list#ads-off OR example.com/details?ads-off
     if (window.location.href.indexOf('ads-off') >= 0) { return; }
 
-console.log('DEALER CHECK');
     const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
     if (isUserDealer()) { return; }
 
@@ -19,8 +17,6 @@ console.log('DEALER CHECK');
         return cookieConsentNeeded && !cookieConsentGiven;
     };
 
-
-console.log('COOKIE CONSENT CHECK');
     if (cookieConsentNeededAndNotGivenYet()) {
         // window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
         window.addEventListener('cookie-consent-given', start);
@@ -38,8 +34,6 @@ console.log('COOKIE CONSENT CHECK');
         const loadDoubleClickAPI = () => {
             // if (loadDoubleClickAPI.done) { return; }
             // loadDoubleClickAPI.done = true;
-
-            console.log('LOAD DOUBLE CLICK API');
             const doubleclickApiUrl = 'https://www.googletagservices.com/tag/js/gpt.js';
             const scriptTag = document.querySelector(`script[src="${doubleclickApiUrl}"]`);
 
@@ -60,7 +54,6 @@ console.log('COOKIE CONSENT CHECK');
         const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
 
         googletag().cmd.push(() => {
-            console.log('GPT STANDARD SETTINGS');
             const pubads = googletag().pubads();
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
@@ -75,8 +68,6 @@ console.log('COOKIE CONSENT CHECK');
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
-
-            console.log('CHECK RESOLUTION');
             if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
 
             const slotType = getAttribute(this, 'type', 'doubleclick');
@@ -91,8 +82,6 @@ console.log('COOKIE CONSENT CHECK');
         };
 
         const loadDoubleClickAdSlot = element => {
-
-            console.log('AD SLOT CONFIGURATION');
             const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
             const slotId = getAttribute(element, 'slot-id');
             const cssClass = getAttribute(element, 'css-class', '');
@@ -121,7 +110,6 @@ console.log('COOKIE CONSENT CHECK');
                 element.setAttribute('sizes', JSON.stringify(sizes));
             }
 
-            console.log('CREATE CONTAINER DIV');
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
             if(cssClass.length > 0) {
@@ -138,13 +126,10 @@ console.log('COOKIE CONSENT CHECK');
                     return;
                 }
 
-            console.log('DEFINE SLOT');
                 // pubads.enableSingleRequest();
                 googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
                 setTimeout(() => {
-
-                    console.log('DISPLAY SLOT');
                     googletag().display(elementId);
                 });
             });
