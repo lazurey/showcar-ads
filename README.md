@@ -4,24 +4,15 @@ This library provides a unified solution for integrating advertisements (ads) on
 
 ## Features
 
-  * Cookie Consent => Ads are not served if a user consent for third party cookies is required.
-  * Dealer recognition => Ads are not served for dealers.
-  * Responsive ads => Supports serving ads for specific resolution ranges if required.
-  * Targeting => Supports setting of custom targeting if required.
-  * Uses Google Publisher Tags => Ads are loaded asynchroneously in a non blocking fashion.
+  * Cookie Consent - Ads are not served if a user consent for third party cookies is required.
+  * Dealer recognition - Ads are not served for dealers.
+  * Responsive ads - Supports serving ads for specific resolution ranges if required.
+  * Targeting - Supports setting of custom targeting if required.
+  * Uses Google Publisher Tags - Ads are loaded asynchroneously in a non blocking fashion.
 
 ## Prerequisites:
 
 This library uses custom-elements which come with the showcar-ui library. In order to use showcar-ads you need to include showcar-ui on your web page.
-
-## Features:
-
-* Currently only supports Doubleclick
-* Cookie consent support (for NL and IT)
-* Possibility to disable Ads (for testing purposes)
-* Ads are not displayed for AS24 dealers
-* Supports targeting
-* Support different resolutions (Responsive ads)
 
 ## How to include:
 
