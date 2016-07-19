@@ -5,7 +5,7 @@
 
     // Simple check to disable ads when ads-off is in the URL
     // e.g. example.com/list#ads-off OR example.com/details?ads-off
-    if (window.location.href.indexOf('ads-off') >= 0) { return; }
+    if (window.location.href.indexOf('ads-off=true') >= 0) { return; }
 
     const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
     if (isUserDealer()) { return; }

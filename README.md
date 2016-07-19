@@ -2,6 +2,14 @@
 
 This library provides a unified solution for integrating advertisements (ads) on all AS24 Tatsu web pages.
 
+## Features
+
+  * Cookie Consent - Ads are not served if a user consent for third party cookies is required.
+  * Dealer recognition - Ads are not served for dealers.
+  * Responsive ads - Supports serving ads for specific resolution ranges if required.
+  * Targeting - Supports setting of custom targeting if required.
+  * Uses Google Publisher Tags - Ads are loaded asynchroneously in a non blocking fashion.
+
 ## Prerequisites:
 
 This library uses custom-elements which come with the showcar-ui library. In order to use showcar-ads you need to include showcar-ui on your web page.
@@ -18,6 +26,12 @@ Like in the showcar-ui library there are two versions of the "showcar-ads" libra
   * develop => latest development version (might be broken)
 
 By using URL parameters we can compare these two for any page that uses the ads library. So we can be sure that our changes won't break your page.
+
+## Disable ads
+
+In case you want to disable all ads in order to e.g. do performance tests you can do so by providing the "ads-off" parameter in the page URL like so:
+
+    https://www.autoscout24.com?ads-off=true
 
 ### Integration in Scala template
 
@@ -61,7 +75,7 @@ The following attributes can be specified in an ad-slot:
 * max-y-resolution: Maximum viewport height in pixels. Ads are only shown if the viewport height < max-y-resolution value.
 * resolution-ranges: Ad is only visible for specific viewport ranges.
   Example values: [[320,512],[768]].
-  This means that the ad is only shown if the viewport is >= 320 AND <= 512 OR >= 768.
+  This means that the ad is only shown if the viewport is >= 320x512 and <= 768.
 
 
 *These attributes are mandatory.
