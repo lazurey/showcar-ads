@@ -1,4 +1,16 @@
 
+1.0.5 / 2016-07-19
+==================
+
+  * updated documentation
+  * Removed log messages to help integrating showcar ads in home project.
+  * Added log messages to help integrating showcar ads in home project.
+  * Added features section in documentation.
+  * Merge branch 'release/v1.0.4' into develop
+  * Release v1.0.4
+  * Made check for resolution range check more readable.
+  * added additional stuff to documentation
+
 1.0.4 / 2016-07-05
 ==================
 

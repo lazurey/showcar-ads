@@ -31,7 +31,7 @@ By using URL parameters we can compare these two for any page that uses the ads 
 
 In case you want to disable all ads in order to e.g. do performance tests you can do so by providing the "ads-off" parameter in the page URL like so:
 
-    https://www.autoscout24.com?ads-off
+    https://www.autoscout24.com?ads-off=true
 
 ### Integration in Scala template
 

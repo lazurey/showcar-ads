@@ -218,9 +218,9 @@ describe('When user is a dealer', () => {
     });
 });
 
-describe('When ads-off is in URL', () => {
+describe('When ads-off=true is in URL', () => {
     beforeEach(() => {
-        window.location.hash = 'ads-off';
+        window.location.hash = 'ads-off=true';
         loadScript();
     });
 
