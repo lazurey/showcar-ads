@@ -83,12 +83,12 @@
 
         const loadDoubleClickAdSlot = element => {
             const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
-            const slotId = getAttribute(element, 'slot-id');
+            const adunit = getAttribute(element, 'ad-unit');
             const cssClass = getAttribute(element, 'css-class', '');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
 
-            if (!slotId) { console.warn('Missing attribute: slot-id parameter must be provided.'); return; }
+            if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
             if (!rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
 
             var sizes, sizeMapping;
@@ -127,7 +127,7 @@
                 }
 
                 // pubads.enableSingleRequest();
-                googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
+                googletag().defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
                 setTimeout(() => {
                     googletag().display(elementId);

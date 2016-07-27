@@ -8,7 +8,7 @@ This library provides a unified solution for integrating advertisements (ads) on
   * Dealer recognition - Ads are not served for dealers.
   * Responsive ads - Supports serving ads for specific resolution ranges if required.
   * Targeting - Supports setting of custom targeting if required.
-  * Uses Google Publisher Tags - Ads are loaded asynchroneously in a non blocking fashion.
+  * Uses Google Publisher Tags - Ads are loaded asynchronously in a non blocking fashion.
 
 ## Prerequisites:
 
@@ -49,7 +49,7 @@ To integrate an ad slot on your page you need to define an "as24-ad-slot" elemen
 
     <as24-ad-slot
         type="doubleclick"
-        slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"
+        ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"
         sizes="[[300,100],[728,90]]"
         size-mapping="[[[1100,400],[728,90]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"
         min-x-resolution="768"
@@ -59,12 +59,12 @@ To integrate an ad slot on your page you need to define an "as24-ad-slot" elemen
         resolution-ranges="[[320,512],[768]]">
     </as24-ad-slot>
 
-This is just an example. You don't have to provide all the attributes. Mandatory attributes are 'slot-id' and 'size-mappings'.
+This is just an example. You don't have to provide all the attributes. Mandatory attributes are 'ad-unit' and 'size-mappings'.
 
 The following attributes can be specified in an ad-slot:
 
 * type: Specifies the ad-server for the ad-slot (currently only doubleclick is supported).
-* slot-id*: The id of the ad-slot. This will be provided by the ad-technology team.
+* ad-unit*: The id of the ad-slot. This will be provided by the ad-technology team.
 * sizes: Supported ad sizes for this slot.
 * size-mappings*: Sets an array of mappings from a minimum viewport size to slot size for this slot.
   Example values: [[0,0],[[300,100],[300,50],[320,50],[320,100]]].
