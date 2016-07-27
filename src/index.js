@@ -57,15 +57,10 @@
             const pubads = googletag().pubads();
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
-        console.log('slotRenderEnded Evet registration');
             pubads.addEventListener('slotRenderEnded', function(event) {
-                console.log('Call slotRenderEnded');
                 document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
             });
             googletag().enableServices();
-        });
-        document.addEventListener('as24-ad-slot:slotRenderEnded', function() {
-           console.log('slotRenderEnded callback');
         });
 
         googletag().cmd.push(() => {
