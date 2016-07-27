@@ -57,6 +57,11 @@
             const pubads = googletag().pubads();
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
+            pubads.addEventListener('slotRenderEnded', function(event) {
+                const slotId = event.slot.getSlotElementId();
+                const loadEvent = new CustomEvent(slotId + ':slotRenderEnded', {detail: event});
+                document.dispatchEvent(loadEvent);
+            });
             googletag().enableServices();
         });
 
