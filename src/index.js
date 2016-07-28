@@ -138,7 +138,7 @@
                         googletag().display(elementId);
                     });
                 });
-            });
+            }, 10);
         };
 
         const doesScreenResolutionProhibitFillingTheAdSlot = el => {
