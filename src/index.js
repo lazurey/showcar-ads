@@ -119,21 +119,22 @@
                 adContainer.className = cssClass;
             }
             element.appendChild(adContainer);
+            window.setTimeout(() => {
+                googletag().cmd.push(() => {
+                    const pubads = googletag().pubads();
 
-            googletag().cmd.push(() => {
-                const pubads = googletag().pubads();
+                    if(!document.getElementById(elementId)) {
+                        console.warn('Ad container div was not available.');
+                        element.style.display = 'none';
+                        return;
+                    }
 
-                if(!document.getElementById(elementId)) {
-                    console.warn('Ad container div was not available.');
-                    element.style.display = 'none';
-                    return;
-                }
+                    // pubads.enableSingleRequest();
+                    googletag().defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
-                // pubads.enableSingleRequest();
-                googletag().defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
-
-                setTimeout(() => {
-                    googletag().display(elementId);
+                    setTimeout(() => {
+                        googletag().display(elementId);
+                    });
                 });
             });
         };
