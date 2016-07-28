@@ -58,6 +58,8 @@
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
             pubads.addEventListener('slotRenderEnded', function(event) {
+                console.log("slotRenderEnded");
+                console.log(event.slot.getSlotElementId());
                 document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
             });
             googletag().enableServices();
@@ -128,7 +130,7 @@
                         element.style.display = 'none';
                         return;
                     }
-
+                    console.log(elementId + ' is there');
                     // pubads.enableSingleRequest();
                     googletag().defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
 
