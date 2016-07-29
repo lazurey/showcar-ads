@@ -121,24 +121,23 @@
                 adContainer.className = cssClass;
             }
             element.appendChild(adContainer);
-            window.setTimeout(() => {
-                googletag().cmd.push(() => {
-                    const pubads = googletag().pubads();
 
-                    if(!document.getElementById(elementId)) {
-                        console.warn('Ad container div was not available.');
-                        element.style.display = 'none';
-                        return;
-                    }
-                    console.log(elementId + ' is there');
-                    // pubads.enableSingleRequest();
-                    googletag().defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
+            googletag().cmd.push(() => {
+                const pubads = googletag().pubads();
 
-                    setTimeout(() => {
-                        googletag().display(elementId);
-                    });
+                if(!document.getElementById(elementId)) {
+                    console.warn('Ad container div was not available.');
+                    element.style.display = 'none';
+                    return;
+                }
+                console.log(elementId + ' is there');
+                // pubads.enableSingleRequest();
+                googletag().defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
+
+                setTimeout(() => {
+                    googletag().display(elementId);
                 });
-            }, 10);
+            });
         };
 
         const doesScreenResolutionProhibitFillingTheAdSlot = el => {
