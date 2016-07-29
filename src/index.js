@@ -69,7 +69,9 @@
         });
 
         document.addEventListener('as24-ad-slots:refresh', () => {
+            console.log('as24-ad-slots:refresh');
             googletag().cmd.push(() => {
+                console.log('google cmd refresh');
                 googletag.pubads().refresh();
 
             });
