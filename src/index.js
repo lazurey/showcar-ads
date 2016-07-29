@@ -68,6 +68,10 @@
             setTargeting(pubads);
         });
 
+        document.addEventListener('as24-ad-slots:refresh', () => {
+            googletag.pubads().refresh(); 
+        });
+
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
