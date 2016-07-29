@@ -69,7 +69,10 @@
         });
 
         document.addEventListener('as24-ad-slots:refresh', () => {
-            googletag.pubads().refresh(); 
+            googletag().cmd.push(() => {
+                googletag.pubads().refresh();
+
+            });
         });
 
         const prototype = Object.create(HTMLElement.prototype);
