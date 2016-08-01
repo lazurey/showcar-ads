@@ -49,31 +49,30 @@
 
         loadDoubleClickAPI();
 
-        const googletag = () => window.googletag;
+        const googletag = window.googletag;
 
         const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
 
-        googletag().cmd.push(() => {
-            const pubads = googletag().pubads();
+        googletag.cmd.push(() => {
+            const pubads = googletag.pubads();
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
             pubads.addEventListener('slotRenderEnded', function(event) {
                 document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
             });
-            googletag().enableServices();
+            googletag.enableServices();
         });
 
-        googletag().cmd.push(() => {
-            const pubads = googletag().pubads();
+        googletag.cmd.push(() => {
+            const pubads = googletag.pubads();
             setTargeting(pubads);
         });
 
         document.addEventListener('as24-ad-slots:refresh', () => {
             console.log('as24-ad-slots:refresh');
-            googletag().cmd.push(() => {
+            googletag.cmd.push(() => {
                 console.log('google cmd refresh');
                 googletag.pubads().refresh();
-
             });
         });
 
@@ -129,8 +128,8 @@
             }
             element.appendChild(adContainer);
 
-            googletag().cmd.push(() => {
-                const pubads = googletag().pubads();
+            googletag.cmd.push(() => {
+                const pubads = googletag.pubads();
 
                 if(!document.getElementById(elementId)) {
                     console.warn('Ad container div was not available.');
@@ -138,10 +137,10 @@
                     return;
                 }
                 // pubads.enableSingleRequest();
-                googletag().defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
+                googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads());
 
                 setTimeout(() => {
-                    googletag().display(elementId);
+                    googletag.display(elementId);
                 });
             });
         };
