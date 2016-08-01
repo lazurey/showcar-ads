@@ -49,20 +49,31 @@
 
         loadDoubleClickAPI();
 
-        const googletag = () => window.googletag;
+        const googletag = window.googletag;
 
         const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
 
-        googletag().cmd.push(() => {
-            const pubads = googletag().pubads();
+        googletag.cmd.push(() => {
+            const pubads = googletag.pubads();
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
-            googletag().enableServices();
+            pubads.addEventListener('slotRenderEnded', function(event) {
+                document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
+            });
+            googletag.enableServices();
         });
 
-        googletag().cmd.push(() => {
-            const pubads = googletag().pubads();
+        googletag.cmd.push(() => {
+            const pubads = googletag.pubads();
             setTargeting(pubads);
+        });
+
+        document.addEventListener('as24-ad-slots:refresh', () => {
+            googletag.cmd.push(() => {
+                const pubads = googletag.pubads();
+                setTargeting(pubads);
+                pubads.refresh();
+            });
         });
 
         const prototype = Object.create(HTMLElement.prototype);
@@ -83,12 +94,12 @@
 
         const loadDoubleClickAdSlot = element => {
             const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
-            const slotId = getAttribute(element, 'slot-id');
+            const adunit = getAttribute(element, 'ad-unit');
             const cssClass = getAttribute(element, 'css-class', '');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
 
-            if (!slotId) { console.warn('Missing attribute: slot-id parameter must be provided.'); return; }
+            if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
             if (!rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
 
             var sizes, sizeMapping;
@@ -117,20 +128,19 @@
             }
             element.appendChild(adContainer);
 
-            googletag().cmd.push(() => {
-                const pubads = googletag().pubads();
+            googletag.cmd.push(() => {
+                const pubads = googletag.pubads();
 
                 if(!document.getElementById(elementId)) {
                     console.warn('Ad container div was not available.');
                     element.style.display = 'none';
                     return;
                 }
-
                 // pubads.enableSingleRequest();
-                googletag().defineSlot(slotId, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag().pubads());
+                googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads());
 
                 setTimeout(() => {
-                    googletag().display(elementId);
+                    googletag.display(elementId);
                 });
             });
         };

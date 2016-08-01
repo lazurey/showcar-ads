@@ -1,4 +1,31 @@
 
+2.1.0 / 2016-08-01
+==================
+
+  * Also refreshing targeting on refresh event
+  * googletag is not a function anymore
+  * Updated documentation
+  * Added logging to test refresh event
+  * wrapped slot refresh call in googletag cmd queue
+  * Added event for refresh ad slots
+  * Removed console log statements
+  * Removed timeout inserted between creating ad container and display
+  * removed no-defer attribute
+  * Removed head element from fragment to allow putting it in various position
+  * Put some additional delay testing if issue with unfindable container elements is solved
+  * Additional logic for debugging purposes
+  * Added timeout after appending container div to fix issue occuring where its not available
+  * Removed additional logging for debugging
+  * Additional logging for debugging
+  * Adapted slotRenderEnded callback to be more general
+  * Added callback event for slotRenderEndet when element-id is specified
+  * updated changelog
+
+2.0.0 / 2016-07-27
+==================
+
+  * Breaking change: slot-id is now called ad-unit
+
 1.0.5 / 2016-07-19
 ==================
 

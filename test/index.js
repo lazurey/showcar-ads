@@ -28,7 +28,7 @@ describe('When script included on the page', () => {
     afterEach(cleanupAfterAdScript);
 
     it('If there is an ad slot, GPT gets loaded', () => {
-        document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
+        document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
         const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
         expect(script).to.not.be.null;
     });
@@ -37,25 +37,25 @@ describe('When script included on the page', () => {
 
         it('If screen x-resolution greater than min-x-resolution then ad slot is filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-x-resolution="${xres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-x-resolution="${xres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
 
         it('If screen x-resolution less than min-x-resolution then ad slot is NOT filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-x-resolution="${xres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-x-resolution="${xres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('If screen x-resolution greater than max-x-resolution then ad slot is NOT filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-x-resolution="${xres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-x-resolution="${xres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('If screen x-resolution less than max-x-resolution then ad slot is filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-x-resolution="${xres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-x-resolution="${xres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
     });
@@ -64,25 +64,25 @@ describe('When script included on the page', () => {
 
         it('If screen x-resolution within specified ad slot is filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-1}, ${xres+1}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-1}, ${xres+1}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
 
         it('If screen x-resolution below specified range ad slot is NOT filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres+1}, ${xres+2}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres+1}, ${xres+2}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('If screen x-resolution between specified ranges then ad slot is NOT filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-2}, ${xres-1}], [${xres+1}, ${xres+2}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-2}, ${xres-1}], [${xres+1}, ${xres+2}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('If screen x-resolution within max open range then ad slot is filled', () => {
             const xres = window.innerWidth;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-2}, ${xres-1}], [${xres}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" resolution-ranges="[[${xres-2}, ${xres-1}], [${xres}]]" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
     });
@@ -92,25 +92,25 @@ describe('When script included on the page', () => {
 
         it('If screen y-resolution greater than min-y-resolution then ad slot is filled', () => {
             const yres = window.innerHeight;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-y-resolution="${yres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-y-resolution="${yres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
 
         it('If screen y-resolution less than min-y-resolution then ad slot is NOT filled', () => {
             const yres = window.innerHeight;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-y-resolution="${yres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" min-y-resolution="${yres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('If screen y-resolution greater than max-y-resolution then ad slot is NOT filled', () => {
             const yres = window.innerHeight;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-y-resolution="${yres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-y-resolution="${yres-1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('If screen y-resolution less than max-y-resolution then ad slot is filled', () => {
             const yres = window.innerHeight;
-            document.body.innerHTML += `<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-y-resolution="${yres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
+            document.body.innerHTML += `<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" max-y-resolution="${yres+1}" sizes="[[300,100],[728,90]]"></as24-ad-slot>`;
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
     });
@@ -124,30 +124,30 @@ describe('When script included on the page', () => {
     });
 
     describe('Parameter validation', () => {
-        it('Without slot-id no ad should be loaded', () => {
+        it('Without ad-unit no ad should be loaded', () => {
             document.body.innerHTML += '<as24-ad-slot type="doubleclick" NO_SLOT_ID_HERE></as24-ad-slot>';
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('Without valid "sizes" or "size-mappings" no ad should be loaded', () => {
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" sizes="a"></as24-ad-slot>';
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" size-mapping="a"></as24-ad-slot>';
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" sizes="a" size-mapping="a"></as24-ad-slot>';
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" sizes="a"></as24-ad-slot>';
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="a"></as24-ad-slot>';
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" sizes="a" size-mapping="a"></as24-ad-slot>';
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(0);
         });
 
         it('With valid "sizes" ad should be loaded', () => {
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" sizes="[]"></as24-ad-slot>';
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" sizes="[]"></as24-ad-slot>';
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
 
         it('With valid "size-mapping" ad should be loaded', () => {
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" size-mapping="[]"></as24-ad-slot>';
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[]"></as24-ad-slot>';
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
 
         it('With valid "size-mapping" ad should be loaded and sizes attribute should be calculated and set correctly', () => {
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"></as24-ad-slot>';
+            document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"></as24-ad-slot>';
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
             expect(document.querySelectorAll('as24-ad-slot[sizes="[[728,90],[728,300],[300,100],[300,50],[320,50],[320,100]]"]').length).to.equal(1);
         });
@@ -169,7 +169,7 @@ describe('Targeting', () => {
 
     it('When as24-ad-targeting element present, targeting params should be set accordingly', (done) => {
         document.body.innerHTML += '<as24-ad-targeting>{ "a": 1, "b": 2 }</as24-ad-targeting>';
-        document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
+        document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
 
         window.googletag.cmd.push(() => {
             setTimeout(() => {
@@ -185,7 +185,7 @@ describe('Targeting', () => {
     it('When multiple as24-ad-targeting element present, targeting params should be set accordingly', (done) => {
         document.body.innerHTML += '<as24-ad-targeting>{ "a": 1, "b": 2 }</as24-ad-targeting>';
         document.body.innerHTML += '<as24-ad-targeting>{ "c": 1, "b": 8 }</as24-ad-targeting>';
-        document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
+        document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
 
         window.googletag.cmd.push(() => {
             setTimeout(() => {
@@ -212,7 +212,7 @@ describe('When user is a dealer', () => {
     });
 
     it('it should not display any ads', () => {
-        document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"></as24-ad-slot>';
+        document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"></as24-ad-slot>';
         const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
         expect(script).to.be.null;
     });
@@ -230,7 +230,7 @@ describe('When ads-off=true is in URL', () => {
     });
 
     it('it should not display any ads', () => {
-        document.body.innerHTML += '<as24-ad-slot type="doubleclick" slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
+        document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" sizes="[[300,100],[728,90]]"></as24-ad-slot>';
         const script = document.querySelector('script[src="https://www.googletagservices.com/tag/js/gpt.js"]');
         expect(script).to.be.null;
     });

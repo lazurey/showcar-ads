@@ -83,7 +83,7 @@
 
         <as24-ad-slot
             type="doubleclick"
-            slot-id="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"
+            ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"
             sizes="[[300,100],[728,90]]"
             size-mapping="[[[1100,400],[728,90]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"
             min-x-resolution="768">
@@ -106,10 +106,20 @@
             </li>
             <li>
                 <as24-ad-slot
-                    slot-id="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1"
+                    ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1"
                     sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]"
-                    size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]">
+                    size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"
+                    element-id="as24-test">
                 </as24-ad-slot>
+                <script>
+                    document.addEventListener("as24-ad-slot:slotRenderEnded", function(evt) {
+                        var adResponse = evt.detail;
+                        console.log(adResponse);
+                        console.log(adResponse.isEmpty);
+                        console.log(adResponse.slot.getSlotElementId());
+                    });
+                </script>
+
             </li>
             <li>
                 <a href="#" class="list-item">
@@ -123,7 +133,7 @@
             </li>
             <li>
                 <as24-ad-slot
-                    slot-id="/4467/AS24_MOBILEWEBSITE_DE/listpage_content2"
+                    ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content2"
                     sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]"
                     size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]">
                 </as24-ad-slot>
@@ -140,7 +150,7 @@
             </li>
             <li>
                 <as24-ad-slot
-                        slot-id="/4467/AS24_MOBILEWEBSITE_DE/listpage_content3"
+                        ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content3"
                         resolution-ranges="[[320,512],[768]]"
                         sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]"
                         size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]">
@@ -186,7 +196,7 @@
     <script>
         document.querySelector('#btn-reload').addEventListener('click', e => {
             const listContainer = document.querySelector('ul');
-            listContainer.innerHTML = `<li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot slot-id="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot slot-id="/4467/AS24_MOBILEWEBSITE_DE/listpage_content2" sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]" size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li>`;
+            listContainer.innerHTML = `<li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content2" sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]" size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li>`;
         });
     </script>
 </body>
