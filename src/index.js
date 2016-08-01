@@ -72,7 +72,9 @@
             console.log('as24-ad-slots:refresh');
             googletag.cmd.push(() => {
                 console.log('google cmd refresh');
-                googletag.pubads().refresh();
+                const pubads = googletag.pubads();
+                setTargeting(pubads);
+                pubads.refresh();
             });
         });
 
