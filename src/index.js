@@ -99,7 +99,9 @@
 
             for (var slot of adslots) {
                 if (slot.G === detachedAdSlotUnit) {
-                    googletag.destroySlots([slot]);
+                    console.log('DETACHING ad-slot: ' + slot.G);
+                    var slotDestroyed = googletag.destroySlots([slot]);
+                    console.log('slot destroyed: ' + slotDestroyed);
                 }
             }
         };
