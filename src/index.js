@@ -78,6 +78,7 @@
 
         const prototype = Object.create(HTMLElement.prototype);
 
+        // Is called when custom element is added to the page
         prototype.attachedCallback = function() {
             if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
 
@@ -89,6 +90,19 @@
                 break;
                 default:
                 return;
+            }
+        };
+
+        var adslots = [];
+
+        // Is called when custom element is removed from the page
+        prototype.detachedCallback = function() {
+            const detachedAdSlotUnit = getAttribute(this, 'ad-unit');
+
+            for (var slot of adslots) {
+                if (slot.G === detachedAdSlotUnit) {
+                    googletag.destroySlots([slot]);
+                }
             }
         };
 
@@ -123,21 +137,22 @@
 
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
-            if(cssClass.length > 0) {
+
+            if (cssClass.length > 0) {
                 adContainer.className = cssClass;
             }
+
             element.appendChild(adContainer);
 
             googletag.cmd.push(() => {
-                const pubads = googletag.pubads();
-
                 if(!document.getElementById(elementId)) {
                     console.warn('Ad container div was not available.');
                     element.style.display = 'none';
                     return;
                 }
-                // pubads.enableSingleRequest();
-                googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads());
+
+                // We need to take hold of all references in order to destroy slots when an element is being detached
+                adslots.push(googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads()));
 
                 setTimeout(() => {
                     googletag.display(elementId);
@@ -181,9 +196,7 @@
         };
 
         const setTargeting = pubads => {
-
             const targetingElements = Array.prototype.slice.call(document.querySelectorAll('as24-ad-targeting'));
-
             const targeting = targetingElements.map(el => JSON.parse(el.innerHTML || '{}')).reduce(extend, {});
 
             const matches = location.search.match(/test=([^&]*)/);
