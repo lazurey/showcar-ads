@@ -97,7 +97,10 @@
         prototype.detachedCallback = function() {
             const detachedAdSlotUnit = getAttribute(this, 'ad-unit');
 
+            console.log('detachedAdSlotUnit: ' +detachedAdSlotUnit);
+
             for (var slot of adslots) {
+                console.log('active slot: ' + slot.G);
                 if (slot.G === detachedAdSlotUnit) {
                     console.log('DETACHING ad-slot: ' + slot.G);
                     var slotDestroyed = googletag.destroySlots([slot]);
