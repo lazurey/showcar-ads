@@ -1,4 +1,9 @@
 
+2.1.1 / 2016-08-02
+==================
+
+  * destroy ad-slot when ad-slot tracking element is detached - needed for dynamic loading on list page
+
 2.1.0 / 2016-08-01
 ==================
 
