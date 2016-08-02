@@ -78,6 +78,7 @@
 
         const prototype = Object.create(HTMLElement.prototype);
 
+        // Is called when custom element is added to the page
         prototype.attachedCallback = function() {
             if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
 
@@ -94,17 +95,13 @@
 
         var adslots = [];
 
+        // Is called when custom element is removed from the page
         prototype.detachedCallback = function() {
             const detachedAdSlotUnit = getAttribute(this, 'ad-unit');
 
-            console.log('detachedAdSlotUnit: ' +detachedAdSlotUnit);
-
             for (var slot of adslots) {
-                console.log('active slot: ' + slot.G);
                 if (slot.G === detachedAdSlotUnit) {
-                    console.log('DETACHING ad-slot: ' + slot.G);
-                    var slotDestroyed = googletag.destroySlots([slot]);
-                    console.log('slot destroyed: ' + slotDestroyed);
+                    googletag.destroySlots([slot]);
                 }
             }
         };
