@@ -68,11 +68,23 @@
             setTargeting(pubads);
         });
 
-        document.addEventListener('as24-ad-slots:refresh', () => {
+        document.addEventListener('as24-ad-slots:refresh', (event) => {
             googletag.cmd.push(() => {
                 const pubads = googletag.pubads();
                 setTargeting(pubads);
-                pubads.refresh();
+
+                if (event && event.detail) {
+                    const adunits = event.detail;
+                    var slots = adslots.filter(function(slot) {
+                        return (adunits.indexOf(slot.G) >= 0);
+                    });
+
+                    if (slots.length > 0) {
+                        pubads.refresh(slots);
+                    }
+                } else {
+                    pubads.refresh();
+                }
             });
         });
 
