@@ -52,6 +52,7 @@
         const googletag = window.googletag;
 
         const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
+        const hasAttribute = (el, attr) => el.hasAttribute(attr);
 
         googletag.cmd.push(() => {
             const pubads = googletag.pubads();
@@ -124,6 +125,7 @@
             const cssClass = getAttribute(element, 'css-class', '');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
+            const outOfPage = hasAttribute(element, 'out-of-page');
 
             if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
             if (!rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
@@ -163,8 +165,12 @@
                     return;
                 }
 
-                // We need to take hold of all references in order to destroy slots when an element is being detached
-                adslots.push(googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads()));
+                if (outOfPage) {
+                    adslots.push(googletag.defineOutOfPageSlot(adunit, elementId).addService(googletag.pubads()));
+                } else {
+                    // We need to take hold of all references in order to destroy slots when an element is being detached
+                    adslots.push(googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads()));
+                }
 
                 setTimeout(() => {
                     googletag.display(elementId);
