@@ -1,3 +1,5 @@
+import { hasAttribute, getAttribute, loadScript, domready } from './helpers.js';
+
 (() => {
     'use strict';
 
@@ -31,78 +33,57 @@
     start();
 
     function start() {
-        const loadDoubleClickAPI = () => {
-            // if (loadDoubleClickAPI.done) { return; }
-            // loadDoubleClickAPI.done = true;
-            const doubleclickApiUrl = 'https://www.googletagservices.com/tag/js/gpt.js';
-            const scriptTag = document.querySelector(`script[src="${doubleclickApiUrl}"]`);
-
-            // early return if script alredy loaded
-            if (scriptTag) { return; }
-
-            var script = document.createElement('script');
-            var s = document.getElementsByTagName('script')[0];
-            script.src = doubleclickApiUrl;
-            s.parentNode.insertBefore(script, s);
-            // loadDoubleClickAPI = () => {};
-        };
-
-        loadDoubleClickAPI();
-
         const googletag = window.googletag;
 
-        const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
-        const hasAttribute = (el, attr) => el.hasAttribute(attr);
+        loadScript('https://www.googletagservices.com/tag/js/gpt.js');
 
         googletag.cmd.push(() => {
             const pubads = googletag.pubads();
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
-            pubads.addEventListener('slotRenderEnded', function(event) {
-                document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
-            });
+            pubads.disableInitialLoad();
+
+            // pubads.addEventListener('slotRenderEnded', function(event) {
+            //     document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
+            // });
+            setTargeting(pubads);
             googletag.enableServices();
         });
 
-        googletag.cmd.push(() => {
-            const pubads = googletag.pubads();
-            setTargeting(pubads);
-        });
-
-        document.addEventListener('as24-ad-slots:refresh', (event) => {
-            googletag.cmd.push(() => {
-                const pubads = googletag.pubads();
-                setTargeting(pubads);
-
-                if (event && event.detail) {
-                    const adunits = event.detail;
-                    var slots = adslots.filter(function(slot) {
-                        return (adunits.indexOf(slot.G) >= 0);
-                    });
-
-                    if (slots.length > 0) {
-                        pubads.refresh(slots);
-                    }
-                } else {
-                    pubads.refresh();
-                }
-            });
-        });
+        // document.addEventListener('as24-ad-slots:refresh', (event) => {
+        //     googletag.cmd.push(() => {
+        //         const pubads = googletag.pubads();
+        //         setTargeting(pubads);
+        //
+        //         if (event && event.detail) {
+        //             const adunits = event.detail;
+        //             var slots = adslots.filter(function(slot) {
+        //                 return (adunits.indexOf(slot.G) >= 0);
+        //             });
+        //
+        //             if (slots.length > 0) {
+        //                 pubads.refresh(slots);
+        //             }
+        //         } else {
+        //             pubads.refresh();
+        //         }
+        //     });
+        // });
 
         const prototype = Object.create(HTMLElement.prototype);
 
         // Is called when custom element is added to the page
         prototype.attachedCallback = function() {
-            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
+            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
 
             const slotType = getAttribute(this, 'type', 'doubleclick');
 
             switch(slotType) {
                 case 'doubleclick':
-                loadDoubleClickAdSlot(this);
-                break;
+                    loadDoubleClickAdSlot(this);
+                    break;
                 default:
-                return;
+                    return;
             }
         };
 
@@ -119,16 +100,23 @@
             }
         };
 
+        const isElementInViewport = element => {
+            const rect = element.getBoundingClientRect();
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            const isOutOfWindow = rect.bottom < scrollY || rect.top > scrollY + windowHeight;
+            return !isOutOfWindow;
+        };
+
         const loadDoubleClickAdSlot = element => {
             const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
             const adunit = getAttribute(element, 'ad-unit');
-            const cssClass = getAttribute(element, 'css-class', '');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
             const outOfPage = hasAttribute(element, 'out-of-page');
 
             if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
-            if (!rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
+            if (!outOfPage && !rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
 
             var sizes, sizeMapping;
 
@@ -152,28 +140,25 @@
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
 
-            if (cssClass.length > 0) {
-                adContainer.className = cssClass;
-            }
-
             element.appendChild(adContainer);
 
             googletag.cmd.push(() => {
-                if(!document.getElementById(elementId)) {
+                if (!document.body.contains(element)) {
                     console.warn('Ad container div was not available.');
-                    element.style.display = 'none';
                     return;
                 }
 
-                if (outOfPage) {
-                    adslots.push(googletag.defineOutOfPageSlot(adunit, elementId).addService(googletag.pubads()));
-                } else {
-                    // We need to take hold of all references in order to destroy slots when an element is being detached
-                    adslots.push(googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads()));
-                }
+                element.gptAdSlot = outOfPage
+                        ? googletag.defineOutOfPageSlot(adunit, elementId).setCollapseEmptyDiv(true).addService(googletag.pubads())
+                        : googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
                 setTimeout(() => {
                     googletag.display(elementId);
+                    // console.log('display', elementId);
+                    // if (isElementInViewport(element)) {
+                        googletag.pubads().refresh([element.gptAdSlot], { changeCorrelator: false });
+                        // console.log('refresh', elementId);
+                    // }
                 });
             });
         };
@@ -184,11 +169,11 @@
                 y: window.innerHeight
             };
 
-            const minX = el.getAttribute('min-x-resolution') || 0;
-            const maxX = el.getAttribute('max-x-resolution') || 1000000;
-            const minY = el.getAttribute('min-y-resolution') || 0;
-            const maxY = el.getAttribute('max-y-resolution') || 1000000;
-            const resolutionRanges = el.getAttribute('resolution-ranges') || '';
+            const minX = getAttribute(el, 'min-x-resolution', 0);
+            const maxX = getAttribute(el, 'max-x-resolution', Infinity);
+            const minY = getAttribute(el, 'min-y-resolution', 0);
+            const maxY = getAttribute(el, 'max-y-resolution', Infinity);
+            const resolutionRanges = getAttribute(el, 'resolution-ranges', '');
 
             if(resolutionRanges.length > 0) {
                 const rangeArray = JSON.parse(resolutionRanges);
@@ -235,12 +220,10 @@
         }
     }
 
-    // const domready = fn => {
-    //     if (document.readyState !== 'loading') {
-    //         return setTimeout(fn);
-    //     }
-    //
-    //     document.addEventListener("DOMContentLoaded", fn);
+    // const showVisibleAds = () => {
+    //     console.log('showVisibleAds');
     // };
-
+    //
+    // window.addEventListener('scroll', showVisibleAds);
+    // domready(showVisibleAds);
 })();

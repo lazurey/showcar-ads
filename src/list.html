@@ -105,6 +105,26 @@
                 </a>
             </li>
             <li>
+                <a href="#" class="list-item">
+                    <div class="img">
+                        <img src="http://loremflickr.com//320/240?1">
+                    </div>
+                    <div class="details">
+                        <h2>Audi A4 Avant 2.0 TDI</h2>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="list-item">
+                    <div class="img">
+                        <img src="http://loremflickr.com//320/240?2">
+                    </div>
+                    <div class="details">
+                        <h2>Audi A4 Avant 2.0 TDI</h2>
+                    </div>
+                </a>
+            </li>
+            <li>
                 <as24-ad-slot
                     ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1"
                     sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]"
@@ -124,7 +144,57 @@
             <li>
                 <a href="#" class="list-item">
                     <div class="img">
-                        <img src="http://loremflickr.com//320/240?1">
+                        <img src="http://loremflickr.com//320/240?3">
+                    </div>
+                    <div class="details">
+                        <h2>Audi A4 Avant 2.0 TDI</h2>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="list-item">
+                    <div class="img">
+                        <img src="http://loremflickr.com//320/240?4">
+                    </div>
+                    <div class="details">
+                        <h2>Audi A4 Avant 2.0 TDI</h2>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="list-item">
+                    <div class="img">
+                        <img src="http://loremflickr.com//320/240?5">
+                    </div>
+                    <div class="details">
+                        <h2>Audi A4 Avant 2.0 TDI</h2>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="list-item">
+                    <div class="img">
+                        <img src="http://loremflickr.com//320/240?6">
+                    </div>
+                    <div class="details">
+                        <h2>Audi A4 Avant 2.0 TDI</h2>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="list-item">
+                    <div class="img">
+                        <img src="http://loremflickr.com//320/240?7">
+                    </div>
+                    <div class="details">
+                        <h2>Audi A4 Avant 2.0 TDI</h2>
+                    </div>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="list-item">
+                    <div class="img">
+                        <img src="http://loremflickr.com//320/240?8">
                     </div>
                     <div class="details">
                         <h2>Audi A4 Avant 2.0 TDI</h2>
@@ -141,7 +211,7 @@
             <li>
                 <a href="#" class="list-item">
                     <div class="img">
-                        <img src="http://loremflickr.com//320/240?2">
+                        <img src="http://loremflickr.com//320/240?9">
                     </div>
                     <div class="details">
                         <h2>Audi A4 Avant 2.0 TDI</h2>
@@ -168,7 +238,7 @@
             <li>
                 <a href="#" class="list-item">
                     <div class="img">
-                        <img src="http://loremflickr.com//320/240?2">
+                        <img src="http://loremflickr.com//320/240?10">
                     </div>
                     <div class="details">
                         <h2>Audi A4 Avant 2.0 TDI</h2>
@@ -205,7 +275,32 @@
     <script>
         document.querySelector('#btn-reload').addEventListener('click', e => {
             const listContainer = document.querySelector('ul');
-            listContainer.innerHTML = `<li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content2" sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]" size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li>`;
+            const renderItemTemplate = () => `<li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li>`;
+            const renderAdTemplate = () => `<as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot>`;
+            listContainer.innerHTML = `
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+
+                ${renderAdTemplate()}
+
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+
+                ${renderAdTemplate()}
+
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+                ${renderItemTemplate()}
+            `;
+            // listContainer.innerHTML = `<li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li><li> <as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content2" sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]" size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]"> </as24-ad-slot> </li><li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li>`;
+
         });
     </script>
 </body>
