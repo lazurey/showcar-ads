@@ -145,12 +145,6 @@ describe('When script included on the page', () => {
             document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[]"></as24-ad-slot>';
             expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
         });
-
-        it('With valid "size-mapping" ad should be loaded and sizes attribute should be calculated and set correctly', () => {
-            document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"></as24-ad-slot>';
-            expect(document.querySelectorAll('as24-ad-slot *').length).to.equal(1);
-            expect(document.querySelectorAll('as24-ad-slot[sizes="[[728,90],[728,300],[300,100],[300,50],[320,50],[320,100]]"]').length).to.equal(1);
-        });
     });
 });
 

@@ -128,15 +128,6 @@ import { hasAttribute, getAttribute, loadScript, domready } from './helpers.js';
                 return;
             }
 
-            if (!sizes.length && sizeMapping.length) {
-                sizes = [];
-                sizeMapping.forEach(mapping => {
-                    sizes = sizes.concat(mapping[1]);
-                });
-
-                element.setAttribute('sizes', JSON.stringify(sizes));
-            }
-
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
 
