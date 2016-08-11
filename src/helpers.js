@@ -1,24 +1,3 @@
-const getAttribute = (el, attributeName, fallback) => {
-    return (el && el.getAttribute && el.getAttribute(attributeName)) || fallback;
-};
-
-const hasAttribute = (el, attributeName) => el.hasAttribute(attributeName);
-
-const loadScript = url => {
-    const script = document.createElement('script');
-    const s = document.getElementsByTagName('script')[0];
-    script.src = url;
-    s.parentNode.insertBefore(script, s);
-};
-
-const domready = fn => {
-    if (document.readyState !== 'loading') {
-        return setTimeout(fn);
-    }
-
-    document.addEventListener("DOMContentLoaded", fn);
-};
-
 const once = fn => {
     let count = 1;
     let memo;
@@ -32,4 +11,29 @@ const once = fn => {
     };
 };
 
-export { getAttribute, hasAttribute, loadScript, domready, once };
+const batch = fn => {
+    const arr = [];
+    let to;
+
+    return arg => {
+        arr.push(arg);
+        clearTimeout(to);
+        to = setTimeout(() => {
+            fn(arr);
+            arr.length = 0;
+        }, 50);
+    };
+};
+
+// const logBatch = batch(tx => console.log(tx, 'ASDF'));
+//
+// logBatch('qwe1');
+// logBatch('qwe2');
+// logBatch('qwe3');
+// logBatch('qwe4');
+
+// Simple check to disable ads when ads-off is in the URL
+// e.g. example.com/list#ads-off OR example.com/details?ads-off
+const adsAreDisabled = () => window.location.href.indexOf('ads-off=true') >= 0;
+
+export { once, adsAreDisabled, batch };

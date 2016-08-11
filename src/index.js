@@ -1,78 +1,60 @@
-import { hasAttribute, getAttribute, loadScript, domready, once } from './helpers.js';
+import { once, adsAreDisabled, batch } from './helpers.js';
+
+import * as cookie from './cookie.js';
+import * as dom from './dom.js';
+
+import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, ready as domready } from './dom.js';
 
 (() => {
-    'use strict';
 
-    window.googletag = window.googletag || { cmd: [] };
+    const googletag = window.googletag = window.googletag || { cmd: [] };
 
-    // Simple check to disable ads when ads-off is in the URL
-    // e.g. example.com/list#ads-off OR example.com/details?ads-off
-    if (window.location.href.indexOf('ads-off=true') >= 0) { return; }
+    if (adsAreDisabled() || cookie.isUserDealer()) { return; }
 
-    const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
-    if (isUserDealer()) { return; }
-
-    const cookieConsentNeededAndNotGivenYet = () => {
-        const host = location.hostname;
-        const cookieConsentNeeded = /\.nl$/.test(host) || /\.it$/.test(host) || (location.hash.indexOf('cookie-consent-needed') >= 0);
-        const cookieConsentGiven = document.cookie.indexOf('cookieConsent=1;') >= 0;
-        return cookieConsentNeeded && !cookieConsentGiven;
-    };
-
-    if (cookieConsentNeededAndNotGivenYet()) {
-        // window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
-        window.addEventListener('cookie-consent-given', start);
-        return;
+    if (cookie.consentNeededAndNotGivenYet()) {
+        // waiting for cookie-consent-given event
+        // i.e. window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
+        return window.addEventListener('cookie-consent-given', start);
     }
-
-    // creating styles to hide
-    const style = document.createElement('style');
-    style.innerHTML = 'as24-ad-targeting{display:none}';
-    document.head.appendChild(style);
 
     start();
 
     function start() {
-        const googletag = window.googletag;
 
         loadScript('https://www.googletagservices.com/tag/js/gpt.js');
 
+        const batchRefresh = batch(slots => {
+            googletag.cmd.push(() => {
+                googletag.pubads().refresh(slots, { changeCorrelator: false });
+            });
+        });
+
         googletag.cmd.push(() => {
             const pubads = googletag.pubads();
+
+            pubads.addEventListener('slotRenderEnded', eventData => {
+                const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
+                if (element) {
+                    const slotElement = element.parentNode;
+
+                    if (eventData.isEmpty) {
+                        setAttribute(slotElement, 'empty', '');
+                    } else {
+                        removeAttribute(slotElement, 'empty');
+                    }
+                }
+            });
+
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
             pubads.disableInitialLoad();
 
-            // pubads.addEventListener('slotRenderEnded', function(event) {
-            //     document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
-            // });
             setTargeting(pubads);
             googletag.enableServices();
         });
 
-        // document.addEventListener('as24-ad-slots:refresh', (event) => {
-        //     googletag.cmd.push(() => {
-        //         const pubads = googletag.pubads();
-        //         setTargeting(pubads);
-        //
-        //         if (event && event.detail) {
-        //             const adunits = event.detail;
-        //             var slots = adslots.filter(function(slot) {
-        //                 return (adunits.indexOf(slot.G) >= 0);
-        //             });
-        //
-        //             if (slots.length > 0) {
-        //                 pubads.refresh(slots);
-        //             }
-        //         } else {
-        //             pubads.refresh();
-        //         }
-        //     });
-        // });
-
         const prototype = Object.create(HTMLElement.prototype);
 
-        // Is called when custom element is added to the page
         prototype.attachedCallback = function() {
             if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
 
@@ -87,36 +69,27 @@ import { hasAttribute, getAttribute, loadScript, domready, once } from './helper
             }
         };
 
-        var adslots = [];
-
-        // Is called when custom element is removed from the page
         prototype.detachedCallback = function() {
             const detachedAdSlotUnit = getAttribute(this, 'ad-unit');
-
-            for (var slot of adslots) {
-                if (slot.G === detachedAdSlotUnit) {
-                    googletag.destroySlots([slot]);
-                }
-            }
+            googletag.cmd.push(() => {
+                googletag.destroySlots([this.gptAdSlot]);
+                this.gptAdSlot = undefined;
+            });
         };
 
-        const isElementInViewport = element => {
-            const rect = element.getBoundingClientRect();
-            const scrollY = window.scrollY;
-            const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-            const isOutOfWindow = rect.bottom < scrollY || rect.top > scrollY + windowHeight;
-            return !isOutOfWindow;
+        prototype.refreshAdSlot = function() {
+            batchRefresh(this.gptAdSlot);
         };
 
         const loadDoubleClickAdSlot = element => {
-            const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
+            const elementId = getAttribute(element, 'element-id') || `ad-slot-element-${Math.random() * 1000000 | 0}`;
             const adunit = getAttribute(element, 'ad-unit');
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
             const outOfPage = hasAttribute(element, 'out-of-page');
 
             if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
-            if (!outOfPage && !rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
+            if (!outOfPage && !rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided if not out-of-page ad slot.'); return; }
 
             var sizes, sizeMapping;
 
@@ -148,7 +121,8 @@ import { hasAttribute, getAttribute, loadScript, domready, once } from './helper
                 setTimeout(() => {
                     // if (isElementInViewport(element)) {
                         // TODO: do this in batches to prevent multiple requests if possible
-                        googletag.pubads().refresh([element.gptAdSlot], { changeCorrelator: false });
+                        batchRefresh(element.gptAdSlot);
+                        // googletag.pubads().refresh([element.gptAdSlot], { changeCorrelator: false });
                         // console.log('refresh', elementId);
                     // }
                 });
