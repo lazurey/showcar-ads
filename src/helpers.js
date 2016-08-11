@@ -19,4 +19,17 @@ const domready = fn => {
     document.addEventListener("DOMContentLoaded", fn);
 };
 
-export { getAttribute, hasAttribute, loadScript, domready };
+const once = fn => {
+    let count = 1;
+    let memo;
+
+    return () => {
+        if (count-- > 0) {
+            memo = fn();
+        }
+
+        return memo;
+    };
+};
+
+export { getAttribute, hasAttribute, loadScript, domready, once };
