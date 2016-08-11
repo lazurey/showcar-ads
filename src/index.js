@@ -1,4 +1,4 @@
-import { hasAttribute, getAttribute, loadScript, domready } from './helpers.js';
+import { hasAttribute, getAttribute, loadScript, domready, once } from './helpers.js';
 
 (() => {
     'use strict';
@@ -143,10 +143,11 @@ import { hasAttribute, getAttribute, loadScript, domready } from './helpers.js';
                         ? googletag.defineOutOfPageSlot(adunit, elementId).setCollapseEmptyDiv(true).addService(googletag.pubads())
                         : googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).setCollapseEmptyDiv(true).addService(googletag.pubads());
 
+                googletag.display(elementId);
+
                 setTimeout(() => {
-                    googletag.display(elementId);
-                    // console.log('display', elementId);
                     // if (isElementInViewport(element)) {
+                        // TODO: do this in batches to prevent multiple requests if possible
                         googletag.pubads().refresh([element.gptAdSlot], { changeCorrelator: false });
                         // console.log('refresh', elementId);
                     // }
