@@ -25,7 +25,8 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
         const batchRefresh = batch(slots => {
             googletag.cmd.push(() => {
-                googletag.pubads().refresh(slots, { changeCorrelator: false });
+                // googletag.pubads().refresh(slots, { changeCorrelator: false });
+                googletag.pubads().refresh(slots);
             });
         });
 
