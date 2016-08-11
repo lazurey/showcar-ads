@@ -71,7 +71,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         };
 
         prototype.detachedCallback = function() {
-            const detachedAdSlotUnit = getAttribute(this, 'ad-unit');
             googletag.cmd.push(() => {
                 googletag.destroySlots([this.gptAdSlot]);
                 this.gptAdSlot = undefined;
