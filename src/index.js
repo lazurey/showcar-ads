@@ -55,7 +55,8 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             });
 
             pubads.enableSingleRequest();
-            pubads.collapseEmptyDivs(true);
+            // pubads.collapseEmptyDivs(true);
+            pubads.collapseEmptyDivs();
             pubads.disableInitialLoad();
 
             setTargeting(pubads);
@@ -86,6 +87,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         };
 
         prototype.refreshAdSlot = function() {
+            slotsToRefreshWhenInViewport = slotsToRefreshWhenInViewport.filter(s => s !== this);
             setAttribute(this, 'loaded', '');
             batchRefresh(this.gptAdSlot);
         };
@@ -129,6 +131,8 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
                 if (dom.isElementInViewport(element)) {
                     element.refreshAdSlot();
+                } else {
+                    slotsToRefreshWhenInViewport.push(element);
                 }
             });
         };
@@ -188,14 +192,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         } catch(ex) {
             console.warn('Custom element already registered: "as24-ad-slot".');
         }
-
-        const refreshAdsWhenInViewport = () => {
-            const slots = document.querySelectorAll('as24-ad-slot:not([loaded])');
-            const visibleSlots = [...slots].filter(slot => dom.isElementInViewport(slot));
-            visibleSlots.forEach(slot => slot.refreshAdSlot());
-        };
-
-        window.addEventListener('scroll', debounce(refreshAdsWhenInViewport, 100));
     }
 
 })();
