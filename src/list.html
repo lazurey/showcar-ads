@@ -129,18 +129,9 @@
         <as24-ad-slot
             id="testadslot"
             type="doubleclick"
-
-            size-map-0-0="[300,50],[320,50]"
-            size-map-720-400="[728,90],[300,600]"
-
-            size-map-0x0="[[300,100],[300,50],[320,50],[320,100]]"
-            size-map-1100x400="[[728,90]]"
-
             size-map-0x0="300x100, 300x50, 320x50, 320x100"
             size-map-1100x400="728 x 90"
             size-map-1400x400=""
-
-
             ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"
             sizes="[[300,100],[728,90]]"
             size-mapping="[[[1100,400],[728,90]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"
@@ -270,18 +261,18 @@
             <li>
                 <as24-ad-slot
                         ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content3"
-                        resolution-ranges="[[320,512],[768]]"
                         sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]"
-                        size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]">
+
+                        size-map-728x300="728x90, 728x300"
+                        size-map-0x0="300x100, 300x50, 320x50, 320x100">
                 </as24-ad-slot>
             </li>
             <li>
                 <as24-ad-slot
                         ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content4"
                         out-of-page
-                        resolution-ranges="[[320,512],[768]]"
-                        sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]"
-                        size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]">
+                        size-map-728x300="728x90, 728x300"
+                        size-map-0x0="300x100, 300x50, 320x50, 320x100">
                 </as24-ad-slot>
             </li>
             <li>
@@ -325,7 +316,7 @@
         document.querySelector('#btn-reload').addEventListener('click', function(e) {
             const listContainer = document.querySelector('ul');
             const renderItemTemplate = () => `<li> <a href="#" class="list-item"> <div class="img"> <img src="http://loremflickr.com//320/240?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li>`;
-            const renderAdTemplate = () => `<as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot>`;
+            const renderAdTemplate = () => `<as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" size-map-728x300="728x90, 728x300" size-map-0x0="300x100, 300x50, 320x50, 320x100" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot>`;
             listContainer.innerHTML = `
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}

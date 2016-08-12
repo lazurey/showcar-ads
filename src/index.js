@@ -38,6 +38,20 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             });
         });
 
+        let slotsToRefreshWhenInViewport = [];
+        const rfr = () => {
+            slotsToRefreshWhenInViewport.forEach(slot => {
+                if (dom.isElementInViewport(slot)) {
+                    slot.refreshAdSlot();
+                }
+            });
+        };
+
+        const debouncedRfr = debounce(rfr, 50);
+
+        window.addEventListener('scroll', debouncedRfr);
+        dom.ready(debouncedRfr);
+
         googletag.cmd.push(() => {
             const pubads = googletag.pubads();
 
@@ -99,6 +113,22 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             const rawSizeMapping = getAttribute(element, 'size-mapping');
             const outOfPage = hasAttribute(element, 'out-of-page');
 
+            // const sizeMaps = [...element.attributes].filter(a => /size\-map\-/.test(a.nodeName)); //.map(x => ({ name: x.nodeName, value: x.value })).filter(x => /size-map-/.test(x.name));
+
+            const parseResolution = str => {
+                const matches = str.match(/[\d]+x[\d]+/i);
+                console.log(matches[0]);
+                return matches[1];
+            };
+
+            const sizeMaps = [...element.attributes].map(x => ({ name: x.nodeName, value: x.value })).filter(x => /size-map-/.test(x.name));
+            sizeMaps.forEach(m => {
+                console.log(parseResolution(m.name), m.value.split(','));
+            })
+            // const ranges = sizeMaps.map(m => [m.name, m.value.split(',')]);
+            // console.log(sizeMaps, ranges);
+
+
             if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
             if (!outOfPage && !rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided if not out-of-page ad slot.'); return; }
 
@@ -111,6 +141,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 console.warn('Invalid attribute: either sizes or size-mapping attribute cannot be JSON-parsed.');
                 return;
             }
+
 
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
