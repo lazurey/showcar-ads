@@ -25,6 +25,14 @@ const batch = fn => {
     };
 };
 
+const debounce = (fn, delay) => {
+    let timer = null;
+    return () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => fn(), delay);
+    };
+}
+
 // const logBatch = batch(tx => console.log(tx, 'ASDF'));
 //
 // logBatch('qwe1');
@@ -36,4 +44,4 @@ const batch = fn => {
 // e.g. example.com/list#ads-off OR example.com/details?ads-off
 const adsAreDisabled = () => window.location.href.indexOf('ads-off=true') >= 0;
 
-export { once, adsAreDisabled, batch };
+export { once, adsAreDisabled, batch, debounce };

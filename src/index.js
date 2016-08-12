@@ -1,4 +1,4 @@
-import { once, adsAreDisabled, batch } from './helpers.js';
+import { once, adsAreDisabled, batch, debounce } from './helpers.js';
 
 import * as cookie from './cookie.js';
 import * as dom from './dom.js';
@@ -14,6 +14,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
     };
 
     hideAdTargetingElements();
+
     const googletag = window.googletag = window.googletag || { cmd: [] };
 
     if (adsAreDisabled() || cookie.isUserDealer()) { return; }
@@ -85,6 +86,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         };
 
         prototype.refreshAdSlot = function() {
+            setAttribute(this, 'loaded', '');
             batchRefresh(this.gptAdSlot);
         };
 
@@ -125,14 +127,9 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
                 googletag.display(elementId);
 
-                setTimeout(() => {
-                    // if (isElementInViewport(element)) {
-                        // TODO: do this in batches to prevent multiple requests if possible
-                        batchRefresh(element.gptAdSlot);
-                        // googletag.pubads().refresh([element.gptAdSlot], { changeCorrelator: false });
-                        // console.log('refresh', elementId);
-                    // }
-                });
+                if (dom.isElementInViewport(element)) {
+                    element.refreshAdSlot();
+                }
             });
         };
 
@@ -191,12 +188,14 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         } catch(ex) {
             console.warn('Custom element already registered: "as24-ad-slot".');
         }
+
+        const refreshAdsWhenInViewport = () => {
+            const slots = document.querySelectorAll('as24-ad-slot:not([loaded])');
+            const visibleSlots = [...slots].filter(slot => dom.isElementInViewport(slot));
+            visibleSlots.forEach(slot => slot.refreshAdSlot());
+        };
+
+        window.addEventListener('scroll', debounce(refreshAdsWhenInViewport, 100));
     }
 
-    // const showVisibleAds = () => {
-    //     console.log('showVisibleAds');
-    // };
-    //
-    // window.addEventListener('scroll', showVisibleAds);
-    // domready(showVisibleAds);
 })();
