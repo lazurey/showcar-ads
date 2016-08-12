@@ -25,8 +25,10 @@ export const ready = fn => {
 
 export const isElementInViewport = element => {
     const rect = element.getBoundingClientRect();
-    const scrollY = window.scrollY;
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    const isOutOfWindow = rect.bottom < scrollY || rect.top > scrollY + windowHeight;
-    return !isOutOfWindow;
+    const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    return rect.top >= 0
+        && rect.top < windowHeight
+        && rect.left >= 0
+        && rect.left < windowWidth;
 };
