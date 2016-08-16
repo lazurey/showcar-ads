@@ -171,7 +171,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
                 googletag.display(elementId);
 
-                if (dom.isElementInViewport(element)) {
+                if (dom.isElementInViewport(element) || outOfPage) {
                     element.refreshAdSlot();
                 } else {
                     slotsToRefreshWhenInViewport.push(element);
