@@ -258,3 +258,41 @@ describe('Cookie consent in NL and IT', () => {
         });
     });
 });
+
+describe('Size mappings are correct', () => {
+    before(() => {
+        loadScript();
+    });
+
+    after(() => {
+        cleanupAfterAdScript();
+    });
+
+    it('Derive gpt size mapping correctly', (done) => {
+        const rndId = 'xxx' + (Math.random() * 100000 | 0);
+        document.body.innerHTML += `<as24-ad-slot id="${rndId}" type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" size-map-0x0="300x50, 320x100"></as24-ad-slot>`;
+
+        window.googletag.cmd.push(() => {
+            const parsedSizeMapping = JSON.parse(document.querySelector(`#${rndId}`).getAttribute('size-mapping'));
+            const generatedSizeMapping = window.googletag.sizeMapping().addSize([0,0], [[300,50], [320,100]]).build();
+            expect(parsedSizeMapping).to.deep.equal(generatedSizeMapping);
+            done();
+        });
+    });
+
+    it('Derive gpt size mapping correctly', (done) => {
+        const rndId = 'xxx' + (Math.random() * 100000 | 0);
+        document.body.innerHTML += `<as24-ad-slot id="${rndId}" type="doubleclick" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2" size-map-0x0="300x50, 320x100" size-map-728x300="728x90, 728x300"></as24-ad-slot>`;
+
+        window.googletag.cmd.push(() => {
+            const parsedSizeMapping = JSON.parse(document.querySelector(`#${rndId}`).getAttribute('size-mapping'));
+            const generatedSizeMapping = window.googletag.sizeMapping()
+                        .addSize([728,300], [[728,90], [728,300]])
+                        .addSize([0,0], [[300,50], [320,100]])
+                        .build();
+
+            expect(parsedSizeMapping).to.deep.equal(generatedSizeMapping);
+            done();
+        });
+    });
+});

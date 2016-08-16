@@ -69,8 +69,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             });
 
             pubads.enableSingleRequest();
-            // pubads.collapseEmptyDivs(true);
-            pubads.collapseEmptyDivs();
+            pubads.collapseEmptyDivs(false);
             pubads.disableInitialLoad();
 
             setTargeting(pubads);
@@ -109,25 +108,46 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         const loadDoubleClickAdSlot = element => {
             const elementId = getAttribute(element, 'element-id') || `ad-slot-element-${Math.random() * 1000000 | 0}`;
             const adunit = getAttribute(element, 'ad-unit');
-            const rawSizes = getAttribute(element, 'sizes');
-            const rawSizeMapping = getAttribute(element, 'size-mapping');
             const outOfPage = hasAttribute(element, 'out-of-page');
 
-            // const sizeMaps = [...element.attributes].filter(a => /size\-map\-/.test(a.nodeName)); //.map(x => ({ name: x.nodeName, value: x.value })).filter(x => /size-map-/.test(x.name));
-
             const parseResolution = str => {
-                const matches = str.match(/[\d]+x[\d]+/i);
-                console.log(matches[0]);
-                return matches[1];
+                const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
+
+                if (matches && matches[2]) {
+                    return [matches[1] | 0, matches[2] | 0];
+                }
+
+                return null;
             };
 
-            const sizeMaps = [...element.attributes].map(x => ({ name: x.nodeName, value: x.value })).filter(x => /size-map-/.test(x.name));
-            sizeMaps.forEach(m => {
-                console.log(parseResolution(m.name), m.value.split(','));
-            })
-            // const ranges = sizeMaps.map(m => [m.name, m.value.split(',')]);
-            // console.log(sizeMaps, ranges);
+            const sizeMaps = [...element.attributes].filter(x => /size-map-/.test(x.nodeName)).map(x => ({ name: x.nodeName, value: x.value }))//.filter(x => /size-map-/.test(x.name));
 
+            if (sizeMaps.length > 0) {
+
+                const parsedSizeMaps = sizeMaps.map(m => {
+                    return [parseResolution(m.name), m.value.split(',').map(parseResolution).filter(r => r && r[0] && r[1])];
+                });
+
+                parsedSizeMaps.sort((a, b) => {
+                    const ax = a[0][0];
+                    const ay = a[0][1];
+
+                    const bx = b[0][0];
+                    const by = b[0][1];
+
+                    if (ax === bx) { return ay - by };
+                    return bx - ax;
+                });
+
+                const smallest = parsedSizeMaps[parsedSizeMaps.length - 1];
+                if (smallest[0][0] !== 0 || smallest[0][1] !== 0) {
+                    parsedSizeMaps.push([[0,0],[]])
+                }
+                setAttribute(element, 'size-mapping', JSON.stringify(parsedSizeMaps));
+            }
+
+            const rawSizes = getAttribute(element, 'sizes');
+            const rawSizeMapping = getAttribute(element, 'size-mapping');
 
             if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
             if (!outOfPage && !rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided if not out-of-page ad slot.'); return; }
@@ -155,8 +175,8 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 }
 
                 element.gptAdSlot = outOfPage
-                        ? googletag.defineOutOfPageSlot(adunit, elementId).setCollapseEmptyDiv(true).addService(googletag.pubads())
-                        : googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).setCollapseEmptyDiv(true).addService(googletag.pubads());
+                        ? googletag.defineOutOfPageSlot(adunit, elementId).addService(googletag.pubads())
+                        : googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads());
 
                 googletag.display(elementId);
 
