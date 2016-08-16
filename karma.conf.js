@@ -11,7 +11,15 @@ module.exports = function(config) {
         preprocessors: {
             'test/**/*.js': ['webpack']
         },
-
+        webpack: {
+            module: {
+                loaders: [{
+                    test: /\.js$/,
+                    exclude: /(node_modules|bower_components)/,
+                    loader: 'babel?presets[]=es2015'
+                }]
+            }
+        },
         webpackMiddleware: {
             noInfo: true
         },

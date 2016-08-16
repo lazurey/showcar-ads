@@ -1,120 +1,148 @@
+import { once, adsAreDisabled, batch, debounce } from './helpers.js';
+
+import * as cookie from './cookie.js';
+import * as dom from './dom.js';
+
+import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, ready as domready } from './dom.js';
+
 (() => {
-    'use strict';
 
-    window.googletag = window.googletag || { cmd: [] };
+    const googletag = window.googletag = window.googletag || { cmd: [] };
 
-    // Simple check to disable ads when ads-off is in the URL
-    // e.g. example.com/list#ads-off OR example.com/details?ads-off
-    if (window.location.href.indexOf('ads-off=true') >= 0) { return; }
+    if (adsAreDisabled() || cookie.isUserDealer()) { return; }
 
-    const isUserDealer = () => document.cookie.indexOf('CustomerType=D') > 0;
-    if (isUserDealer()) { return; }
-
-    const cookieConsentNeededAndNotGivenYet = () => {
-        const host = location.hostname;
-        const cookieConsentNeeded = /\.nl$/.test(host) || /\.it$/.test(host) || (location.hash.indexOf('cookie-consent-needed') >= 0);
-        const cookieConsentGiven = document.cookie.indexOf('cookieConsent=1;') >= 0;
-        return cookieConsentNeeded && !cookieConsentGiven;
-    };
-
-    if (cookieConsentNeededAndNotGivenYet()) {
-        // window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
-        window.addEventListener('cookie-consent-given', start);
-        return;
+    if (cookie.consentNeededAndNotGivenYet()) {
+        // waiting for cookie-consent-given event
+        // i.e. window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
+        return window.addEventListener('cookie-consent-given', start);
     }
-
-    // creating styles to hide
-    const style = document.createElement('style');
-    style.innerHTML = 'as24-ad-targeting{display:none}';
-    document.head.appendChild(style);
 
     start();
 
     function start() {
-        const loadDoubleClickAPI = () => {
-            // if (loadDoubleClickAPI.done) { return; }
-            // loadDoubleClickAPI.done = true;
-            const doubleclickApiUrl = 'https://www.googletagservices.com/tag/js/gpt.js';
-            const scriptTag = document.querySelector(`script[src="${doubleclickApiUrl}"]`);
 
-            // early return if script alredy loaded
-            if (scriptTag) { return; }
+        loadScript('https://www.googletagservices.com/tag/js/gpt.js');
 
-            var script = document.createElement('script');
-            var s = document.getElementsByTagName('script')[0];
-            script.src = doubleclickApiUrl;
-            s.parentNode.insertBefore(script, s);
-            // loadDoubleClickAPI = () => {};
+        const batchRefresh = batch(slots => {
+            googletag.cmd.push(() => {
+                // googletag.pubads().refresh(slots, { changeCorrelator: false });
+                googletag.pubads().refresh(slots);
+            });
+        });
+
+        let slotsToRefreshWhenInViewport = [];
+        const rfr = () => {
+            slotsToRefreshWhenInViewport.forEach(slot => {
+                if (dom.isElementInViewport(slot)) {
+                    slot.refreshAdSlot();
+                }
+            });
         };
 
-        loadDoubleClickAPI();
+        const debouncedRfr = debounce(rfr, 50);
 
-        const googletag = window.googletag;
-
-        const getAttribute = (el, attr, fallback) => el.getAttribute(attr) || fallback;
+        window.addEventListener('scroll', debouncedRfr);
+        dom.ready(debouncedRfr);
 
         googletag.cmd.push(() => {
             const pubads = googletag.pubads();
+
+            pubads.addEventListener('slotRenderEnded', eventData => {
+                const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
+                if (element) {
+                    const slotElement = element.parentNode;
+
+                    if (eventData.isEmpty) {
+                        setAttribute(slotElement, 'empty', '');
+                    } else {
+                        removeAttribute(slotElement, 'empty');
+                    }
+                }
+            });
+
             pubads.enableSingleRequest();
-            pubads.collapseEmptyDivs(true);
-            pubads.addEventListener('slotRenderEnded', function(event) {
-                document.dispatchEvent(new CustomEvent('as24-ad-slot:slotRenderEnded', {detail: event}));
-            });
-            googletag.enableServices();
-        });
+            pubads.collapseEmptyDivs(false);
+            pubads.disableInitialLoad();
 
-        googletag.cmd.push(() => {
-            const pubads = googletag.pubads();
             setTargeting(pubads);
-        });
-
-        document.addEventListener('as24-ad-slots:refresh', () => {
-            googletag.cmd.push(() => {
-                const pubads = googletag.pubads();
-                setTargeting(pubads);
-                pubads.refresh();
-            });
+            googletag.enableServices();
         });
 
         const prototype = Object.create(HTMLElement.prototype);
 
-        // Is called when custom element is added to the page
         prototype.attachedCallback = function() {
-            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { this.style.display = 'none'; return; }
+            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
 
             const slotType = getAttribute(this, 'type', 'doubleclick');
 
             switch(slotType) {
                 case 'doubleclick':
-                loadDoubleClickAdSlot(this);
-                break;
+                    loadDoubleClickAdSlot(this);
+                    break;
                 default:
-                return;
+                    return;
             }
         };
 
-        var adslots = [];
-
-        // Is called when custom element is removed from the page
         prototype.detachedCallback = function() {
-            const detachedAdSlotUnit = getAttribute(this, 'ad-unit');
+            googletag.cmd.push(() => {
+                googletag.destroySlots([this.gptAdSlot]);
+                this.gptAdSlot = undefined;
+            });
+        };
 
-            for (var slot of adslots) {
-                if (slot.G === detachedAdSlotUnit) {
-                    googletag.destroySlots([slot]);
-                }
-            }
+        prototype.refreshAdSlot = function() {
+            slotsToRefreshWhenInViewport = slotsToRefreshWhenInViewport.filter(s => s !== this);
+            setAttribute(this, 'loaded', '');
+            batchRefresh(this.gptAdSlot);
         };
 
         const loadDoubleClickAdSlot = element => {
-            const elementId = getAttribute(element, 'element-id') || `${Math.random()}`;
+            const elementId = getAttribute(element, 'element-id') || `ad-slot-element-${Math.random() * 1000000 | 0}`;
             const adunit = getAttribute(element, 'ad-unit');
-            const cssClass = getAttribute(element, 'css-class', '');
+            const outOfPage = hasAttribute(element, 'out-of-page');
+
+            const parseResolution = str => {
+                const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
+
+                if (matches && matches[2]) {
+                    return [matches[1] | 0, matches[2] | 0];
+                }
+
+                return null;
+            };
+
+            const sizeMaps = [...element.attributes].filter(x => /size-map-/.test(x.nodeName)).map(x => ({ name: x.nodeName, value: x.value }));
+
+            if (sizeMaps.length > 0) {
+
+                const parsedSizeMaps = sizeMaps.map(m => {
+                    return [parseResolution(m.name), m.value.split(',').map(parseResolution).filter(r => r && r[0] && r[1])];
+                });
+
+                parsedSizeMaps.sort((a, b) => {
+                    const ax = a[0][0];
+                    const ay = a[0][1];
+
+                    const bx = b[0][0];
+                    const by = b[0][1];
+
+                    if (ax === bx) { return ay - by };
+                    return bx - ax;
+                });
+
+                const smallest = parsedSizeMaps[parsedSizeMaps.length - 1];
+                if (smallest[0][0] !== 0 || smallest[0][1] !== 0) {
+                    parsedSizeMaps.push([[0,0],[]])
+                }
+                setAttribute(element, 'size-mapping', JSON.stringify(parsedSizeMaps));
+            }
+
             const rawSizes = getAttribute(element, 'sizes');
             const rawSizeMapping = getAttribute(element, 'size-mapping');
 
             if (!adunit) { console.warn('Missing attribute: ad-unit parameter must be provided.'); return; }
-            if (!rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided.'); return; }
+            if (!outOfPage && !rawSizes && !rawSizeMapping) { console.warn('Missing attribute: either sizes or size-mapping must be provided if not out-of-page ad slot.'); return; }
 
             var sizes, sizeMapping;
 
@@ -126,37 +154,28 @@
                 return;
             }
 
-            if (!sizes.length && sizeMapping.length) {
-                sizes = [];
-                sizeMapping.forEach(mapping => {
-                    sizes = sizes.concat(mapping[1]);
-                });
-
-                element.setAttribute('sizes', JSON.stringify(sizes));
-            }
-
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
-
-            if (cssClass.length > 0) {
-                adContainer.className = cssClass;
-            }
 
             element.appendChild(adContainer);
 
             googletag.cmd.push(() => {
-                if(!document.getElementById(elementId)) {
+                if (!document.body.contains(element)) {
                     console.warn('Ad container div was not available.');
-                    element.style.display = 'none';
                     return;
                 }
 
-                // We need to take hold of all references in order to destroy slots when an element is being detached
-                adslots.push(googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads()));
+                element.gptAdSlot = outOfPage
+                        ? googletag.defineOutOfPageSlot(adunit, elementId).addService(googletag.pubads())
+                        : googletag.defineSlot(adunit, sizes, elementId).defineSizeMapping(sizeMapping).addService(googletag.pubads());
 
-                setTimeout(() => {
-                    googletag.display(elementId);
-                });
+                googletag.display(elementId);
+
+                if (dom.isElementInViewport(element)) {
+                    element.refreshAdSlot();
+                } else {
+                    slotsToRefreshWhenInViewport.push(element);
+                }
             });
         };
 
@@ -166,11 +185,11 @@
                 y: window.innerHeight
             };
 
-            const minX = el.getAttribute('min-x-resolution') || 0;
-            const maxX = el.getAttribute('max-x-resolution') || 1000000;
-            const minY = el.getAttribute('min-y-resolution') || 0;
-            const maxY = el.getAttribute('max-y-resolution') || 1000000;
-            const resolutionRanges = el.getAttribute('resolution-ranges') || '';
+            const minX = getAttribute(el, 'min-x-resolution', 0);
+            const maxX = getAttribute(el, 'max-x-resolution', Infinity);
+            const minY = getAttribute(el, 'min-y-resolution', 0);
+            const maxY = getAttribute(el, 'max-y-resolution', Infinity);
+            const resolutionRanges = getAttribute(el, 'resolution-ranges', '');
 
             if(resolutionRanges.length > 0) {
                 const rangeArray = JSON.parse(resolutionRanges);
@@ -216,13 +235,5 @@
             console.warn('Custom element already registered: "as24-ad-slot".');
         }
     }
-
-    // const domready = fn => {
-    //     if (document.readyState !== 'loading') {
-    //         return setTimeout(fn);
-    //     }
-    //
-    //     document.addEventListener("DOMContentLoaded", fn);
-    // };
 
 })();

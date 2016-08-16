@@ -6,8 +6,10 @@ var shouldWatch = false;
 gulp.task('js', () => {
     const babel = require('gulp-babel');
     const uglify = require('gulp-uglify');
+    const rollup = require('gulp-rollup');
 
-    return gulp.src('src/index.js')
+    return gulp.src('src/**/*.js')
+                .pipe(rollup({ entry: './src/index.js' }))
                 .pipe(babel({ presets: ['es2015'] }))
                 .pipe(uglify())
                 .pipe(gulp.dest('dist'));
