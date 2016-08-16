@@ -7,14 +7,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
 (() => {
 
-    const hideAdTargetingElements = () => {
-        const style = document.createElement('style');
-        style.innerHTML = 'as24-ad-targeting{display:none}';
-        document.head.appendChild(style);
-    };
-
-    hideAdTargetingElements();
-
     const googletag = window.googletag = window.googletag || { cmd: [] };
 
     if (adsAreDisabled() || cookie.isUserDealer()) { return; }
