@@ -102,6 +102,8 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             const adunit = getAttribute(element, 'ad-unit');
             const outOfPage = hasAttribute(element, 'out-of-page');
 
+            setAttribute(element, 'empty', '');
+
             const parseResolution = str => {
                 const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
 
