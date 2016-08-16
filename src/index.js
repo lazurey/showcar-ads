@@ -112,7 +112,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 return null;
             };
 
-            const sizeMaps = [...element.attributes].filter(x => /size-map-/.test(x.nodeName)).map(x => ({ name: x.nodeName, value: x.value }))//.filter(x => /size-map-/.test(x.name));
+            const sizeMaps = [...element.attributes].filter(x => /size-map-/.test(x.nodeName)).map(x => ({ name: x.nodeName, value: x.value }));
 
             if (sizeMaps.length > 0) {
 
@@ -153,7 +153,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 console.warn('Invalid attribute: either sizes or size-mapping attribute cannot be JSON-parsed.');
                 return;
             }
-
 
             var adContainer = document.createElement('div');
             adContainer.id = elementId;
