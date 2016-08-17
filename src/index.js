@@ -116,7 +116,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 return null;
             };
 
-            const sizeMaps = [...element.attributes].filter(x => /size-map-/.test(x.nodeName)).map(x => ({ name: x.nodeName, value: x.value }));
+            const sizeMaps = [].slice.call(element.attributes).filter(x => /size-map-/.test(x.nodeName)).map(x => ({ name: x.nodeName, value: x.value }));
 
             if (sizeMaps.length > 0) {
 
@@ -139,7 +139,29 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 if (smallest[0][0] !== 0 || smallest[0][1] !== 0) {
                     parsedSizeMaps.push([[0,0],[]])
                 }
+
                 setAttribute(element, 'size-mapping', JSON.stringify(parsedSizeMaps));
+
+                const pageResolution = {
+                    x: window.innerWidth,
+                    y: window.innerHeight
+                };
+
+                for (let m of parsedSizeMaps) {
+                    // console.log(m[0][0], m[0][1]);
+                    const q = pageResolution.x >= m[0][0] && pageResolution.y >= m[0][1];
+
+                    if (q) {
+                        const sizes = m[1];
+
+                        if (sizes.length <= 0) {
+                            // Not showing ad slot due to size map restrictions.
+                            return;
+                        }
+
+                        break;
+                    }
+                }
             }
 
             const rawSizes = getAttribute(element, 'sizes');
