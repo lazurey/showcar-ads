@@ -215,20 +215,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             const maxX = getAttribute(el, 'max-x-resolution', Infinity);
             const minY = getAttribute(el, 'min-y-resolution', 0);
             const maxY = getAttribute(el, 'max-y-resolution', Infinity);
-            const resolutionRanges = getAttribute(el, 'resolution-ranges', '');
-
-            if(resolutionRanges.length > 0) {
-                const rangeArray = JSON.parse(resolutionRanges);
-                for(var i = 0; i < rangeArray.length; i++){
-                    var min = rangeArray[i][0] || 0;
-                    var max = rangeArray[i][1] || 8192;
-                    if ((pageResolution.x >= min) && (pageResolution.x <= max)) {
-                        return false;
-                        break;
-                    }
-                }
-                return true;
-            }
 
             return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
         };
