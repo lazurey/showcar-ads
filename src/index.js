@@ -85,10 +85,12 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         };
 
         prototype.detachedCallback = function() {
-            googletag.cmd.push(() => {
-                googletag.destroySlots([this.gptAdSlot]);
-                this.gptAdSlot = undefined;
-            });
+            if (this.gptAdSlot) {
+                googletag.cmd.push(() => {
+                    googletag.destroySlots([this.gptAdSlot]);
+                    this.gptAdSlot = undefined;
+                });
+            }
         };
 
         prototype.refreshAdSlot = function() {
@@ -213,6 +215,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             for (var key in source) {
                 target[key] = source[key];
             }
+
             return target;
         };
 
