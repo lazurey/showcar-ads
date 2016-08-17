@@ -61,7 +61,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             });
 
             pubads.enableSingleRequest();
-            pubads.collapseEmptyDivs(false);
+            pubads.collapseEmptyDivs(true);
             pubads.disableInitialLoad();
 
             setTargeting(pubads);
