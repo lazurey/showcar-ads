@@ -219,22 +219,14 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
         };
 
-        const extend = (target, source) => {
-            for (var key in source) {
-                target[key] = source[key];
-            }
-
-            return target;
-        };
-
         const setTargeting = pubads => {
             const targetingElements = Array.prototype.slice.call(document.querySelectorAll('as24-ad-targeting'));
-            const targeting = targetingElements.map(el => JSON.parse(el.innerHTML || '{}')).reduce(extend, {});
+            const targetingObjects = targetingElements.map(el => JSON.parse(el.innerHTML || '{}'));
+            const targeting = {};
 
-            const matches = location.search.match(/test=([^&]*)/);
-            if (matches && matches.length >= 2) {
-                targeting.test = matches[1];
-            }
+            targetingObjects.forEach(obj => {
+                Object.assign(targeting, obj);
+            });
 
             for (let key in targeting) {
                 const value = `${targeting[key]}`.split(',');
