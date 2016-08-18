@@ -9,7 +9,11 @@ module.exports = function(config) {
         browsers: ['Electron'],
         frameworks: ['mocha', 'sinon'],
         preprocessors: {
-            'test/**/*.js': ['webpack']
+            'test/**/*.js': ['webpack', 'electron']
+            // '**/*.js': ['electron']
+        },
+        client: {
+            useIframe: false
         },
         webpack: {
             module: {

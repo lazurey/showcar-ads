@@ -147,8 +147,8 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                     y: window.innerHeight
                 };
 
-                for (let m of parsedSizeMaps) {
-                    // console.log(m[0][0], m[0][1]);
+                for (let i = 0; i < parsedSizeMaps.length; i++) {
+                    const m = parsedSizeMaps[i];
                     const q = pageResolution.x >= m[0][0] && pageResolution.y >= m[0][1];
 
                     if (q) {
