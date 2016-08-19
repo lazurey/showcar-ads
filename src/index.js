@@ -72,8 +72,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
-            if (doesScreenResolutionProhibitFillingTheAdSlot(this)) { return; }
-
             const slotType = getAttribute(this, 'type', 'doubleclick');
 
             switch(slotType) {
@@ -206,28 +204,12 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             });
         };
 
-        const doesScreenResolutionProhibitFillingTheAdSlot = el => {
-            const pageResolution = {
-                x: window.innerWidth,
-                y: window.innerHeight
-            };
-
-            const minX = getAttribute(el, 'min-x-resolution', 0);
-            const maxX = getAttribute(el, 'max-x-resolution', Infinity);
-            const minY = getAttribute(el, 'min-y-resolution', 0);
-            const maxY = getAttribute(el, 'max-y-resolution', Infinity);
-
-            return minX > pageResolution.x || maxX < pageResolution.x || minY > pageResolution.y || maxY < pageResolution.y;
-        };
-
         const setTargeting = pubads => {
             const targetingElements = Array.prototype.slice.call(document.querySelectorAll('as24-ad-targeting'));
             const targetingObjects = targetingElements.map(el => JSON.parse(el.innerHTML || '{}'));
             const targeting = {};
 
-            targetingObjects.forEach(obj => {
-                Object.assign(targeting, obj);
-            });
+            targetingObjects.forEach(obj => Object.assign(targeting, obj));
 
             for (let key in targeting) {
                 const value = `${targeting[key]}`.split(',');
