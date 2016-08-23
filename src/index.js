@@ -1,4 +1,3 @@
-// import * as customElementsPolyfill from './ce-polyfill.js';
 import { once, adsAreDisabled, batch, debounce } from './helpers.js';
 
 import * as cookie from './cookie.js';
