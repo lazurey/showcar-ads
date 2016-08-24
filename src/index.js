@@ -7,6 +7,10 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
 (() => {
 
+    const s = document.createElement('style');
+    s.innerHTML = 'as24-ad-slot[empty], as24-ad-slot:not([loaded]) { display: none; }';
+    document.head.appendChild(s);
+
     const googletag = window.googletag = window.googletag || { cmd: [] };
 
     if (adsAreDisabled() || cookie.isUserDealer()) { return; }
@@ -51,25 +55,27 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
                 const iframe = element.querySelector('iframe');
                 const style = window.getComputedStyle(iframe);
+                const slotElement = element.parentNode;
 
                 if (style.display === 'none') {
-                    const slotElement = element.parentNode;
                     setAttribute(slotElement, 'empty', '');
+                } else {
+                    removeAttribute(slotElement, 'empty');
                 }
             });
 
-            pubads.addEventListener('slotRenderEnded', eventData => {
-                const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
-                if (element) {
-                    const slotElement = element.parentNode;
-
-                    if (eventData.isEmpty) {
-                        setAttribute(slotElement, 'empty', '');
-                    } else {
-                        removeAttribute(slotElement, 'empty');
-                    }
-                }
-            });
+            // pubads.addEventListener('slotRenderEnded', eventData => {
+            //     const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
+            //     if (element) {
+            //         const slotElement = element.parentNode;
+            //
+            //         if (eventData.isEmpty) {
+            //             setAttribute(slotElement, 'empty', '');
+            //         } else {
+            //             removeAttribute(slotElement, 'empty');
+            //         }
+            //     }
+            // });
 
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
@@ -121,6 +127,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             const elementId = getAttribute(element, 'element-id') || `ad-slot-element-${Math.random() * 1000000 | 0}`;
             const adunit = getAttribute(element, 'ad-unit');
             const outOfPage = hasAttribute(element, 'out-of-page');
+
 
             setAttribute(element, 'empty', '');
 
