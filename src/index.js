@@ -47,6 +47,17 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         googletag.cmd.push(() => {
             const pubads = googletag.pubads();
 
+            pubads.addEventListener('slotOnload', eventData => {
+                const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
+                const iframe = element.querySelector('iframe');
+                const style = window.getComputedStyle(iframe);
+
+                if (style.display === 'none') {
+                    const slotElement = element.parentNode;
+                    setAttribute(slotElement, 'empty', '');
+                }
+            });
+
             pubads.addEventListener('slotRenderEnded', eventData => {
                 const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
                 if (element) {
@@ -67,6 +78,15 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             setTargeting(pubads);
             googletag.enableServices();
         });
+
+        // const x = Object.assign(Object.create(HTMLElement.prototype), {
+        //     attachedCallback() {
+        //         console.log('XXX', this);
+        //     }
+        // });
+        //
+        // document.registerElement('as24-ad-slot-x', { prototype: x });
+
 
         const prototype = Object.create(HTMLElement.prototype);
 
@@ -222,5 +242,44 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             console.warn('Custom element already registered: "as24-ad-slot".');
         }
     }
+
+    // performance.getEntriesByType("resource").filter(x => /gpt/.test(x.name))
+
+    // var ln = document.createElement('link');
+    // ln.rel = 'preload';
+    // ln.rel = 'prefetch';
+    // ln.href = 'https://www.googletagservices.com/tag/js/gpt.js';
+    // ln.href = 'https://partner.googleadservices.com/gpt/pubads_impl_93.js';
+    // // ln.href = 'https://partner.googleadservices.com/';
+    // ln.onerror = e => console.log('ERROR', e);
+    //
+    // document.head.appendChild(ln);
+
+    // setTimeout(() => {
+    //     const div = document.createElement('div');
+    //     div.id = 'adblockdetect';
+    //     div.className = 'pub_300x250 pub_300x250m pub_728x90 text-ad textAd text_ad text_ads text-ads text-ad-links';
+    //     div.style = 'width: 1px !important; height: 1px !important; position: absolute !important; left: -10000px !important; top: -1000px !important;';
+    //     document.body.appendChild(div);
+    //
+    //     setInterval(() => {
+    //         if (window.document.body.getAttribute('abp') !== null
+    //     		|| div.offsetParent === null
+    //     		|| div.offsetHeight == 0
+    //     		|| div.offsetLeft == 0
+    //     		|| div.offsetTop == 0
+    //     		|| div.offsetWidth == 0
+    //     		|| div.clientHeight == 0
+    //     		|| div.clientWidth == 0
+    //             || window.getComputedStyle(div).getPropertyValue('display') === 'none'
+    //             || window.getComputedStyle(div).getPropertyValue('visibility') === 'hidden') {
+    //
+    //                 console.log('Ad blocker detected');
+    //
+	// 	      } else  {
+    //               console.log('No ab');
+    //           }
+    //     }, 1000);
+    // }, 100);
 
 })();
