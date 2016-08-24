@@ -8,7 +8,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 (() => {
 
     const s = document.createElement('style');
-    s.innerHTML = 'as24-ad-slot[empty], as24-ad-slot:not([loaded]) { display: none; }';
+    s.innerHTML = 'as24-ad-slot[empty] div, as24-ad-slot:not([loaded]) div { display: none !important; }';
     document.head.appendChild(s);
 
     const googletag = window.googletag = window.googletag || { cmd: [] };
