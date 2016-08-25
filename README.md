@@ -75,7 +75,7 @@ The following attributes can be specified in an ad-slot:
 * max-y-resolution: Maximum viewport height in pixels. Ads are only shown if the viewport height < max-y-resolution value.
 * resolution-ranges: Ad is only visible for specific viewport ranges.
   Example values: [[320,512],[768]].
-  This means that the ad is only shown if the viewport is >= 320 AND <= 512 OR >= 768.
+  This means that the ad is only shown if the viewport is >= 320x512 and <= 768.
 
 
 *These attributes are mandatory.
