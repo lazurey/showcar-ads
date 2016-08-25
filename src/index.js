@@ -53,7 +53,11 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
             pubads.addEventListener('slotOnload', eventData => {
                 const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
+                if (!element) { return; }
+
                 const iframe = element.querySelector('iframe');
+                if (!iframe) { return; }
+
                 const style = window.getComputedStyle(iframe);
                 const slotElement = element.parentNode;
 
