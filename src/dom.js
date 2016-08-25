@@ -24,6 +24,7 @@ export const ready = fn => {
 };
 
 export const isElementInViewport = element => {
+    if (!element) { return false; }
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
