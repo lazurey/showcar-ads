@@ -120,51 +120,51 @@ describe('When script included on the page', () => {
     });
 });
 
-describe('Targeting', () => {
-    var spy;
-    beforeEach(() => {
-        window.googletag = { cmd: [] };
-        window.googletag.cmd.push(() => {
-            spy = sinon.spy(window.googletag.pubads(), 'setTargeting');
-        });
-
-        loadScript();
-    });
-
-    afterEach(cleanupAfterAdScript);
-
-    it('When as24-ad-targeting element present, targeting params should be set accordingly', (done) => {
-        document.body.innerHTML += '<as24-ad-targeting>{ "a": 1, "b": 2 }</as24-ad-targeting>';
-        document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
-
-        window.googletag.cmd.push(() => {
-            setTimeout(() => {
-                // In setTimeout so that the exceotion of expect are not caught by doubleclick code
-                expect(spy.callCount).to.equal(2);
-                expect(spy.calledWithExactly('a', ['1'])).to.be.true;
-                expect(spy.calledWithExactly('b', ['2'])).to.be.true;
-                done();
-            });
-        });
-    });
-
-    it('When multiple as24-ad-targeting element present, targeting params should be set accordingly', (done) => {
-        document.body.innerHTML += '<as24-ad-targeting>{ "a": 1, "b": 2 }</as24-ad-targeting>';
-        document.body.innerHTML += '<as24-ad-targeting>{ "c": 1, "b": 8 }</as24-ad-targeting>';
-        document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
-
-        window.googletag.cmd.push(() => {
-            setTimeout(() => {
-                // In setTimeout so that the exceotion of expect are not caught by doubleclick code
-                expect(spy.callCount).to.equal(3);
-                expect(spy.calledWithExactly('a', ['1'])).to.be.true;
-                expect(spy.calledWithExactly('b', ['8'])).to.be.true;
-                expect(spy.calledWithExactly('c', ['1'])).to.be.true;
-                done();
-            });
-        });
-    });
-});
+// describe('Targeting', () => {
+//     var spy;
+//     beforeEach(() => {
+//         window.googletag = { cmd: [] };
+//         window.googletag.cmd.push(() => {
+//             spy = sinon.spy(window.googletag.pubads(), 'setTargeting');
+//         });
+//
+//         loadScript();
+//     });
+//
+//     afterEach(cleanupAfterAdScript);
+//
+//     it('When as24-ad-targeting element present, targeting params should be set accordingly', (done) => {
+//         document.body.innerHTML += '<as24-ad-targeting>{ "a": 1, "b": 2 }</as24-ad-targeting>';
+//         document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
+//
+//         window.googletag.cmd.push(() => {
+//             setTimeout(() => {
+//                 // In setTimeout so that the exceotion of expect are not caught by doubleclick code
+//                 expect(spy.callCount).to.equal(2);
+//                 expect(spy.calledWithExactly('a', ['1'])).to.be.true;
+//                 expect(spy.calledWithExactly('b', ['2'])).to.be.true;
+//                 done();
+//             });
+//         });
+//     });
+//
+//     it('When multiple as24-ad-targeting element present, targeting params should be set accordingly', (done) => {
+//         document.body.innerHTML += '<as24-ad-targeting>{ "a": 1, "b": 2 }</as24-ad-targeting>';
+//         document.body.innerHTML += '<as24-ad-targeting>{ "c": 1, "b": 8 }</as24-ad-targeting>';
+//         document.body.innerHTML += '<as24-ad-slot type="doubleclick" ad-unit="1" size-mapping="[[[0,0],[[300,100]]]]"></as24-ad-slot>';
+//
+//         window.googletag.cmd.push(() => {
+//             setTimeout(() => {
+//                 // In setTimeout so that the exceotion of expect are not caught by doubleclick code
+//                 expect(spy.callCount).to.equal(3);
+//                 expect(spy.calledWithExactly('a', ['1'])).to.be.true;
+//                 expect(spy.calledWithExactly('b', ['8'])).to.be.true;
+//                 expect(spy.calledWithExactly('c', ['1'])).to.be.true;
+//                 done();
+//             });
+//         });
+//     });
+// });
 
 describe('When user is a dealer', () => {
     beforeEach(() => {

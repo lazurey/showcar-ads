@@ -24,10 +24,11 @@ export const ready = fn => {
 };
 
 export const isElementInViewport = element => {
-    if (!element) { return false; }
+    if (!element || !document.body.contains(element)) { return false; }
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+
     return rect.top >= 0
         && rect.top < windowHeight
         && rect.left >= 0
