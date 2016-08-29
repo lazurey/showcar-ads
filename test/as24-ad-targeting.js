@@ -60,7 +60,8 @@ describe('Targeting with custom element', () => {
 
         registerElement(tagName);
 
-        testContainer.innerHTML = `<${tagName}>{ "a": 1, "b": 2 }</${tagName}><${tagName}>{ "b": 3, "c": 4, "d": 5 }</${tagName}>`;
+        testContainer.innerHTML = `<${tagName}>{ "a": 1, "b": 2 }</${tagName}>`;
+        testContainer.innerHTML += `<${tagName}>{ "b": 3, "c": 4, "d": 5 }</${tagName}>`;
 
         window.googletag.cmd.forEach(cmd => cmd());
         expect(window.googletag.pubads().getTargetingKeys()).to.deep.equal(['a', 'b', 'c', 'd']);
