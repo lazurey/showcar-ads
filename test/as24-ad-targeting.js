@@ -28,14 +28,16 @@ const mockPubads = () => {
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);
 
-describe('Targeting with custom element', () => {
+describe.only('Targeting with custom element', () => {
     beforeEach(() => {
         mockPubads();
     });
 
-    afterEach(() => {
+    afterEach(done => {
         testContainer.innerHTML = '';
         delete window.googletag;
+
+        setTimeout(done, 100);
     });
 
     it('sets targeting basic targeting values', () => {
@@ -54,16 +56,16 @@ describe('Targeting with custom element', () => {
 
     it('sets targeting with multiple custom elements', () => {
         const tagName = `x-${uuid()}`;
-
         const setTargetingSpy = sinon.spy(window.googletag.pubads(), 'setTargeting');
         const clearTargetingSpy = sinon.spy(window.googletag.pubads(), 'clearTargeting');
 
         registerElement(tagName);
-
-        testContainer.innerHTML = `<${tagName}>{ "a": 1, "b": 2 }</${tagName}>`;
-        testContainer.innerHTML += `<${tagName}>{ "b": 3, "c": 4, "d": 5 }</${tagName}>`;
+        testContainer.innerHTML = `<${tagName}>{ "a": 1, "b": 2 }</${tagName}><${tagName}>{ "b": 3, "c": 4, "d": 5 }</${tagName}>`;
 
         window.googletag.cmd.forEach(cmd => cmd());
+
         expect(window.googletag.pubads().getTargetingKeys()).to.deep.equal(['a', 'b', 'c', 'd']);
+        expect(clearTargetingSpy.callCount).to.equal(4);
+        expect(setTargetingSpy.callCount).to.equal(8);
     });
 });
