@@ -9,7 +9,7 @@ const registerElement = name => {
         refreshAdSlot() {}
     }
 
-    document.registerElement(name, AS24AdTargeting);
+    document.registerElement(name || 'as24-ad-slot', AS24AdTargeting);
 };
 
 export default registerElement;

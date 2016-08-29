@@ -32,7 +32,7 @@ const registerElement = name => {
         }
     }
 
-    document.registerElement(name, AS24AdTargeting);
+    document.registerElement(name || 'as24-ad-targeting', AS24AdTargeting);
 };
 
 export default registerElement;
