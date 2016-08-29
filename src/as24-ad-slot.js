@@ -1,9 +1,15 @@
-export default class AS24AdSlot extends HTMLElement {
-    createdCallback() {}
-    attachedCallback () {}
-    detachedCallback() {}
+const registerElement = name => {
+    const googletag = window.googletag || (window.googletag = { cmd: [] });
 
-    static registerElement(name) {
-        document.registerElement(name, AS24AdSlot);
+    class AS24AdSlot extends HTMLElement {
+        // createdCallback() {}
+        attachedCallback () {}
+        detachedCallback() {}
+
+        refreshAdSlot() {}
     }
-}
+
+    document.registerElement(name, AS24AdTargeting);
+};
+
+export default registerElement;

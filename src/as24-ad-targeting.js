@@ -1,5 +1,5 @@
 const registerElement = name => {
-    const googletag = window.googletag || { cmd: [] };
+    const googletag = window.googletag || (window.googletag = { cmd: [] });
 
     class AS24AdTargeting extends HTMLElement {
 
