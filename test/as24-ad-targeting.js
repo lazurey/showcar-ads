@@ -28,9 +28,12 @@ const mockPubads = () => {
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);
 
-describe.only('Targeting with custom element', () => {
+describe('Targeting with custom element', () => {
+    let tagName;
+
     beforeEach(() => {
         mockPubads();
+        tagName = `x-${uuid()}`;
     });
 
     afterEach(done => {
@@ -41,7 +44,6 @@ describe.only('Targeting with custom element', () => {
     });
 
     it('sets targeting basic targeting values', () => {
-        const tagName = `x-${uuid()}`;
         const setTargetingSpy = sinon.spy(window.googletag.pubads(), 'setTargeting');
 
         registerElement(tagName);
@@ -55,7 +57,6 @@ describe.only('Targeting with custom element', () => {
     });
 
     it('sets targeting with multiple custom elements', () => {
-        const tagName = `x-${uuid()}`;
         const setTargetingSpy = sinon.spy(window.googletag.pubads(), 'setTargeting');
         const clearTargetingSpy = sinon.spy(window.googletag.pubads(), 'clearTargeting');
 
