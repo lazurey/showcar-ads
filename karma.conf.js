@@ -1,3 +1,7 @@
+const buble = require('rollup-plugin-buble');
+const commonjs = require('rollup-plugin-commonjs');
+const nodeResolve = require('rollup-plugin-node-resolve');
+
 module.exports = function(config) {
     config.set({
 
@@ -7,34 +11,33 @@ module.exports = function(config) {
         ],
 
         browsers: ['Electron'],
-        frameworks: ['mocha', 'chai', 'sinon'],
-        preprocessors: {
-            'test/**/*.js': ['webpack', 'electron']
-            // '**/*.js': ['electron']
-        },
+        frameworks: ['mocha', 'chai-as-promised', 'chai', 'sinon'],
         client: {
             useIframe: false
         },
-        webpack: {
-            module: {
-                loaders: [{
-                    test: /\.js$/,
-                    exclude: /(node_modules|bower_components)/,
-                    loader: 'babel?presets[]=es2015'
-                }]
-            }
+
+        preprocessors: {
+            'test/**/*.js': ['rollup']
         },
-        webpackMiddleware: {
-            noInfo: true
+        rollupPreprocessor: {
+            plugins: [
+                nodeResolve(),
+                commonjs(),
+                buble()
+            ],
+            format: 'iife',
+            sourceMap: 'inline',
+            moduleName: 'qwqwq'
         },
-        reporters: ["mocha"],
+        reporters: ['mocha'],
         plugins: [
-            "karma-mocha-reporter",
-            "karma-mocha",
-            "karma-sinon",
-            "karma-chai",
-            "karma-electron",
-            "karma-webpack"
+            'karma-mocha-reporter',
+            'karma-mocha',
+            'karma-sinon',
+            'karma-chai',
+            'karma-electron',
+            'karma-rollup-plugin',
+            'karma-chai-as-promised'
         ],
 
         client: {

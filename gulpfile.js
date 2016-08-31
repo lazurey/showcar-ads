@@ -4,14 +4,19 @@ const browserSync = require('browser-sync').create();
 var shouldWatch = false;
 
 gulp.task('js', () => {
-    const babel = require('gulp-babel');
-    const uglify = require('gulp-uglify');
-    const rollup = require('gulp-rollup');
+    const gulpRollup = require('gulp-rollup');
+    const buble = require('rollup-plugin-buble');
+    const uglify = require('rollup-plugin-uglify');
 
     return gulp.src('src/**/*.js')
-                .pipe(rollup({ entry: './src/index.js' }))
-                .pipe(babel({ presets: ['es2015'] }))
-                .pipe(uglify())
+                .pipe(gulpRollup({
+                    entry: './src/index.js',
+                    format: 'iife',
+                    plugins: [
+                        buble(),
+                        uglify()
+                    ]
+                }))
                 .pipe(gulp.dest('dist'));
 
 });
