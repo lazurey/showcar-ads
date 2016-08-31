@@ -5,7 +5,11 @@ import * as dom from './dom.js';
 
 import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, ready as domready } from './dom.js';
 
+// import start from './start';
+
 (() => {
+
+    // return;
 
     const s = document.createElement('style');
     s.innerHTML = 'as24-ad-slot[empty] div, as24-ad-slot:not([loaded]) div { display: none !important; }';
@@ -84,7 +88,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
             pubads.disableInitialLoad();
-
+            // pubads.enableAsyncRendering(); // TODO: check this
             googletag.enableServices();
         });
 
@@ -95,8 +99,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         // });
         //
         // document.registerElement('as24-ad-slot-x', { prototype: x });
-
-
         const prototype = Object.create(HTMLElement.prototype);
 
         prototype.attachedCallback = function() {
@@ -130,7 +132,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             const elementId = getAttribute(element, 'element-id') || `ad-slot-element-${Math.random() * 1000000 | 0}`;
             const adunit = getAttribute(element, 'ad-unit');
             const outOfPage = hasAttribute(element, 'out-of-page');
-
 
             setAttribute(element, 'empty', '');
 
