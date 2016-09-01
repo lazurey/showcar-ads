@@ -2,8 +2,6 @@ import { setAttribute, getAttribute } from './dom';
 
 export const parseSizeMappingFromElement = element => {
 
-    debugger;
-
     const parseResolution = str => {
         const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
 

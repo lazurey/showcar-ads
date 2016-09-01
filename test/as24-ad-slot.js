@@ -1,4 +1,4 @@
-import uuid from './uuid';
+import uuid from '../src/uuid';
 
 import registerElement from '../src/as24-ad-slot';
 
@@ -15,7 +15,7 @@ describe('as24-ad-slot element', () => {
     });
 
     it('Setting empty attribute on attach to DOM', () => {
-        testContainer.innerHTML = `<${tagName}></${tagName}>`;
+        testContainer.innerHTML = `<${tagName} size-map-0x0="1x1"></${tagName}>`;
         const el = document.querySelector(`${tagName}[empty]`);
         expect(el).to.be.ok;
     });

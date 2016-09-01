@@ -28,6 +28,11 @@ const registerElement = name => {
                     const value = `${targeting[key]}`.split(',');
                     pubads.setTargeting(key, value);
                 }
+
+                if (window.Krux) {
+                    pubads.setTargeting('ksg', window.Krux.segments);
+                    pubads.setTargeting('kuid', window.Krux.user);
+                }
             });
         }
     }
