@@ -1,29 +1,6 @@
 import registerElement from '../src/as24-ad-targeting';
-
-const uuid = () => {
-    // http://stackoverflow.com/a/2117523
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
-        return v.toString(16);
-    });
-};
-
-const mockPubads = () => {
-    const currentTargeting = {};
-
-    const pa = {
-        clearTargeting(key) { delete currentTargeting[key]; },
-        getTargetingKeys() { return Object.keys(currentTargeting); },
-        setTargeting(key, value) { currentTargeting[key] = value; }
-    };
-
-    window.googletag = {
-        cmd: [],
-        pubads() {
-            return pa;
-        }
-    };
-};
+import uuid from '../src/uuid';
+import { mockGoogletag } from './mocks';
 
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);
@@ -32,7 +9,7 @@ describe('Targeting with custom element', () => {
     let tagName;
 
     beforeEach(() => {
-        mockPubads();
+        mockGoogletag();
         tagName = `x-${uuid()}`;
     });
 
@@ -43,7 +20,7 @@ describe('Targeting with custom element', () => {
         setTimeout(done, 100);
     });
 
-    it('sets targeting basic targeting values', () => {
+    it('Sets targeting correctly with only one element', () => {
         const setTargetingSpy = sinon.spy(window.googletag.pubads(), 'setTargeting');
 
         registerElement(tagName);
@@ -56,7 +33,7 @@ describe('Targeting with custom element', () => {
         expect(setTargetingSpy.secondCall.calledWith('b', ['2'])).to.be.true;
     });
 
-    it('sets targeting with multiple custom elements', () => {
+    it('Sets targeting corectly and clears out old values with multiple elements', () => {
         const setTargetingSpy = sinon.spy(window.googletag.pubads(), 'setTargeting');
         const clearTargetingSpy = sinon.spy(window.googletag.pubads(), 'clearTargeting');
 
@@ -68,5 +45,25 @@ describe('Targeting with custom element', () => {
         expect(window.googletag.pubads().getTargetingKeys()).to.deep.equal(['a', 'b', 'c', 'd']);
         expect(clearTargetingSpy.callCount).to.equal(4);
         expect(setTargetingSpy.callCount).to.equal(8);
+    });
+
+    it('Sets Krux parameters correctly if they are present', () => {
+        const setTargetingSpy = sinon.spy(window.googletag.pubads(), 'setTargeting');
+
+        window.Krux = {
+            segments: 'segments',
+            user: 'user'
+        };
+
+        registerElement(tagName);
+        testContainer.innerHTML += `<${tagName}>{ "a": 1 }</${tagName}>`;
+
+        window.googletag.cmd.forEach(cmd => { cmd()});
+        expect(setTargetingSpy.callCount).to.equal(3);
+        expect(setTargetingSpy.firstCall.calledWith('a', ['1'])).to.be.true;
+        expect(setTargetingSpy.secondCall.calledWith('ksg', 'segments')).to.be.true;
+        expect(setTargetingSpy.thirdCall.calledWith('kuid', 'user')).to.be.true;
+
+        delete window.Krux;
     });
 });
