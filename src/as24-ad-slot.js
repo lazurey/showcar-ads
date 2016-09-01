@@ -1,5 +1,6 @@
 import { getAttribute, setAttribute, hasAttribute } from './dom';
-import { parseSizeMappingFromElement } from './double-click';
+import { parseSizeMappingFromElement, gptinit, registerAdSlot, destroyAdSlot, refreshAdSlot } from './double-click';
+import uuid from './uuid';
 
 const registerElement = name => {
     const googletag = window.googletag || (window.googletag = { cmd: [] });
@@ -7,18 +8,38 @@ const registerElement = name => {
     class AS24AdSlot extends HTMLElement {
         attachedCallback () {
             const element = this;
-            const elementId = getAttribute(element, 'element-id') || `ad-slot-element-${Math.random() * 1000000 | 0}`;
+
+            const sizeMapping = parseSizeMappingFromElement(element);
+            const notShownDueToSizeMapping = false; // TODO
+            if (notShownDueToSizeMapping) { return ;}
+
+            const elementId = getAttribute(element, 'element-id') || `ad-${uuid()}`;
             const adunit = getAttribute(element, 'ad-unit');
             const outOfPage = hasAttribute(element, 'out-of-page');
 
-            parseSizeMappingFromElement(element);
-
             setAttribute(element, 'empty', '');
+
+            const adContainer = document.createElement('div');
+            adContainer.id = elementId;
+            element.appendChild(adContainer);
+
+            this.adSlot = registerAdSlot({
+                adunit,
+                outOfPage,
+                sizeMapping,
+                adContainer
+            });
+
+            this.refreshAdSlot();
         }
 
-        detachedCallback() {}
+        detachedCallback() {
+            destroyAdSlot(this.adSlot);
+        }
 
-        refreshAdSlot() {}
+        refreshAdSlot() {
+            refreshAdSlot(this.adSlot);
+        }
     }
 
     document.registerElement(name || 'as24-ad-slot', AS24AdSlot);

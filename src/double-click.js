@@ -59,5 +59,35 @@ export const parseSizeMappingFromElement = element => {
             }
         }
     }
+};
+
+export const gptinit = () => {
+    window.googletag.cmd.push(() => {
+        const pubads = window.googletag.pubads();
+        pubads.enableSingleRequest();
+        pubads.collapseEmptyDivs(true);
+        pubads.disableInitialLoad();
+        // pubads.enableAsyncRendering(); // TODO: check this
+        googletag.enableServices();
+    });
+};
+
+export const registerAdSlot = (adunit, element, sizeMapping, outOfPage) => {
+    window.googletag.cmd.push(() => {
+        const pubads = googletag.pubads();
+
+        outOfPage
+            ? window.googletag.defineOutOfPageSlot(adunit, element.id).addService(window.googletag.pubads())
+            : window.googletag.defineSlot(adunit, [], element.id).defineSizeMapping(sizeMapping).addService(window.googletag.pubads());
+
+        window.googletag.display(element.id);
+    });
+};
+
+export const refreshAdSlots = slot => {
 
 };
+
+export const destroyAdSlot = slot => {
+    window.googletag.cmd.push(() => window.googletag.destroySlots([slot]));
+}
