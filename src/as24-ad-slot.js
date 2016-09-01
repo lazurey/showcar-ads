@@ -1,4 +1,4 @@
-import { getAttribute, setAttribute, hasAttribute } from './dom';
+import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
 import { parseSizeMappingFromElement, gptinit, registerAdSlot, destroyAdSlot, refreshAdSlot } from './double-click';
 import uuid from './uuid';
 
@@ -42,6 +42,7 @@ const registerElement = name => {
         }
     }
 
+    addCss(`{name}{display:block}`);
     document.registerElement(name || 'as24-ad-slot', AS24AdSlot);
 };
 

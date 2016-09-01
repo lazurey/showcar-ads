@@ -84,7 +84,7 @@ export const registerAdSlot = (adunit, element, sizeMapping, outOfPage) => {
     });
 };
 
-export const refreshAdSlots = slot => {
+export const refreshAdSlot = slot => {
 
 };
 

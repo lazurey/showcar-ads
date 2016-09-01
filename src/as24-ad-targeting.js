@@ -1,3 +1,5 @@
+import { addCss } from './dom';
+
 const registerElement = name => {
     const googletag = window.googletag || (window.googletag = { cmd: [] });
 
@@ -37,6 +39,7 @@ const registerElement = name => {
         }
     }
 
+    addCss(`{name}{display:none}`);
     document.registerElement(name || 'as24-ad-targeting', AS24AdTargeting);
 };
 
