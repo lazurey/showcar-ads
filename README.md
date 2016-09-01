@@ -52,7 +52,7 @@ To integrate an ad slot on your page you need to define an "as24-ad-slot" elemen
 
 ```html
     <as24-ad-slot
-        ad-unit="##THIS_COMES_FROM_DOUBLECLICK##"
+        ad-unit="/1234/path-to-some/ad-unit"
         size-map-0x0="300x50, 320x100">
     </as24-ad-slot>
 ```
@@ -67,12 +67,12 @@ The possible sizes of an ad slot must be defined as a mapping between min-resolu
 
 ```html
 <as24-ad-slot
-    ad-unit="##THIS_COMES_FROM_DOUBLECLICK##"
+    ad-unit="/1234/path-to-some/ad-unit"
     size-map-0x0="300x50, 320x100">
 </as24-ad-slot>
 
 <as24-ad-slot
-    ad-unit="##THIS_COMES_FROM_DOUBLECLICK##"
+    ad-unit="/1234/path-to-some/ad-unit"
     size-map-0x0="300x50, 320x100"
     size-map-728x300="728x90, 728x300"
     size-map-1400x0="970x250, 728x90, 728x300">
@@ -82,7 +82,7 @@ If size-map-0x0 is omitted then an empty mapping is assumed.
 In the following example ads are only displayed when screen resolution equals or is higher than 728x300 pixels.
 
 <as24-ad-slot
-    ad-unit="##THIS_COMES_FROM_DOUBLECLICK##"
+    ad-unit="/1234/path-to-some/ad-unit"
     size-map-728x300="728x90, 728x300">
 </as24-ad-slot>
 ```
@@ -116,7 +116,6 @@ For Ad-Targeting integration you can use the "as24-ad-targeting" element like so
     }
 </as24-ad-targeting>
 ```
-
 
 ### Cookie consent
 
