@@ -34,3 +34,9 @@ export const isElementInViewport = element => {
         && rect.left >= 0
         && rect.left < windowWidth;
 };
+
+export const addCss = ruleText => {
+    const el = document.createElement('style');
+    el.innerHTML = ruleText;
+    document.querySelector('head').appendChild(el);
+}
