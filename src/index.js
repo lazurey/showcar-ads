@@ -234,7 +234,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         };
 
         try {
-            dom.addCss('as24-ad-slot{display:none}');
+            dom.addCss('as24-ad-slot{display:block}');
             document.registerElement('as24-ad-slot', { prototype });
         } catch(ex) {
             console.warn('Custom element already registered: "as24-ad-slot".');
