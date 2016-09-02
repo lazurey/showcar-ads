@@ -234,6 +234,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
         };
 
         try {
+            dom.addCss('as24-ad-slot{display:none}');
             document.registerElement('as24-ad-slot', { prototype });
         } catch(ex) {
             console.warn('Custom element already registered: "as24-ad-slot".');
@@ -256,6 +257,11 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                     for (let key in targeting) {
                         const value = `${targeting[key]}`.split(',');
                         pubads.setTargeting(key, value);
+                    }
+
+                    if (window.Krux) {
+                        pubads.setTargeting('ksg', window.Krux.segments);
+                        pubads.setTargeting('kuid', window.Krux.user);
                     }
                 });
             }
