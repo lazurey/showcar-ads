@@ -122,7 +122,9 @@ For Ad-Targeting integration you can use the "as24-ad-targeting" element like so
 There are some countries in which the loading of ads is prohibited without having the user's consent
 for accepting third party cookies. Usually it is wished that the ads are loaded as soon as the user
 agrees with this. In this case a "cookie-consent-given" event has to be triggered OR the `cookieConsent=1` cookie needs to be set before.
-
+```javascript
+window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
+```
 
 ## Changelog / History
 
