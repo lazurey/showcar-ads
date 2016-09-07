@@ -59,7 +59,7 @@ To integrate an ad slot on your page you need to define an "as24-ad-slot" elemen
 
 ### Size mapping
 
-The possible sizes of an ad slot must be defined as a mapping between min-resolution and possible sizes: e.g. `size-map-728x300="728x90, 728x300"` - which means if the window resolution is greater or equals 728x90 then we let Doubleclick choose ads with a format of 728x90 or 728x300 pixels.
+The possible sizes of an ad slot must be defined as a mapping between min-resolution and possible sizes: e.g. `size-map-728x300="728x90, 728x300"` - which means if the window resolution is greater or equals 728x300 then we let Doubleclick choose ads with a format of 728x90 or 728x300 pixels.
 
 *Please note: pixels are always CSS pixels.*
 
