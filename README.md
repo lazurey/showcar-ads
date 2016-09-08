@@ -59,7 +59,7 @@ To integrate an ad slot on your page you need to define an "as24-ad-slot" elemen
 
 ### Size mapping
 
-The possible sizes of an ad slot must be defined as a mapping between min-resolution and possible sizes: e.g. `size-map-728x300="728x90, 728x300"` - which means if the window resolution is greater or equals 728x90 then we let Doubleclick choose ads with a format of 728x90 or 728x300 pixels.
+The possible sizes of an ad slot must be defined as a mapping between min-resolution and possible sizes: e.g. `size-map-728x300="728x90, 728x300"` - which means if the window resolution is greater or equals 728x300 then we let Doubleclick choose ads with a format of 728x90 or 728x300 pixels.
 
 *Please note: pixels are always CSS pixels.*
 
@@ -122,7 +122,9 @@ For Ad-Targeting integration you can use the "as24-ad-targeting" element like so
 There are some countries in which the loading of ads is prohibited without having the user's consent
 for accepting third party cookies. Usually it is wished that the ads are loaded as soon as the user
 agrees with this. In this case a "cookie-consent-given" event has to be triggered OR the `cookieConsent=1` cookie needs to be set before.
-
+```javascript
+window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
+```
 
 ## Changelog / History
 
