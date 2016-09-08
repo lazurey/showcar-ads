@@ -29,9 +29,9 @@ const debounce = (fn, delay) => {
     let timer = null;
     return () => {
         clearTimeout(timer);
-        timer = setTimeout(() => fn(), delay);
+        timer = setTimeout(fn, delay);
     };
-}
+};
 
 // const logBatch = batch(tx => console.log(tx, 'ASDF'));
 //
