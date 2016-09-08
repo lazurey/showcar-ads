@@ -1,5 +1,5 @@
-import registerElement from '../src/as24-ad-targeting';
-import uuid from '../src/uuid';
+import registerElement from '../src/js/as24-ad-targeting';
+import uuid from '../src/js/uuid';
 import { mockGoogletag } from './mocks';
 
 const testContainer = document.createElement('div');

@@ -1,6 +1,6 @@
-import uuid from '../src/uuid';
+import uuid from '../src/js/uuid';
 
-import registerElement from '../src/as24-ad-slot';
+import registerElement from '../src/js/as24-ad-slot';
 
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);

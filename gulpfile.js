@@ -7,18 +7,18 @@ gulp.task('js', () => {
     const gulpRollup = require('gulp-rollup');
     const buble = require('rollup-plugin-buble');
     const uglify = require('rollup-plugin-uglify');
+    const rollupConfig = {
+        entry: './src/js/start.js',
+        format: 'iife',
+        plugins: [
+            buble(),
+            uglify()
+        ]
+    };
 
     return gulp.src('src/**/*.js')
-                .pipe(gulpRollup({
-                    entry: './src/index.js',
-                    format: 'iife',
-                    plugins: [
-                        buble(),
-                        uglify()
-                    ]
-                }))
-                .pipe(gulp.dest('dist'));
-
+        .pipe(gulpRollup(rollupConfig))
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('watch', () => {
@@ -43,10 +43,10 @@ gulp.task('html', ['js'], () => {
     const foreach = require('gulp-foreach');
 
     return gulp.src('src/*.html')
-                .pipe(foreach((stream, file) => {
-                    return stream.pipe(smoosher({ base: 'dist' }));
-                }))
-                .pipe(gulp.dest('dist'));
+    .pipe(foreach((stream, file) => {
+        return stream.pipe(smoosher({ base: 'dist' }));
+    }))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve', ['html', 'js'], () => {

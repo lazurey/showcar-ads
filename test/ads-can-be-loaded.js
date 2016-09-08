@@ -1,4 +1,4 @@
-import waitUntilAdsCanBeLoaded from '../src/ads-can-be-loaded';
+import waitUntilAdsCanBeLoaded from '../src/js/ads-can-be-loaded';
 
 describe('Loading ads', () => {
     afterEach(() => {
