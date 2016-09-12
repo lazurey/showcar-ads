@@ -29,14 +29,18 @@ export const sortSizeMapping = (a, b) => {
     return bx - ax;
 };
 
-export const adsFormatsUnderResolution = (pageResolution, sizeMapping) => {
-    if (!sizeMapping) { return null; }
-    return sizeMapping.filter(m => pageResolution.x >= m[0][0] && pageResolution.y >= m[0][1]);
+export const sizeFitsTheScreen = (_a, mappingFor) => {
+    var x = _a.x, y = _a.y;
+    return x >= mappingFor[0] && y >= mappingFor[1];
 }
 
-// export const getPossibleAdsSizes = (formats) => {
-//     return formats && formats[0] && formats[0][1];
-// }
+export const adsFormatsUnderResolution = (res, mappings) => {
+    return mappings.filter(m => sizeFitsTheScreen(res, m[0]));
+}
+
+export const findAdSizes = (mappings) => {
+    return mappings[0][1];
+}
 
 export const parseSizeMappingFromElement = element => {
 
@@ -49,11 +53,7 @@ export const parseSizeMappingFromElement = element => {
 
         const smallest = parsedSizeMaps[parsedSizeMaps.length - 1];
         if (smallest[0][0] !== 0 || smallest[0][1] !== 0) {
-            parsedSizeMaps.push(
-              [
-                [0,0],[]
-              ]
-            );
+            parsedSizeMaps.push( [ [0,0], [] ] );
         }
 
         setAttribute(element, 'size-mapping', JSON.stringify(parsedSizeMaps));
@@ -63,22 +63,10 @@ export const parseSizeMappingFromElement = element => {
             y: window.innerHeight
         };
 
-        let eligible = adsFormatsUnderResolution(pageResolution, parsedSizeMaps);
+        let eligibleAdSizes = findAdSizes(adsFormatsUnderResolution(pageResolution, parsedSizeMaps));
 
-        for (let i = 0; i < parsedSizeMaps.length; i++) {
-            const m = parsedSizeMaps[i];
-            const q = pageResolution.x >= m[0][0] && pageResolution.y >= m[0][1];
-
-            if (q) {
-                // const sizes = m[1];
-
-                if (m[1].length <= 0) {
-                    // Not showing ad slot due to size map restrictions.
-                    return;
-                }
-
-                break;
-            }
+        if (!eligibleAdSizes.length) {
+            return;
         }
     }
 };

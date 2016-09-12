@@ -1,4 +1,4 @@
-import { gptinit, parseResolution, adsFormatsUnderResolution, isSizeMappingAttribute, sortSizeMapping } from '../src/js/double-click';
+import { gptinit, parseResolution, adsFormatsUnderResolution, isSizeMappingAttribute, sortSizeMapping, findAdSizes } from '../src/js/double-click';
 
 import { mockGoogletag } from './mocks';
 
@@ -69,44 +69,91 @@ describe('Doubleclick', () => {
                 let mapping = [
                     [[300, 300], []],
                     [[100, 100], []],
+                    [[100, 150], []],
                     [[200, 200], []]
+                ];
+                let expected = [
+                    [[300, 300], []],
+                    [[200, 200], []],
+                    [[100, 150], []],
+                    [[100, 100], []]
                 ];
 
                 // when
                 let result = mapping.sort(sortSizeMapping);
 
                 // then
-                expect(result).to.deep.equal([
-                    [[300, 300], []],
-                    [[200, 200], []],
-                    [[100, 100], []]
-                ]);
+                expect(result).to.deep.equal(expected);
             });
 
+        });
+
+        describe('adsFormatsUnderResolution function§', () => {
             it('should filter out formats for higher resolutions', () => {
                 // given
                 let resultion = {
                     x: 768,
                     y: 480
-                }
+                };
                 let mapping = [
-                    [[1024, 400], []]
-                    [[640, 480], [[300, 50], [320, 100]]],
-                    [[200, 30], []],
-                    [[0, 0], []],
+                    [ [1024, 400], [[0, 0], [1, 1]] ],
+                    [ [640, 480], [[300, 50], [320, 100]] ],
+                    [ [200, 30], [ [0, 0], [0, 0] ] ],
+                    [ [0, 0], [ [0, 0], [0, 0] ] ]
+                ];
+                let expected = [
+                    [ [640, 480], [[300, 50], [320, 100]] ],
+                    [ [200, 30], [ [0, 0], [0, 0] ] ],
+                    [ [0, 0], [ [0, 0], [0, 0] ] ]
                 ];
 
                 // when
                 let result = adsFormatsUnderResolution(resultion, mapping);
 
                 // then
-                expect(result).to.deep.equal([
-                    [[640, 480], [[300, 50], [320, 100]]]
-                    [[200, 30], []],
-                    [[0, 0], []],
-                ]);
+                expect(result).to.deep.equal(expected);
             });
 
+            it('should not fail if the data is empty', () => {
+                // given
+                let resultion = {
+                    x: 768,
+                    y: 480
+                };
+
+                let mapping = [];
+
+                let expected = [];
+
+                // when
+                let result = adsFormatsUnderResolution(resultion, mapping);
+
+                // then
+                expect(result).to.deep.equal(expected);
+            });
+        });
+
+        describe("findAdSizes function", () => {
+            it('should return an empty array if there is nothing after filtering', () => {
+                // given
+                let resultion = {
+                    x: 768,
+                    y: 480
+                };
+                let mappings = [
+                    [ [1024, 400], [[0, 0], [1, 1]] ],
+                    [ [640, 480], [[300, 50], [320, 100]] ],
+                    [ [200, 30], [ [0, 0], [0, 0] ] ],
+                    [ [0, 0], [ [0, 0], [0, 0] ] ]
+                ];
+                let expected = [[300, 50], [320, 100]];
+
+                // when
+                let result = findAdSizes(adsFormatsUnderResolution(resultion, mappings));
+
+                // then
+                expect(result).to.deep.equal(expected);
+            });
         });
 
     });
