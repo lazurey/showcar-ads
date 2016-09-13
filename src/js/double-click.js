@@ -42,6 +42,11 @@ export const findAdSizes = (mappings) => {
     return mappings[0][1];
 }
 
+/**
+ *
+ * @param  {[type]} element [description]
+ * @return {[[number, number]] | null}
+ */
 export const parseSizeMappingFromElement = element => {
 
     const parsedSizeMaps = asArray(element.attributes)
@@ -66,7 +71,7 @@ export const parseSizeMappingFromElement = element => {
         let eligibleAdSizes = findAdSizes(adsFormatsUnderResolution(pageResolution, parsedSizeMaps));
 
         if (!eligibleAdSizes.length) {
-            return;
+            return null;
         }
     }
 };

@@ -9,6 +9,16 @@ const registerElement = name => {
         attachedCallback () {
             const element = this;
 
+// <as24... size-map-123x123="1x2,1x2,1x2">
+// 1. normalize attribute set of a tag (debuggin)
+// 1.1 convert attrs into data structure
+// 1.2 sort size mapping attrs from greater to lower
+// 1.3 add 0x0 mapping if it is missing
+// 1.4 debug: add `size-mapping="<data structure>"`
+
+// 2. find eligible ads sizes for the current resolution
+// 3. if there are such sizes move on...
+
             const sizeMapping = parseSizeMappingFromElement(element);
             const notShownDueToSizeMapping = false; // TODO
             if (notShownDueToSizeMapping) { return ;}
