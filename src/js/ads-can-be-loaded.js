@@ -22,5 +22,5 @@ export default () => {
         } else {
             resolve();
         }
-    })
+    });
 };

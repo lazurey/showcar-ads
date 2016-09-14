@@ -1,6 +1,7 @@
 import uuid from '../src/js/uuid';
 
 import registerElement from '../src/js/as24-ad-slot';
+import {mockGoogletag} from './mocks';
 
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);
@@ -12,6 +13,7 @@ describe('as24-ad-slot element', () => {
         // mockPubads();
         tagName = `x-${uuid()}`;
         registerElement(tagName);
+        mockGoogletag();
     });
 
     it('Setting empty attribute on attach to DOM', () => {

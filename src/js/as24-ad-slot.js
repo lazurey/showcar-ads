@@ -1,9 +1,9 @@
 import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
-import { parseSizeMappingFromElement, gptinit, registerAdSlot, destroyAdSlot, refreshAdSlot } from './double-click';
+import { parseSizeMappingFromElement, getEligibleAdsSizes, registerAdSlot, destroyAdSlot, refreshAdSlot } from './double-click';
 import uuid from './uuid';
 
 const registerElement = name => {
-    const googletag = window.googletag || (window.googletag = { cmd: [] });
+    // const googletag = window.googletag || (window.googletag = { cmd: [] });
 
     class AS24AdSlot extends HTMLElement {
         attachedCallback () {
@@ -20,8 +20,17 @@ const registerElement = name => {
 // 3. if there are such sizes move on...
 
             const sizeMapping = parseSizeMappingFromElement(element);
-            const notShownDueToSizeMapping = false; // TODO
-            if (notShownDueToSizeMapping) { return ;}
+
+            setAttribute(element, 'size-mapping', JSON.stringify(sizeMapping));
+
+            const pageResolution = {
+                x: window.innerWidth,
+                y: window.innerHeight
+            };
+
+            const eligibleSizes = getEligibleAdsSizes(pageResolution, sizeMapping);
+
+            if (!eligibleSizes.length) { return; }
 
             const elementId = getAttribute(element, 'element-id') || `ad-${uuid()}`;
             const adunit = getAttribute(element, 'ad-unit');

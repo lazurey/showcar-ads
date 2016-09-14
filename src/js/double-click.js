@@ -1,5 +1,6 @@
 import { asArray } from './helpers';
-import { setAttribute, getAttribute } from './dom';
+
+const googletag = window.googletag;
 
 export const parseResolution = str => {
     const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
@@ -25,22 +26,25 @@ export const sortSizeMapping = (a, b) => {
     const bx = bhead[0];
     const by = bhead[1];
 
-    if (ax === bx) { return by - ay };
+    if (ax === bx) { return by - ay; }
     return bx - ax;
 };
 
 export const sizeFitsTheScreen = (_a, mappingFor) => {
     var x = _a.x, y = _a.y;
     return x >= mappingFor[0] && y >= mappingFor[1];
-}
+};
 
 export const adsFormatsUnderResolution = (res, mappings) => {
     return mappings.filter(m => sizeFitsTheScreen(res, m[0]));
-}
+};
 
 export const findAdSizes = (mappings) => {
     return mappings[0][1];
-}
+};
+
+export const getEligibleAdsSizes = (pageResolution, parsedSizeMaps) =>
+    findAdSizes(adsFormatsUnderResolution(pageResolution, parsedSizeMaps));
 
 /**
  *
@@ -55,25 +59,14 @@ export const parseSizeMappingFromElement = element => {
         .sort(sortSizeMapping);
 
     if (parsedSizeMaps.length > 0) {
-
         const smallest = parsedSizeMaps[parsedSizeMaps.length - 1];
         if (smallest[0][0] !== 0 || smallest[0][1] !== 0) {
-            parsedSizeMaps.push( [ [0,0], [] ] );
-        }
-
-        setAttribute(element, 'size-mapping', JSON.stringify(parsedSizeMaps));
-
-        const pageResolution = {
-            x: window.innerWidth,
-            y: window.innerHeight
-        };
-
-        let eligibleAdSizes = findAdSizes(adsFormatsUnderResolution(pageResolution, parsedSizeMaps));
-
-        if (!eligibleAdSizes.length) {
-            return null;
+            parsedSizeMaps.push( [[0, 0], []] );
         }
     }
+
+    return parsedSizeMaps;
+
 };
 
 export const gptinit = () => {
@@ -89,7 +82,7 @@ export const gptinit = () => {
 
 export const registerAdSlot = (adunit, element, sizeMapping, outOfPage) => {
     window.googletag.cmd.push(() => {
-        const pubads = googletag.pubads();
+        // const pubads = googletag.pubads();
 
         outOfPage
             ? window.googletag.defineOutOfPageSlot(adunit, element.id).addService(window.googletag.pubads())
@@ -99,9 +92,7 @@ export const registerAdSlot = (adunit, element, sizeMapping, outOfPage) => {
     });
 };
 
-export const refreshAdSlot = slot => {
-
-};
+export const refreshAdSlot = slot => slot;
 
 export const destroyAdSlot = slot => {
     window.googletag.cmd.push(() => window.googletag.destroySlots([slot]));

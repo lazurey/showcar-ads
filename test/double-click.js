@@ -133,7 +133,7 @@ describe('Doubleclick', () => {
             });
         });
 
-        describe("findAdSizes function", () => {
+        describe('findAdSizes function', () => {
             it('should return an empty array if there is nothing after filtering', () => {
                 // given
                 let resultion = {
@@ -159,6 +159,7 @@ describe('Doubleclick', () => {
     });
 
     describe('Google tag', () => {
+
         beforeEach(mockGoogletag);
 
         it('Initialization is correct', () =>{
@@ -168,7 +169,7 @@ describe('Doubleclick', () => {
 
             gptinit();
 
-            expect(googletag.cmd.length).to.equal(1);
+            expect(window.googletag.cmd.length).to.equal(1);
 
             window.googletag.cmd.forEach(cmd => cmd());
 

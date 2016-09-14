@@ -1,16 +1,19 @@
 export const getAttribute = (el, attributeName, fallback) => {
     return (el && el.getAttribute && el.getAttribute(attributeName)) || fallback;
-}
+};
 
 export const hasAttribute = (el, attributeName) => {
     return el && el.hasAttribute(attributeName);
-}
+};
+
 export const setAttribute = (el, attributeName, value) => {
     return el && el.setAttribute(attributeName, value);
-}
+};
+
 export const removeAttribute = (el, attributeName) => {
     return el && el.removeAttribute(attributeName);
-}
+};
+
 export const loadScript = url => {
     const script = document.createElement('script');
     const s = document.getElementsByTagName('script')[0];
@@ -23,7 +26,7 @@ export const ready = fn => {
         return setTimeout(fn);
     }
 
-    document.addEventListener("DOMContentLoaded", fn);
+    document.addEventListener('DOMContentLoaded', fn);
 };
 
 export const isElementInViewport = element => {
@@ -42,4 +45,4 @@ export const addCss = ruleText => {
     const el = document.createElement('style');
     el.innerHTML = ruleText;
     document.querySelector('head').appendChild(el);
-}
+};
