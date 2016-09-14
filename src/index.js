@@ -63,39 +63,25 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
                 if (style.display === 'none') {
                     setAttribute(slotElement, 'empty', '');
-                } else {
-                    removeAttribute(slotElement, 'empty');
                 }
+
+                setAttribute(slotElement, 'loaded', '');
             });
 
-            // pubads.addEventListener('slotRenderEnded', eventData => {
-            //     const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
-            //     if (element) {
-            //         const slotElement = element.parentNode;
-            //
-            //         if (eventData.isEmpty) {
-            //             setAttribute(slotElement, 'empty', '');
-            //         } else {
-            //             removeAttribute(slotElement, 'empty');
-            //         }
-            //     }
-            // });
+            pubads.addEventListener('slotRenderEnded', eventData => {
+                const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
+
+                if (element && eventData.isEmpty) {
+                    const slotElement = element.parentNode;
+                    setAttribute(slotElement, 'empty', '');
+                }
+            });
 
             pubads.enableSingleRequest();
             pubads.collapseEmptyDivs(true);
             pubads.disableInitialLoad();
-
             googletag.enableServices();
         });
-
-        // const x = Object.assign(Object.create(HTMLElement.prototype), {
-        //     attachedCallback() {
-        //         console.log('XXX', this);
-        //     }
-        // });
-        //
-        // document.registerElement('as24-ad-slot-x', { prototype: x });
-
 
         const prototype = Object.create(HTMLElement.prototype);
 
@@ -122,7 +108,8 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
 
         prototype.refreshAdSlot = function() {
             slotsToRefreshWhenInViewport = slotsToRefreshWhenInViewport.filter(s => s !== this);
-            setAttribute(this, 'loaded', '');
+            removeAttribute(this, 'loaded');
+            removeAttribute(this, 'empty');
             batchRefresh(this.gptAdSlot);
         };
 
@@ -130,9 +117,6 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
             const elementId = getAttribute(element, 'element-id') || `ad-slot-element-${Math.random() * 1000000 | 0}`;
             const adunit = getAttribute(element, 'ad-unit');
             const outOfPage = hasAttribute(element, 'out-of-page');
-
-
-            setAttribute(element, 'empty', '');
 
             const parseResolution = str => {
                 const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
