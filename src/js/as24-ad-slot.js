@@ -38,18 +38,25 @@ const registerElement = name => {
 
             setAttribute(element, 'empty', '');
 
-            const adContainer = document.createElement('div');
-            adContainer.id = elementId;
-            element.appendChild(adContainer);
+            const container = document.createElement('div');
+            container.id = elementId;
+            element.appendChild(container);
 
-            this.adSlot = registerAdSlot({
-                adunit,
-                outOfPage,
-                sizeMapping,
-                adContainer
-            });
+            // dbl.registerSlot({
+            //     adunit,
+            //     outOfPage,
+            //     sizeMapping,
+            //     adContainer
+            // });
 
-            this.refreshAdSlot();
+            // this.adSlot = registerAdSlot({
+            //     adunit,
+            //     outOfPage,
+            //     sizeMapping,
+            //     adContainer
+            // });
+            //
+            // this.refreshAdSlot();
         }
 
         detachedCallback() {
