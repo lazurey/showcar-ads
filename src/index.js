@@ -59,18 +59,7 @@ import { hasAttribute, getAttribute, setAttribute, removeAttribute, loadScript, 
                 const element = document.querySelector(`#${eventData.slot.getSlotElementId()}`);
                 if (!element) { return; }
 
-                const iframes = Array.from(element.querySelectorAll('iframe'));
-                const visibleIframes = iframes.filter(iframe => {
-                    const style = window.getComputedStyle(iframe);
-                    return style.display !== 'none';
-                });
-
                 const slotElement = element.parentNode;
-
-                if (visibleIframes.length <= 0) {
-                    setAttribute(slotElement, 'empty', '');
-                }
-            
                 setAttribute(slotElement, 'loaded', '');
             });
 
