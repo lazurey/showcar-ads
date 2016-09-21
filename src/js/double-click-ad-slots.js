@@ -4,15 +4,13 @@ import uuid from './uuid';
 
 import { isElementInViewport } from './dom';
 
-// const googletag = window.googletag || (window.googletag = { cmd: [] });
-
 import googletag from './googletag';
 
 const slotsCache = {};
 
 const destroyAdSlotById = id => {
     const slot = slotsCache[id].slot;
-    window.googletag.cmd.push(() => window.googletag.destroySlots([slot]));
+    googletag().cmd.push(() => googletag().destroySlots([slot]));
 };
 
 const refreshAdSlotById = id => {
@@ -26,13 +24,13 @@ const refreshAdSlotById = id => {
 const register = ({ adunit, container, outOfPage, sizeMapping, slotElement }) => {
     const id = uuid();
 
-    window.googletag.cmd.push(() => {
-        const pubads = googletag.pubads();
+    googletag().cmd.push(() => {
+        const pubads = googletag().pubads();
         const slot = outOfPage
-        ? window.googletag.defineOutOfPageSlot(adunit, container.id).addService(pubads)
-        : window.googletag.defineSlot(adunit, [], container.id).defineSizeMapping(sizeMapping).addService(pubads);
+        ? googletag().defineOutOfPageSlot(adunit, container.id).addService(pubads)
+        : googletag().defineSlot(adunit, [], container.id).defineSizeMapping(sizeMapping).addService(pubads);
 
-        window.googletag.display(container.id);
+        googletag().display(container.id);
 
         slotsCache[id].slot = slot;
         refreshAdSlotById(id);
@@ -64,18 +62,38 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
         }
     });
 
-    window.googletag.cmd.push(() => {
-        // window.googletag.pubads().refresh(slotsToRefresh, { changeCorrelator: false });
-        window.googletag.pubads().refresh(slotsToRefresh);
+    googletag().cmd.push(() => {
+        // googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+        googletag().pubads().refresh(slotsToRefresh);
     });
 }, 50);
+
+const findXIdByGptSlot = slot => {
+    const xs = Object.keys(slotsCache).filter(id => {
+        return slotsCache[id].slot === slot;
+    }).map(id => slotsCache[id]);
+
+    return xs.length ? xs[0] : null;
+}
+
+googletag().cmd.push(() => {
+    const pubads = googletag().pubads();
+    pubads.addEventListener('slotOnload', eventData => {
+        const x = findXIdByGptSlot(eventData.slot);
+        x && x.ret.onload && x.ret.onload();
+    });
+
+    pubads.addEventListener('slotRenderEnded', eventData => {
+        if (eventData.isEmpty) {
+            const x = findXIdByGptSlot(eventData.slot);
+            x && x.ret.onempty && x.ret.onempty();
+        }
+    });
+});
 
 window.addEventListener('load', refreshAdslotsWaitingToBeRefreshed);
 window.addEventListener('scroll', refreshAdslotsWaitingToBeRefreshed);
 window.addEventListener('animationend', refreshAdslotsWaitingToBeRefreshed);
 window.addEventListener('transitionend', refreshAdslotsWaitingToBeRefreshed);
-
-
-setTimeout(refreshAdslotsWaitingToBeRefreshed, 100); // TODO: check this
 
 export default register;

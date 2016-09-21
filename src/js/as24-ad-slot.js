@@ -4,7 +4,7 @@ import uuid from './uuid';
 
 import registerDoubleclickAdslot from './double-click-ad-slots';
 
-const registerElement = name => {
+const registerElement = (name = 'as24-ad-slot') => {
     const googletag = window.googletag || (window.googletag = { cmd: [] });
 
     class AS24AdSlot extends HTMLElement {
@@ -50,15 +50,16 @@ const registerElement = name => {
                 slotElement: this
             });
 
-            console.log('qqq', this.adslot);
-
-            this.adslot.onload = eventData => {
-                if (eventData.isEmpty) {
-                    setAttribute('empty', '');
-                }
-
-                setAttribute('loaded', '');
-            };
+            this.adslot.onempty = () => setAttribute(this, 'empty', '');
+            this.adslot.onload = () => setAttribute(this, 'loaded', '');
+            //
+            // this.adslot.onload = eventData => {
+            //     if (eventData.isEmpty) {
+            //         setAttribute('empty', '');
+            //     }
+            //
+            //     setAttribute('loaded', '');
+            // };
         }
 
         detachedCallback() {
@@ -70,8 +71,8 @@ const registerElement = name => {
         }
     }
 
-    addCss(`{name}{display:block}`);
-    document.registerElement(name || 'as24-ad-slot', AS24AdSlot);
+    addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
+    document.registerElement(name, AS24AdSlot);
 };
 
 export default registerElement;

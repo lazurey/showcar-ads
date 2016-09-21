@@ -1,6 +1,6 @@
 import { addCss } from './dom';
 
-const registerElement = name => {
+const registerElement = (name = 'as24-ad-targeting') => {
     const googletag = window.googletag || (window.googletag = { cmd: [] });
 
     class AS24AdTargeting extends HTMLElement {
@@ -39,8 +39,8 @@ const registerElement = name => {
         }
     }
 
-    addCss(`{name}{display:none}`);
-    document.registerElement(name || 'as24-ad-targeting', AS24AdTargeting);
+    addCss(`${name}{display:none}`);
+    document.registerElement(name, AS24AdTargeting);
 };
 
 export default registerElement;
