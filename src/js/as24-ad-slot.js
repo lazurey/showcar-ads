@@ -52,14 +52,6 @@ const registerElement = (name = 'as24-ad-slot') => {
 
             this.adslot.onempty = () => setAttribute(this, 'empty', '');
             this.adslot.onload = () => setAttribute(this, 'loaded', '');
-            //
-            // this.adslot.onload = eventData => {
-            //     if (eventData.isEmpty) {
-            //         setAttribute('empty', '');
-            //     }
-            //
-            //     setAttribute('loaded', '');
-            // };
         }
 
         detachedCallback() {
