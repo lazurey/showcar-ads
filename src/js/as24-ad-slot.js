@@ -1,34 +1,40 @@
 import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
-import { parseSizeMappingFromElement, getEligibleAdsSizes, registerAdSlot, destroyAdSlot, refreshAdSlot } from './double-click';
+import { parseSizeMappingFromElement, getEligibleAdsSizes } from './double-click';
 import uuid from './uuid';
 
 import registerDoubleclickAdslot from './double-click-ad-slots';
 
+// import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from './size-mapping';
+
 const registerElement = (name = 'as24-ad-slot') => {
-    const googletag = window.googletag || (window.googletag = { cmd: [] });
 
     class AS24AdSlot extends HTMLElement {
         attachedCallback () {
             const element = this;
 
-// <as24... size-map-123x123="1x2,1x2,1x2">
-// 1. normalize attribute set of a tag (debuggin)
-// 1.1 convert attrs into data structure
-// 1.2 sort size mapping attrs from greater to lower
-// 1.3 add 0x0 mapping if it is missing
-// 1.4 debug: add `size-mapping="<data structure>"`
+            // <as24... size-map-123x123="1x2,1x2,1x2">
+            // 1. normalize attribute set of a tag (debuggin)
+            // 1.1 convert attrs into data structure
+            // 1.2 sort size mapping attrs from greater to lower
+            // 1.3 add 0x0 mapping if it is missing
+            // 1.4 debug: add `size-mapping="<data structure>"`
 
-// 2. find eligible ads sizes for the current resolution
-// 3. if there are such sizes move on...
-
-            const sizeMapping = parseSizeMappingFromElement(element);
-
-            setAttribute(element, 'size-mapping', JSON.stringify(sizeMapping));
+            // 2. find eligible ads sizes for the current resolution
+            // 3. if there are such sizes move on...
 
             const pageResolution = {
                 x: window.innerWidth,
                 y: window.innerHeight
             };
+
+            const sizeMapping = parseSizeMappingFromElement(element);
+
+            // const qwe = parseAttributesIntoValidMapping(element.attributes);
+            // console.log('QWE', JSON.stringify(qwe));
+            // console.log(mappingHasSizesForResolution(qwe, pageResolution));
+
+            setAttribute(element, 'size-mapping', JSON.stringify(sizeMapping));
+
 
             const eligibleSizes = getEligibleAdsSizes(pageResolution, sizeMapping);
 
