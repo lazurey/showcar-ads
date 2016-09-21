@@ -1,7 +1,8 @@
 const buble = require('rollup-plugin-buble');
+const eslint = require('rollup-plugin-eslint');
+
 const commonjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
-const eslint = require('rollup-plugin-eslint');
 
 module.exports = function(config) {
     config.set({
@@ -23,6 +24,8 @@ module.exports = function(config) {
         },
         rollupPreprocessor: {
             plugins: [
+                nodeResolve({ jsnext: true, main: true }),
+                commonjs(),
                 buble()
             ],
             format: 'iife',

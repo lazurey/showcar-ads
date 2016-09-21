@@ -7,11 +7,18 @@ module.exports = (gulp, plugins, options) => {
     const uglify = require('rollup-plugin-uglify');
     const filesize = require('rollup-plugin-filesize');
 
+
+    // TODO remove commonj + nodeReolve
+    const commonjs = require('rollup-plugin-commonjs');
+    const nodeResolve = require('rollup-plugin-node-resolve');
+
     const config = {
         entry: options.js.entry,
         cache,
         plugins: [
             eslint(),
+            nodeResolve({ jsnext: true, main: true }),
+            commonjs(),
             buble(),
             uglify(),
             filesize(),
