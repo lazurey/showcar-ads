@@ -16,12 +16,6 @@ describe('as24-ad-slot element', () => {
         mockGoogletag();
     });
 
-    it('Setting empty attribute on attach to DOM', () => {
-        testContainer.innerHTML = `<${tagName} size-map-0x0="1x1"></${tagName}>`;
-        const el = document.querySelector(`${tagName}[empty]`);
-        expect(el).to.be.ok;
-    });
-
     it('Correctly parsing size-mapping from size-map-*x* attributes', () => {
         testContainer.innerHTML = `<${tagName} size-map-0x0="300x50, 320x100" size-map-728x300="728x90, 300x50"></${tagName}>`;
         const el = document.querySelector(`${tagName}`);
