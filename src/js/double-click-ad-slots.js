@@ -1,9 +1,6 @@
 import debounce from 'lodash/debounce';
-
 import uuid from './uuid';
-
 import { isElementInViewport } from './dom';
-
 import googletag from './googletag';
 
 const slotsCache = {};
