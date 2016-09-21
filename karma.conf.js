@@ -18,16 +18,12 @@ module.exports = function(config) {
         },
 
         preprocessors: {
-            // 'test/**/*.js': ['rollup']
             'test/**/*.js': ['rollup'],
             'src/**/*.js': ['rollup']
         },
         rollupPreprocessor: {
             plugins: [
-                // nodeResolve(),
-                // commonjs(),
-                buble(),
-                eslint()
+                buble()
             ],
             format: 'iife',
             sourceMap: 'inline',

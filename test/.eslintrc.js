@@ -19,13 +19,12 @@ module.exports = {
             "error",
             4
         ],
-        // "quotes": [
-        //     "error",
-        //     "single",
-        //     {
-        //         "allowTemplateLiterals": true
-        //     }
-        // ],
+        "quotes": [
+            "off",
+        ],
+        "no-unused-vars": [
+            "off"
+        ],
         "semi": [
             "error",
             "always"

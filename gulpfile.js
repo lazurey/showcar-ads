@@ -1,25 +1,28 @@
+'use strict';
+
 const gulp = require('gulp');
+const plugins = require('gulp-load-plugins')();
 const browserSync = require('browser-sync').create();
 
 var shouldWatch = false;
 
-gulp.task('js', () => {
-    const gulpRollup = require('gulp-rollup');
-    const buble = require('rollup-plugin-buble');
-    const uglify = require('rollup-plugin-uglify');
-    const rollupConfig = {
-        entry: './src/js/start.js',
-        format: 'iife',
-        plugins: [
-            buble(),
-            uglify()
-        ]
-    };
+const options = {
+    js: {
+        entry: 'src/js/index.js',
+        out: `dist/index.js`
+    },
+    env: {
+        production: true
+    }
+};
 
-    return gulp.src('src/**/*.js')
-        .pipe(gulpRollup(rollupConfig))
-        .pipe(gulp.dest('dist'));
-});
+const loadTask = name => {
+    const task = require(`./gulptasks/${name}`);
+    return () => task(gulp, plugins, options);
+};
+
+gulp.task('set-dev', () => options.env.production = false);
+gulp.task('js', loadTask('rollup'));
 
 gulp.task('watch', () => {
 
@@ -59,5 +62,5 @@ gulp.task('serve', ['html', 'js'], () => {
 });
 
 gulp.task('build', ['js', 'html']);
-gulp.task('dev', ['watch', 'js', 'html', 'test', 'serve']);
+gulp.task('dev', ['set-dev', 'watch', 'js', 'html', 'test', 'serve']);
 gulp.task('default', ['serve']);
