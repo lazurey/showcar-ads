@@ -1,6 +1,6 @@
 import { asArray } from './helpers';
 
-const googletag = window.googletag;
+const googletag = window.googletag || (window.googletag = { cmd: [] });
 
 export const parseResolution = str => {
     const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
@@ -40,7 +40,7 @@ export const adsFormatsUnderResolution = (res, mappings) => {
 };
 
 export const findAdSizes = (mappings) => {
-    return mappings[0][1];
+    return mappings && mappings[0] && mappings[0][1];
 };
 
 export const getEligibleAdsSizes = (pageResolution, parsedSizeMaps) =>
@@ -80,19 +80,31 @@ export const gptinit = () => {
     });
 };
 
+const refreshSlot = slot => {
+
+}
+
+const adSlots = [];
 export const registerAdSlot = (adunit, element, sizeMapping, outOfPage) => {
     window.googletag.cmd.push(() => {
-        // const pubads = googletag.pubads();
+        const pubads = googletag.pubads();
 
-        outOfPage
-            ? window.googletag.defineOutOfPageSlot(adunit, element.id).addService(window.googletag.pubads())
-            : window.googletag.defineSlot(adunit, [], element.id).defineSizeMapping(sizeMapping).addService(window.googletag.pubads());
+        const slot = outOfPage
+                        ? window.googletag.defineOutOfPageSlot(adunit, element.id).addService(pubads)
+                        : window.googletag.defineSlot(adunit, [], element.id).defineSizeMapping(sizeMapping).addService(pubads);
 
         window.googletag.display(element.id);
+
+        adSlots.push({
+            element,
+            slot
+        });
+
+        refreshSlot(slot, element);
     });
 };
 
-export const refreshAdSlot = slot => slot;
+export const refreshAdSlot = () => {};
 
 export const destroyAdSlot = slot => {
     window.googletag.cmd.push(() => window.googletag.destroySlots([slot]));

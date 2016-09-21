@@ -2,8 +2,10 @@ import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
 import { parseSizeMappingFromElement, getEligibleAdsSizes, registerAdSlot, destroyAdSlot, refreshAdSlot } from './double-click';
 import uuid from './uuid';
 
+import registerDoubleclickAdslot from './double-click-ad-slots';
+
 const registerElement = name => {
-    // const googletag = window.googletag || (window.googletag = { cmd: [] });
+    const googletag = window.googletag || (window.googletag = { cmd: [] });
 
     class AS24AdSlot extends HTMLElement {
         attachedCallback () {
@@ -30,41 +32,41 @@ const registerElement = name => {
 
             const eligibleSizes = getEligibleAdsSizes(pageResolution, sizeMapping);
 
-            if (!eligibleSizes.length) { return; }
+            if (!eligibleSizes || !eligibleSizes.length) { return; }
 
             const elementId = getAttribute(element, 'element-id') || `ad-${uuid()}`;
             const adunit = getAttribute(element, 'ad-unit');
             const outOfPage = hasAttribute(element, 'out-of-page');
-
-            setAttribute(element, 'empty', '');
-
             const container = document.createElement('div');
+
             container.id = elementId;
             element.appendChild(container);
 
-            // dbl.registerSlot({
-            //     adunit,
-            //     outOfPage,
-            //     sizeMapping,
-            //     adContainer
-            // });
+            this.adslot = registerDoubleclickAdslot({
+                adunit,
+                outOfPage,
+                sizeMapping,
+                container,
+                slotElement: this
+            });
 
-            // this.adSlot = registerAdSlot({
-            //     adunit,
-            //     outOfPage,
-            //     sizeMapping,
-            //     adContainer
-            // });
-            //
-            // this.refreshAdSlot();
+            console.log('qqq', this.adslot);
+
+            this.adslot.onload = eventData => {
+                if (eventData.isEmpty) {
+                    setAttribute('empty', '');
+                }
+
+                setAttribute('loaded', '');
+            };
         }
 
         detachedCallback() {
-            destroyAdSlot(this.adSlot);
+            this.adslot.destroy();
         }
 
         refreshAdSlot() {
-            refreshAdSlot(this.adSlot);
+            this.adslot.refresh();
         }
     }
 
