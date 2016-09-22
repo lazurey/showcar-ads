@@ -1,10 +1,10 @@
 import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
-import { parseSizeMappingFromElement, getEligibleAdsSizes } from './double-click';
+// import { parseSizeMappingFromElement, getEligibleAdsSizes } from './double-click';
 import uuid from './uuid';
 
 import registerDoubleclickAdslot from './double-click-ad-slots';
 
-// import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from './size-mapping';
+import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from './size-mapping';
 
 const registerElement = (name = 'as24-ad-slot') => {
 
@@ -27,18 +27,12 @@ const registerElement = (name = 'as24-ad-slot') => {
                 y: window.innerHeight
             };
 
-            const sizeMapping = parseSizeMappingFromElement(element);
-
-            // const qwe = parseAttributesIntoValidMapping(element.attributes);
-            // console.log('QWE', JSON.stringify(qwe));
-            // console.log(mappingHasSizesForResolution(qwe, pageResolution));
+            const sizeMapping = parseAttributesIntoValidMapping(element.attributes);
+            const hasEligibleSizes = mappingHasSizesForResolution(sizeMapping, pageResolution);
 
             setAttribute(element, 'size-mapping', JSON.stringify(sizeMapping));
 
-
-            const eligibleSizes = getEligibleAdsSizes(pageResolution, sizeMapping);
-
-            if (!eligibleSizes || !eligibleSizes.length) { return; }
+            if (!hasEligibleSizes) { return; }
 
             const elementId = getAttribute(element, 'element-id') || `ad-${uuid()}`;
             const adunit = getAttribute(element, 'ad-unit');

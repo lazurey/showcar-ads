@@ -16,7 +16,10 @@ export const parseAttributes = attributes => {
     return Array.from(attributes).filter(x => {
         return /size-map-/.test(x.nodeName);
     }).map(x => {
-        return [parseResolution(x.nodeName), x.value.split(',').map(parseResolution).filter(x => x)];
+        return [
+            parseResolution(x.nodeName),
+            x.value.split(',').map(parseResolution).filter(x => Array.isArray(x) && x.length === 2)
+        ];
     });
 };
 
@@ -30,6 +33,7 @@ export const consolidateSizeMapping = mapping => {
 
         return mapping;
     };
+
     const sortedMapping = mapping.sort((x, y) => {
         return (y[0][0] - x[0][0]) || (y[0][1] - x[0][1]);
     });
@@ -41,7 +45,7 @@ export const consolidateSizeMapping = mapping => {
 
 export const mappingHasSizesForResolution = (mapping, resolution) => {
     const fe =  first(mapping.filter(x => x[0][0] <= resolution.x && x[0][1] <= resolution.y));
-    return fe && fe[1] && fe[1].length > 0;
+    return !!(fe && fe[1] && fe[1].length > 0);
 };
 
 export const parseAttributesIntoValidMapping = attributes => {
