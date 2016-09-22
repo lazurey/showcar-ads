@@ -41,7 +41,3 @@ export const debounce = (fn, delay) => {
 // logBatch('qwe2');
 // logBatch('qwe3');
 // logBatch('qwe4');
-
-// Simple check to disable ads when ads-off is in the URL
-// e.g. example.com/list#ads-off OR example.com/details?ads-off
-export const adsAreDisabled = () => window.location.href.indexOf('ads-off=true') >= 0;

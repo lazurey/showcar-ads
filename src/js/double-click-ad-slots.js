@@ -60,8 +60,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
     });
 
     googletag().cmd.push(() => {
-        // googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
-        googletag().pubads().refresh(slotsToRefresh);
+       googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
     });
 }, 50);
 
