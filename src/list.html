@@ -5,52 +5,41 @@
     <title>Ad Integration Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/document-register-element/0.5.3/document-register-element.js"></script>
-    <!-- smoosh -->
     <script src="index.js"></script>
-    <!-- endsmoosh -->
     <style>
         *, *::before, *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-
         html {
             font-size: 100%;
             font-family: sans-serif;
             color: #333;
         }
-
         h1 {
             line-height: 80px;
             text-align: center;
         }
-
         #site-header {
             box-shadow: 0 2px 4px rgba(0,0,0,0.3);
             position: relative;
             z-index: 1;
             margin-bottom: 24px;
-
         }
-
         as24-ad-slot {
             display: block;
         }
-
         as24-ad-slot > div {
             text-align: center;
         }
-
         as24-ad-slot > div > div {
             box-sizing: content-box;
             padding: 12px 0;
         }
-
         ul {
             list-style-type: none;
         }
-
         .list-item {
             display: flex;
             flex-flow: row;
@@ -60,16 +49,13 @@
             overflow: hidden;
             height: 140px;
         }
-
         img {
             max-width: 100%;
             display: block;
         }
-
         .list-item .img {
             flex: 1;
         }
-
         .list-item .details {
             flex: 3;
             padding: 20px;
@@ -77,7 +63,6 @@
     </style>
 </head>
 <body>
-    <as24-ad-slot-x></as24-ad-slot-x>
     <header id="site-header">
         <h1>List Page</h1>
     </header>
@@ -85,60 +70,21 @@
         <div style="position: fixed; left: 0; top: 0; background-color: limegreen;">
             <as24-ad-slot
                 ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1"
-                sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]"
-                size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]">
-            </as24-ad-slot>
-        </div>
-        <!-- <style>
-            as24-ad-slot:not([empty]) { margin-bottom: 12px; }
-        </style>
-
-        <as24-ad-slot type="doubleclick"
-            size-map-0x0="320x50, 728x90"></as24-ad-slot>
-
-        <as24-ad-slot type="doubleclick"
-            size-map-768x0="320x50"
-            size-map-1400x0="320x50"
-            size-map-1024x0=""
+                size-map-0x0="300x100, 300x250, 320x50, 320x100, 320x240"
+                size-map-728x600="728x300"
+                size-map-728x300="728x90"
             ></as24-ad-slot>
-
-        <as24-ad-slot type="doubleclick"
-                element-id="@elementId"
-                ad-unit="/4467/as24_@urlSupport.topLevelDomain.value/Listpage_Contentbanner_@index"
-
-                size-map-0x0="300x50, 300 x 100, 300 x 250"
-                size-map-728x300=""
-                size-map-1400x500="728x90"
-
-
-                size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,50],[300,100],[300,250],[320,50],[320,100],[320,240]]]]"
-
-                sizes="[[728,90],[728,300],[300,50],[300,100],[300,250],[320,50],[320,100],[320,240]]"
-
-                min-x-resolution="@size.minX"
-                max-x-resolution="@size.maxX">
-            </as24-ad-slot>
-
-        <as24-ad-slot
-                size-map-0x0="300x50, 320x100"
-                size-map-768x0=""
-                ></as24-ad-slot>
-
-        <as24-ad-slot
-                size-map-768x0="768x90"
-                ></as24-ad-slot> -->
-
+        </div>
         <as24-ad-slot id="flickerslot" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_1" size-map-1024x0="728x90,728x300"></as24-ad-slot>
         <as24-ad-slot id="flickerslot" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_2" size-map-1024x0="728x90,728x300"></as24-ad-slot>
-
         <as24-ad-slot
             id="testadslot2"
             type="doubleclick"
             size-map-0x0="300x100, 300x50, 320x50, 320x100"
             size-map-1100x400="728 x 90"
             size-map-1400x400=""
-            ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"></as24-ad-slot>
-
+            ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"
+        ></as24-ad-slot>
         <as24-ad-slot
             id="testadslot"
             type="doubleclick"
@@ -146,15 +92,10 @@
             size-map-1100x400="728 x 90"
             size-map-1400x400=""
             ad-unit="/4467/AS24_MOBILEWEBSITE_DE/detailpage_content2"
-            sizes="[[300,100],[728,90]]"
-            size-mapping="[[[1100,400],[728,90]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"
-            min-x-resolution="768">
-        </as24-ad-slot>
-
+        ></as24-ad-slot>
         <div style="text-align: center; margin-bottom: 24px;">
             <button id="btn-reload" style="padding: 12px; background-color: #f1f1f1; border: 3px solid orange; border-radius: 4px;">Reload list items (and refresh ads)</button>
         </div>
-
         <as24-ad-targeting style="display:none;">
             {
                 "make":13,
@@ -179,7 +120,6 @@
                 "type":"U"
             }
         </as24-ad-targeting>
-
         <ul>
             <li>
                 <a href="#" class="list-item">
@@ -226,8 +166,8 @@
             <li>
                 <as24-ad-slot
                     ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1"
-                    sizes="[[300,100],[728,90],[728,300],[300,50],[320,50],[320,100]]"
-                    size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"
+                    size-map-0x0="300x100, 300x50, 320x50, 320x100"
+                    size-map-728x300="728x90,728x300"
                     element-id="as24-test">
                 </as24-ad-slot>
             </li>
@@ -293,9 +233,9 @@
             </li>
             <li>
                 <as24-ad-slot
-                    ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content2"
-                    sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]"
-                    size-mapping="[[[728,300],[[728,90]]],[[0,0],[[300,100],[300,250],[300,50],[320,50],[320,100],[320,240]]]]">
+                    ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1"
+                    size-map-0x0="300x100, 300x50, 320x50, 320x100"
+                    size-map-728x300="728x90,728x300">
                 </as24-ad-slot>
             </li>
             <li>
@@ -311,10 +251,16 @@
             <li>
                 <as24-ad-slot
                         ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content3"
-                        sizes="[[300,100],[300,250],[728,90],[300,50],[320,50],[320,100],[320,240]]"
-
                         size-map-728x300="728x90, 728x300"
                         size-map-0x0="300x100, 300x50, 320x50, 320x100">
+                </as24-ad-slot>
+            </li>
+            <li>
+                <as24-ad-slot
+                        ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content4"
+                        out-of-page
+                        size-map-728x300="1x1"
+                        size-map-0x0="">
                 </as24-ad-slot>
             </li>
             <li>
@@ -328,8 +274,7 @@
                 </a>
             </li>
         </ul>
-
-        <as24-ad-slot type="doubleclick" out-of-page size-map-728x400="1x1" ad-unit="/4467/as24_at/Listpage"></as24-ad-slot>
+        <as24-ad-slot type="doubleclick" out-of-page ad-unit="/4467/as24_at/Listpage"></as24-ad-slot>
     </main>
     <script>
         document.querySelector('#btn-reload').addEventListener('click', function(e) {
@@ -337,14 +282,11 @@
             const renderItemTemplate = () => `<li> <a href="#" class="list-item"> <div class="img"> <img src="https://dummyimage.com/320x240/?${Math.random()}"> </div><div class="details"> <h2>Audi A4 Avant 2.0 TDI ${Math.random()}</h2> </div></a> </li>`;
             const renderAdTemplate = () => `<as24-ad-slot ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1" size-map-728x300="728x90, 728x300" size-map-0x0="300x100, 300x50, 320x50, 320x100" size-mapping="[[[728,300],[[728,90],[728,300]]],[[0,0],[[300,100],[300,50],[320,50],[320,100]]]]"> </as24-ad-slot>`;
             const renderTargetingTemplate = () => `<as24-ad-targeting style="display:none;">{ "make":${Math.random() * 50 | 0}, "model":[${Math.random() * 50 | 0}] }</as24-ad-targeting>`;
-
             listContainer.innerHTML = `
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
-
                 ${renderAdTemplate()}
-
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
@@ -353,13 +295,10 @@
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
-
                 ${renderAdTemplate()}
-
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
                 ${renderItemTemplate()}
-
                 ${renderTargetingTemplate()}
             `;
         });

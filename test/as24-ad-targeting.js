@@ -1,5 +1,5 @@
-import registerElement from '../src/as24-ad-targeting';
-import uuid from '../src/uuid';
+import registerElement from '../src/js/as24-ad-targeting';
+import uuid from '../src/js/uuid';
 import { mockGoogletag } from './mocks';
 
 const testContainer = document.createElement('div');
@@ -26,7 +26,7 @@ describe('Targeting with custom element', () => {
         registerElement(tagName);
         testContainer.innerHTML += `<${tagName}>{ "a": 1, "b": 2 }</${tagName}>`;
 
-        window.googletag.cmd.forEach(cmd => { cmd()});
+        window.googletag.cmd.forEach(cmd => { cmd(); });
 
         expect(setTargetingSpy.callCount).to.equal(2);
         expect(setTargetingSpy.firstCall.calledWith('a', ['1'])).to.be.true;
@@ -58,7 +58,7 @@ describe('Targeting with custom element', () => {
         registerElement(tagName);
         testContainer.innerHTML += `<${tagName}>{ "a": 1 }</${tagName}>`;
 
-        window.googletag.cmd.forEach(cmd => { cmd()});
+        window.googletag.cmd.forEach(cmd => { cmd(); });
         expect(setTargetingSpy.callCount).to.equal(3);
         expect(setTargetingSpy.firstCall.calledWith('a', ['1'])).to.be.true;
         expect(setTargetingSpy.secondCall.calledWith('ksg', 'segments')).to.be.true;

@@ -1,25 +1,28 @@
+'use strict';
+
 const gulp = require('gulp');
+const plugins = require('gulp-load-plugins')();
 const browserSync = require('browser-sync').create();
 
 var shouldWatch = false;
 
-gulp.task('js', () => {
-    const gulpRollup = require('gulp-rollup');
-    const buble = require('rollup-plugin-buble');
-    const uglify = require('rollup-plugin-uglify');
+const options = {
+    js: {
+        entry: 'src/js/index.js',
+        out: `dist/index.js`
+    },
+    env: {
+        production: true
+    }
+};
 
-    return gulp.src('src/**/*.js')
-                .pipe(gulpRollup({
-                    entry: './src/index.js',
-                    format: 'iife',
-                    plugins: [
-                        buble(),
-                        uglify()
-                    ]
-                }))
-                .pipe(gulp.dest('dist'));
+const loadTask = name => {
+    const task = require(`./gulptasks/${name}`);
+    return () => task(gulp, plugins, options);
+};
 
-});
+gulp.task('set-dev', () => options.env.production = false);
+gulp.task('js', loadTask('rollup'));
 
 gulp.task('watch', () => {
 
@@ -43,10 +46,10 @@ gulp.task('html', ['js'], () => {
     const foreach = require('gulp-foreach');
 
     return gulp.src('src/*.html')
-                .pipe(foreach((stream, file) => {
-                    return stream.pipe(smoosher({ base: 'dist' }));
-                }))
-                .pipe(gulp.dest('dist'));
+    .pipe(foreach((stream, file) => {
+        return stream.pipe(smoosher({ base: 'dist' }));
+    }))
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('serve', ['html', 'js'], () => {
@@ -59,5 +62,5 @@ gulp.task('serve', ['html', 'js'], () => {
 });
 
 gulp.task('build', ['js', 'html']);
-gulp.task('dev', ['watch', 'js', 'html', 'test', 'serve']);
+gulp.task('dev', ['set-dev', 'watch', 'js', 'html', 'test', 'serve']);
 gulp.task('default', ['serve']);

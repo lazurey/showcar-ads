@@ -1,6 +1,7 @@
-import uuid from '../src/uuid';
+import uuid from '../src/js/uuid';
 
-import registerElement from '../src/as24-ad-slot';
+import registerElement from '../src/js/as24-ad-slot';
+import {mockGoogletag} from './mocks';
 
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);
@@ -12,12 +13,7 @@ describe('as24-ad-slot element', () => {
         // mockPubads();
         tagName = `x-${uuid()}`;
         registerElement(tagName);
-    });
-
-    it('Setting empty attribute on attach to DOM', () => {
-        testContainer.innerHTML = `<${tagName} size-map-0x0="1x1"></${tagName}>`;
-        const el = document.querySelector(`${tagName}[empty]`);
-        expect(el).to.be.ok;
+        mockGoogletag();
     });
 
     it('Correctly parsing size-mapping from size-map-*x* attributes', () => {
