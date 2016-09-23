@@ -21,6 +21,17 @@ const refreshAdSlotById = id => {
 const register = ({ adunit, container, outOfPage, sizeMapping, slotElement }) => {
     const id = uuid();
 
+    const ret = {
+        refresh: () => refreshAdSlotById(id),
+        destroy: () => destroyAdSlotById(id)
+    };
+
+    slotsCache[id] = {
+        ret,
+        container,
+        slotElement
+    };
+
     googletag().cmd.push(() => {
         const pubads = googletag().pubads();
         const slot = outOfPage
@@ -32,17 +43,6 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement }) =>
         slotsCache[id].slot = slot;
         refreshAdSlotById(id);
     });
-
-    const ret = {
-        refresh: () => refreshAdSlotById(id),
-        destroy: () => destroyAdSlotById(id)
-    };
-
-    slotsCache[id] = {
-        ret,
-        container,
-        slotElement
-    };
 
     return ret;
 };
@@ -60,7 +60,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
     });
 
     googletag().cmd.push(() => {
-       googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+        googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
     });
 }, 50);
 
@@ -70,7 +70,7 @@ const findXIdByGptSlot = slot => {
     }).map(id => slotsCache[id]);
 
     return xs.length ? xs[0] : null;
-}
+};
 
 googletag().cmd.push(() => {
     const pubads = googletag().pubads();

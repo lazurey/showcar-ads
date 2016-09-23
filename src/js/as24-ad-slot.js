@@ -55,11 +55,15 @@ const registerElement = (name = 'as24-ad-slot') => {
         }
 
         detachedCallback() {
-            this.adslot.destroy();
+            if (this.adslot) {
+                this.adslot.destroy();
+            }
         }
 
         refreshAdSlot() {
-            this.adslot.refresh();
+            if (this.adslot) {
+                this.adslot.refresh();
+            }
         }
     }
 

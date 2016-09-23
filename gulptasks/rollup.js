@@ -19,9 +19,7 @@ module.exports = (gulp, plugins, options) => {
             eslint(),
             nodeResolve({ jsnext: true, main: true }),
             commonjs(),
-            buble(),
-            uglify(),
-            filesize(),
+            buble()
         ]
     };
 
