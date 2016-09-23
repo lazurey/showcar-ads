@@ -1,19 +1,18 @@
 import uuid from '../src/js/uuid';
 
 import registerElement from '../src/js/as24-ad-slot';
-import {mockGoogletag} from './mocks';
+import { mockGoogletag } from './mocks';
 
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);
 
-describe('as24-ad-slot element', () => {
+describe('The as24-ad-slot element', () => {
     let tagName;
 
     beforeEach(() => {
-        // mockPubads();
         tagName = `x-${uuid()}`;
-        registerElement(tagName);
         mockGoogletag();
+        registerElement(tagName);
     });
 
     it('Correctly parsing size-mapping from size-map-*x* attributes', () => {
@@ -46,6 +45,11 @@ describe('as24-ad-slot element', () => {
                 [0,0], []
             ]
         ]);
+    });
+
+    it('Elements have refreshAdSlot method', () => {
+        const element = document.createElement(tagName);
+        expect(element.refreshAdSlot).to.be.exist;
     });
 
 });

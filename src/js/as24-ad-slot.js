@@ -1,9 +1,6 @@
-import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
-// import { parseSizeMappingFromElement, getEligibleAdsSizes } from './double-click';
 import uuid from './uuid';
-
+import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
 import registerDoubleclickAdslot from './double-click-ad-slots';
-
 import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from './size-mapping';
 
 const registerElement = (name = 'as24-ad-slot') => {
@@ -11,16 +8,6 @@ const registerElement = (name = 'as24-ad-slot') => {
     class AS24AdSlot extends HTMLElement {
         attachedCallback () {
             const element = this;
-
-            // <as24... size-map-123x123="1x2,1x2,1x2">
-            // 1. normalize attribute set of a tag (debuggin)
-            // 1.1 convert attrs into data structure
-            // 1.2 sort size mapping attrs from greater to lower
-            // 1.3 add 0x0 mapping if it is missing
-            // 1.4 debug: add `size-mapping="<data structure>"`
-
-            // 2. find eligible ads sizes for the current resolution
-            // 3. if there are such sizes move on...
 
             const pageResolution = {
                 x: window.innerWidth,

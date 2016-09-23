@@ -93,3 +93,14 @@ window.addEventListener('animationend', refreshAdslotsWaitingToBeRefreshed);
 window.addEventListener('transitionend', refreshAdslotsWaitingToBeRefreshed);
 
 export default register;
+
+export const gptinit = () => {
+    window.googletag.cmd.push(() => {
+        const pubads = window.googletag.pubads();
+        pubads.enableSingleRequest();
+        pubads.collapseEmptyDivs(true);
+        pubads.disableInitialLoad();
+        // pubads.enableAsyncRendering(); // TODO: check this
+        googletag.enableServices();
+    });
+};

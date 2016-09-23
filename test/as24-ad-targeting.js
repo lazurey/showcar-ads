@@ -5,7 +5,7 @@ import { mockGoogletag } from './mocks';
 const testContainer = document.createElement('div');
 document.body.appendChild(testContainer);
 
-describe('Targeting with custom element', () => {
+describe('The as24-ad-targeting element', () => {
     let tagName;
 
     beforeEach(() => {
