@@ -49,6 +49,8 @@ const registerElement = (name = 'as24-ad-slot') => {
 
         refreshAdSlot() {
             if (this.adslot) {
+                this.removeAttribute('loaded');
+                this.removeAttribute('empty');
                 this.adslot.refresh();
             }
         }
