@@ -39,6 +39,10 @@ const registerElement = (name = 'as24-ad-slot') => {
 
             this.adslot.onempty = () => setAttribute(this, 'empty', '');
             this.adslot.onload = () => setAttribute(this, 'loaded', '');
+            this.adslot.onrefresh = () => {
+                this.removeAttribute('loaded');
+                this.removeAttribute('empty');
+            };
         }
 
         detachedCallback() {
@@ -49,8 +53,6 @@ const registerElement = (name = 'as24-ad-slot') => {
 
         refreshAdSlot() {
             if (this.adslot) {
-                this.removeAttribute('loaded');
-                this.removeAttribute('empty');
                 this.adslot.refresh();
             }
         }

@@ -52,13 +52,16 @@ describe('The as24-ad-slot element', () => {
         expect(element.refreshAdSlot).to.be.exist;
     });
 
-    it('When refreshing "empty" and "loaded" attributes must be removed', () => {
+    it('When refreshing then "empty" and "loaded" attributes must be removed when slots really get refreshed', done => {
         testContainer.innerHTML = `<${tagName} size-map-728x300="728x90, 300x50" loaded empty></${tagName}>`;
         const element = document.querySelector(tagName);
         element.refreshAdSlot();
 
-        expect(element.attributes.loaded).to.be.undefined;
-        expect(element.attributes.empty).to.be.undefined;
+        setTimeout(() => {
+            expect(element.attributes.loaded).to.be.undefined;
+            expect(element.attributes.empty).to.be.undefined;
+            done();
+        }, 100);
     });
 
 });

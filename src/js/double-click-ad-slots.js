@@ -56,6 +56,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
         if (x.waitsForRefresh && isElementInViewport(x.slotElement)) {
             slotsToRefresh.push(x.slot);
             x.waitsForRefresh = false;
+            x.ret.onrefresh && x.ret.onrefresh();
         }
     });
 
