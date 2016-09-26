@@ -1,5 +1,5 @@
 import uuid from './uuid';
-import { getAttribute, setAttribute, hasAttribute, addCss } from './dom';
+import { getAttribute, setAttribute, hasAttribute, removeAttribute, addCss } from './dom';
 import registerDoubleclickAdslot from './double-click-ad-slots';
 import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from './size-mapping';
 
@@ -40,8 +40,8 @@ const registerElement = (name = 'as24-ad-slot') => {
             this.adslot.onempty = () => setAttribute(this, 'empty', '');
             this.adslot.onload = () => setAttribute(this, 'loaded', '');
             this.adslot.onrefresh = () => {
-                this.removeAttribute('loaded');
-                this.removeAttribute('empty');
+                removeAttribute(this, 'loaded');
+                removeAttribute(this, 'empty');
             };
         }
 
