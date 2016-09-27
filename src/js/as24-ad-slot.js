@@ -24,8 +24,8 @@ const registerElement = (name = 'as24-ad-slot') => {
             const elementId = getAttribute(element, 'element-id') || `ad-${uuid()}`;
             const adunit = getAttribute(element, 'ad-unit');
             const outOfPage = hasAttribute(element, 'out-of-page');
-            const container = document.createElement('div');
 
+            const container = document.createElement('div');
             container.id = elementId;
             element.appendChild(container);
 

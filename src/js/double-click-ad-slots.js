@@ -60,9 +60,11 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
         }
     });
 
-    googletag().cmd.push(() => {
-        googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
-    });
+    if (slotsToRefresh.length > 0) {
+        googletag().cmd.push(() => {
+            googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+        });
+    }
 }, 50);
 
 const findXIdByGptSlot = slot => {
