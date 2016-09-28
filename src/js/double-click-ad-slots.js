@@ -41,6 +41,7 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement }) =>
         googletag().display(container.id);
 
         slotsCache[id].slot = slot;
+        slotsCache[id].outOfPage = outOfPage;
         refreshAdSlotById(id);
     });
 
@@ -53,7 +54,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
     Object.keys(slotsCache).forEach(id => {
         const x = slotsCache[id];
 
-        if (x.waitsForRefresh && isElementInViewport(x.slotElement)) {
+        if (x.waitsForRefresh && (x.outOfPage || isElementInViewport(x.slotElement))) {
             slotsToRefresh.push(x.slot);
             x.waitsForRefresh = false;
             x.ret.onrefresh && x.ret.onrefresh();
