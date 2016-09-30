@@ -19,8 +19,12 @@ waitUntilAdsCanBeLoaded()
             registerAdTargetingElement();
 
             if (useOpenX) {
+                const convertSizes = sizes => {
+                    return JSON.parse(sizes).map(x => x.join('x'));
+                };
+
                 const activeSlots = Array.from(document.querySelectorAll('as24-ad-slot[sizes]:not([sizes="[]"]):not([out-of-page])'));
-                window.OX_dfp_ads = activeSlots.map(element => [element.getAttribute('ad-unit'), element.getAttribute('sizes'), element.children[0].id]);
+                window.OX_dfp_ads = activeSlots.map(element => [element.getAttribute('ad-unit'), convertSizes(element.getAttribute('sizes')), element.children[0].id]);
                 loadScript('https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout');
 
                 var oxTimeout;
