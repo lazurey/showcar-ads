@@ -63,7 +63,16 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
 
     if (slotsToRefresh.length > 0) {
         googletag().cmd.push(() => {
-            googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+            const usingOpenX = window.OX && window.OX.dfp_bidder && OX.dfp_bidder.refresh && window.OX.dfp_bidder.setOxTargeting;
+
+            if (usingOpenX) {
+                OX.dfp_bidder.refresh(() => {
+                    window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
+                    googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+                });
+            } else {
+                googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+            }
         });
     }
 }, 50);

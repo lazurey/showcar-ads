@@ -1,4 +1,4 @@
-import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from '../src/js/size-mapping';
+import { parseAttributesIntoValidMapping } from '../src/js/size-mapping';
 
 const createAttribute = (name, value) => {
     return {

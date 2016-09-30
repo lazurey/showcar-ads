@@ -1,7 +1,7 @@
 import uuid from './uuid';
 import { getAttribute, setAttribute, hasAttribute, removeAttribute, addCss } from './dom';
 import registerDoubleclickAdslot from './double-click-ad-slots';
-import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from './size-mapping';
+import { parseAttributesIntoValidMapping, getEligibleSizesForResolution } from './size-mapping';
 
 const registerElement = (name = 'as24-ad-slot') => {
 
@@ -15,9 +15,11 @@ const registerElement = (name = 'as24-ad-slot') => {
             };
 
             const sizeMapping = parseAttributesIntoValidMapping(element.attributes);
-            const hasEligibleSizes = mappingHasSizesForResolution(sizeMapping, pageResolution);
+            const eligibleSizes = getEligibleSizesForResolution(sizeMapping, pageResolution);
+            const hasEligibleSizes = eligibleSizes && eligibleSizes.length > 0;
 
             setAttribute(element, 'size-mapping', JSON.stringify(sizeMapping));
+            setAttribute(element, 'sizes', JSON.stringify(eligibleSizes));
 
             if (!hasEligibleSizes) { return; }
 
