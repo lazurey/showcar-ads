@@ -7,7 +7,7 @@ import { loadScript, ready } from './dom';
 
 waitUntilAdsCanBeLoaded()
     .then(() => {
-        const useOpenX = location.href.indexOf('ads-openx=true') >= 0;
+        const useOpenX = location.hostname.indexOf('.de') > 0;
 
         if (!useOpenX) {
             loadScript('https://www.googletagservices.com/tag/js/gpt.js');
