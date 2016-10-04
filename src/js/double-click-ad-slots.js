@@ -69,6 +69,8 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
                 OX.dfp_bidder.refresh(() => {
                     window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
                     googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+
+                    window.OX.dfp_bidder.refresh = cb => cb(); // preventing multiple calls to dfp_bidder.refresh() but still calling callback
                 });
             } else {
                 googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
