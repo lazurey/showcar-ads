@@ -1,4 +1,4 @@
-import { parseAttributesIntoValidMapping, mappingHasSizesForResolution } from '../src/js/size-mapping';
+import { parseAttributesIntoValidMapping, getEligibleSizesForResolution } from '../src/js/size-mapping';
 
 const createAttribute = (name, value) => {
     return {
@@ -101,7 +101,7 @@ describe('Size mapping', () => {
         ]);
     });
 
-    it('mappingHasSizesForResolution', () => {
+    it('getEligibleSizesForResolution', () => {
         const emptyMapping = [];
         const mapping1 = parseAttributesIntoValidMapping([
             createAttribute('size-map-0x0', '300x100, 300x50'),
@@ -113,9 +113,9 @@ describe('Size mapping', () => {
         const resolutionSmall = { x: 460, y: 240 };
         const resolutionMedium = { x: 800, y: 600 };
 
-        expect(mappingHasSizesForResolution(emptyMapping, resolution)).to.be.false;
-        expect(mappingHasSizesForResolution(mapping1, resolution)).to.be.true;
-        expect(mappingHasSizesForResolution(mapping1, resolutionSmall)).to.be.true;
-        expect(mappingHasSizesForResolution(mapping1, resolutionMedium)).to.be.false;
+        expect(getEligibleSizesForResolution(emptyMapping, resolution)).to.deep.equal([]);
+        expect(getEligibleSizesForResolution(mapping1, resolution)).to.deep.equal([[600, 300], [600, 100]]);
+        expect(getEligibleSizesForResolution(mapping1, resolutionSmall)).to.deep.equal([[300, 100], [300, 50]]);
+        expect(getEligibleSizesForResolution(mapping1, resolutionMedium)).to.deep.equal([]);
     });
 });

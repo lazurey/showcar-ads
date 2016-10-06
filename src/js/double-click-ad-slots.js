@@ -48,6 +48,8 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement }) =>
     return ret;
 };
 
+var refreshOxBids = false;
+
 const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
     const slotsToRefresh = [];
 
@@ -63,7 +65,22 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
 
     if (slotsToRefresh.length > 0) {
         googletag().cmd.push(() => {
-            googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+            const usingOpenX = window.OX && window.OX.dfp_bidder && OX.dfp_bidder.refresh && window.OX.dfp_bidder.setOxTargeting;
+
+            if (usingOpenX) {
+                if (refreshOxBids) {
+                    OX.dfp_bidder.refresh(() => {
+                        window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
+                        googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+                    }, slotsToRefresh);
+                } else {
+                    refreshOxBids = true;
+                    window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
+                    googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+                }
+            } else {
+                googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+            }
         });
     }
 }, 50);

@@ -43,9 +43,9 @@ export const consolidateSizeMapping = mapping => {
     return mappingWith0x0Mapping;
 };
 
-export const mappingHasSizesForResolution = (mapping, resolution) => {
+export const getEligibleSizesForResolution = (mapping, resolution) => {
     const fe =  first(mapping.filter(x => x[0][0] <= resolution.x && x[0][1] <= resolution.y));
-    return !!(fe && fe[1] && fe[1].length > 0);
+    return (fe && fe[1]) || [];
 };
 
 export const parseAttributesIntoValidMapping = attributes => {
