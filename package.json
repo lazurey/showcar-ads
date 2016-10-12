@@ -1,6 +1,6 @@
 {
   "name": "showcar-ads",
-  "version": "6.0.1",
+  "version": "6.1.0",
   "description": "Ad library for DoubleClick (GPT) and other ad servers",
   "main": "index.js",
   "scripts": {
