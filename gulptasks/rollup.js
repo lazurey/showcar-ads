@@ -1,3 +1,7 @@
+const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
+
 var cache = null;
 
 module.exports = (gulp, plugins, options) => {
@@ -32,10 +36,15 @@ module.exports = (gulp, plugins, options) => {
     return rollup.rollup(config).then(bundle => {
         cache = bundle;
 
-        return bundle.write({
+        const result = bundle.generate({
             format: 'iife',
-            dest: options.js.out,
             sourceMap: true
         });
+
+        const sourceMapFileUrl = process.env.CI_BUILD_REF_NAME ? `/assets/external/showcar-ads/${process.env.CI_BUILD_REF_NAME}/${process.env.CI_BUILD_REF}/index.js.map` : 'index.js.map';
+
+        mkdirp.sync(path.dirname(options.js.out));
+        fs.writeFileSync(`${options.js.out}`, `${result.code}\n//# sourceMappingURL=${sourceMapFileUrl}`);
+        fs.writeFileSync(`${options.js.out}.map`, result.map.toString());
     });
 };
