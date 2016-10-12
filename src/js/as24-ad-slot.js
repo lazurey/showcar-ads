@@ -5,8 +5,8 @@ import { parseAttributesIntoValidMapping, getEligibleSizesForResolution } from '
 
 const registerElement = (name = 'as24-ad-slot') => {
 
-    class AS24AdSlot extends HTMLElement {
-        attachedCallback () {
+    const AS24AdSlotPrototype = Object.create(HTMLElement.prototype, {
+        attachedCallback: { value: function() {
             const pageResolution = {
                 x: window.innerWidth,
                 y: window.innerHeight
@@ -43,23 +43,23 @@ const registerElement = (name = 'as24-ad-slot') => {
                 removeAttribute(this, 'loaded');
                 removeAttribute(this, 'empty');
             };
-        }
+        } },
 
-        detachedCallback() {
+        detachedCallback: { value: function() {
             if (this.adslot) {
                 this.adslot.destroy();
             }
-        }
+        } },
 
-        refreshAdSlot() {
+        refreshAdSlot: { value: function() {
             if (this.adslot) {
                 this.adslot.refresh();
             }
-        }
-    }
+        }},
+    });
 
     addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
-    document.registerElement(name, AS24AdSlot);
+    document.registerElement(name, { prototype: AS24AdSlotPrototype });
 };
 
 export default registerElement;
