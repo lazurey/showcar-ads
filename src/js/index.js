@@ -7,7 +7,16 @@ import { loadScript, ready } from './dom';
 
 waitUntilAdsCanBeLoaded()
     .then(() => {
-        const useOpenX = location.hostname.indexOf('.de') > 0;
+        const tld = location.hostname.split('.').pop();
+        const useOpenX = tld === 'de' || tld === 'at' || location.hash.indexOf('ads-use-openx') >= 0;
+        const getOpenxUrl = tld => {
+            const urls = {
+                de: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout',
+                at: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-at'
+            };
+
+            return urls[tld] || urls['de'];
+        };
 
         if (!useOpenX) {
             loadScript('https://www.googletagservices.com/tag/js/gpt.js');
@@ -25,7 +34,7 @@ waitUntilAdsCanBeLoaded()
 
                 const activeSlots = Array.from(document.querySelectorAll('as24-ad-slot[sizes]:not([sizes="[]"]):not([out-of-page])'));
                 window.OX_dfp_ads = activeSlots.map(element => [element.getAttribute('ad-unit'), convertSizes(element.getAttribute('sizes')), element.children[0].id]);
-                loadScript('https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout');
+                loadScript(getOpenxUrl(tld));
 
                 var oxTimeout;
                 const oxCallback = () => {
