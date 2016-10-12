@@ -5,63 +5,67 @@ import { parseAttributesIntoValidMapping, getEligibleSizesForResolution } from '
 
 const registerElement = (name = 'as24-ad-slot') => {
 
-    class AS24AdSlot extends HTMLElement {
-        attachedCallback () {
-            const element = this;
+    const AS24AdSlotPrototype = Object.create(HTMLElement.prototype, {
+        attachedCallback: {
+            value: function() {
+                const pageResolution = {
+                    x: window.innerWidth,
+                    y: window.innerHeight
+                };
 
-            const pageResolution = {
-                x: window.innerWidth,
-                y: window.innerHeight
-            };
+                const sizeMapping = parseAttributesIntoValidMapping(this.attributes);
+                const eligibleSizes = getEligibleSizesForResolution(sizeMapping, pageResolution);
+                const hasEligibleSizes = eligibleSizes && eligibleSizes.length > 0;
 
-            const sizeMapping = parseAttributesIntoValidMapping(element.attributes);
-            const eligibleSizes = getEligibleSizesForResolution(sizeMapping, pageResolution);
-            const hasEligibleSizes = eligibleSizes && eligibleSizes.length > 0;
+                setAttribute(this, 'size-mapping', JSON.stringify(sizeMapping));
+                setAttribute(this, 'sizes', JSON.stringify(eligibleSizes));
 
-            setAttribute(element, 'size-mapping', JSON.stringify(sizeMapping));
-            setAttribute(element, 'sizes', JSON.stringify(eligibleSizes));
+                if (!hasEligibleSizes) { return; }
 
-            if (!hasEligibleSizes) { return; }
+                const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
+                const adunit = getAttribute(this, 'ad-unit');
+                const outOfPage = hasAttribute(this, 'out-of-page');
 
-            const elementId = getAttribute(element, 'element-id') || `ad-${uuid()}`;
-            const adunit = getAttribute(element, 'ad-unit');
-            const outOfPage = hasAttribute(element, 'out-of-page');
+                const container = document.createElement('div');
+                container.id = elementId;
+                this.appendChild(container);
 
-            const container = document.createElement('div');
-            container.id = elementId;
-            element.appendChild(container);
+                this.adslot = registerDoubleclickAdslot({
+                    adunit,
+                    outOfPage,
+                    sizeMapping,
+                    container,
+                    slotElement: this
+                });
 
-            this.adslot = registerDoubleclickAdslot({
-                adunit,
-                outOfPage,
-                sizeMapping,
-                container,
-                slotElement: this
-            });
+                this.adslot.onempty = () => setAttribute(this, 'empty', '');
+                this.adslot.onload = () => setAttribute(this, 'loaded', '');
+                this.adslot.onrefresh = () => {
+                    removeAttribute(this, 'loaded');
+                    removeAttribute(this, 'empty');
+                };
+            }
+        },
 
-            this.adslot.onempty = () => setAttribute(this, 'empty', '');
-            this.adslot.onload = () => setAttribute(this, 'loaded', '');
-            this.adslot.onrefresh = () => {
-                removeAttribute(this, 'loaded');
-                removeAttribute(this, 'empty');
-            };
-        }
+        detachedCallback: {
+            value: function() {
+                if (this.adslot) {
+                    this.adslot.destroy();
+                }
+            }
+        },
 
-        detachedCallback() {
-            if (this.adslot) {
-                this.adslot.destroy();
+        refreshAdSlot: {
+            value: function() {
+                if (this.adslot) {
+                    this.adslot.refresh();
+                }
             }
         }
-
-        refreshAdSlot() {
-            if (this.adslot) {
-                this.adslot.refresh();
-            }
-        }
-    }
+    });
 
     addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
-    document.registerElement(name, AS24AdSlot);
+    document.registerElement(name, { prototype: AS24AdSlotPrototype });
 };
 
 export default registerElement;
