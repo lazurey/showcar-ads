@@ -7,29 +7,27 @@ const registerElement = (name = 'as24-ad-slot') => {
 
     class AS24AdSlot extends HTMLElement {
         attachedCallback () {
-            const element = this;
-
             const pageResolution = {
                 x: window.innerWidth,
                 y: window.innerHeight
             };
 
-            const sizeMapping = parseAttributesIntoValidMapping(element.attributes);
+            const sizeMapping = parseAttributesIntoValidMapping(this.attributes);
             const eligibleSizes = getEligibleSizesForResolution(sizeMapping, pageResolution);
             const hasEligibleSizes = eligibleSizes && eligibleSizes.length > 0;
 
-            setAttribute(element, 'size-mapping', JSON.stringify(sizeMapping));
-            setAttribute(element, 'sizes', JSON.stringify(eligibleSizes));
+            setAttribute(this, 'size-mapping', JSON.stringify(sizeMapping));
+            setAttribute(this, 'sizes', JSON.stringify(eligibleSizes));
 
             if (!hasEligibleSizes) { return; }
 
-            const elementId = getAttribute(element, 'element-id') || `ad-${uuid()}`;
-            const adunit = getAttribute(element, 'ad-unit');
-            const outOfPage = hasAttribute(element, 'out-of-page');
+            const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
+            const adunit = getAttribute(this, 'ad-unit');
+            const outOfPage = hasAttribute(this, 'out-of-page');
 
             const container = document.createElement('div');
             container.id = elementId;
-            element.appendChild(container);
+            this.appendChild(container);
 
             this.adslot = registerDoubleclickAdslot({
                 adunit,
