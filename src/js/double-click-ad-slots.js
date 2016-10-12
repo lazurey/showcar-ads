@@ -65,11 +65,11 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
 
     if (slotsToRefresh.length > 0) {
         googletag().cmd.push(() => {
-            const usingOpenX = window.OX && window.OX.dfp_bidder && OX.dfp_bidder.refresh && window.OX.dfp_bidder.setOxTargeting;
+            const usingOpenX = window.OX && window.OX.dfp_bidder && window.OX.dfp_bidder.refresh && window.OX.dfp_bidder.setOxTargeting;
 
             if (usingOpenX) {
                 if (refreshOxBids) {
-                    OX.dfp_bidder.refresh(() => {
+                    window.OX.dfp_bidder.refresh(() => {
                         window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
                         googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
                     }, slotsToRefresh);
