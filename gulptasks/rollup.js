@@ -41,7 +41,7 @@ module.exports = (gulp, plugins, options) => {
             sourceMap: true
         });
 
-        const sourceMapFileUrl = process.env.CI_BUILD_REF_NAME ? `/showcar-ads/${process.env.CI_BUILD_REF_NAME}/${process.env.CI_BUILD_REF}/index.js.map` : 'index.js.map';
+        const sourceMapFileUrl = process.env.CI_BUILD_REF_NAME ? `/assets/external/showcar-ads/${process.env.CI_BUILD_REF_NAME}/${process.env.CI_BUILD_REF}/index.js.map` : 'index.js.map';
 
         mkdirp.sync(path.dirname(options.js.out));
         fs.writeFileSync(`${options.js.out}`, `${result.code}\n//# sourceMappingURL=${sourceMapFileUrl}`);
