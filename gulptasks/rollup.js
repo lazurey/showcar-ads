@@ -1,4 +1,6 @@
 const fs = require('fs');
+const path = require('path');
+const mkdirp = require('mkdirp');
 
 var cache = null;
 
@@ -40,7 +42,9 @@ module.exports = (gulp, plugins, options) => {
         });
 
         const sourceMapFileUrl = process.env.CI_BUILD_REF_NAME ? `/showcar-ads/${process.env.CI_BUILD_REF_NAME}/${process.env.CI_BUILD_REF}/index.js.map` : 'index.js.map';
-        fs.writeFileSync(options.js.out, `${result.code}\n//# sourceMappingURL=${sourceMapFileUrl}`);
+
+        mkdirp.sync(path.dirname(options.js.out));
+        fs.writeFileSync(`${options.js.out}`, `${result.code}\n//# sourceMappingURL=${sourceMapFileUrl}`);
         fs.writeFileSync(`${options.js.out}.map`, result.map.toString());
     });
 };
