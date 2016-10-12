@@ -6,56 +6,62 @@ import { parseAttributesIntoValidMapping, getEligibleSizesForResolution } from '
 const registerElement = (name = 'as24-ad-slot') => {
 
     const AS24AdSlotPrototype = Object.create(HTMLElement.prototype, {
-        attachedCallback: { value: function() {
-            const pageResolution = {
-                x: window.innerWidth,
-                y: window.innerHeight
-            };
+        attachedCallback: {
+            value: function() {
+                const pageResolution = {
+                    x: window.innerWidth,
+                    y: window.innerHeight
+                };
 
-            const sizeMapping = parseAttributesIntoValidMapping(this.attributes);
-            const eligibleSizes = getEligibleSizesForResolution(sizeMapping, pageResolution);
-            const hasEligibleSizes = eligibleSizes && eligibleSizes.length > 0;
+                const sizeMapping = parseAttributesIntoValidMapping(this.attributes);
+                const eligibleSizes = getEligibleSizesForResolution(sizeMapping, pageResolution);
+                const hasEligibleSizes = eligibleSizes && eligibleSizes.length > 0;
 
-            setAttribute(this, 'size-mapping', JSON.stringify(sizeMapping));
-            setAttribute(this, 'sizes', JSON.stringify(eligibleSizes));
+                setAttribute(this, 'size-mapping', JSON.stringify(sizeMapping));
+                setAttribute(this, 'sizes', JSON.stringify(eligibleSizes));
 
-            if (!hasEligibleSizes) { return; }
+                if (!hasEligibleSizes) { return; }
 
-            const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
-            const adunit = getAttribute(this, 'ad-unit');
-            const outOfPage = hasAttribute(this, 'out-of-page');
+                const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
+                const adunit = getAttribute(this, 'ad-unit');
+                const outOfPage = hasAttribute(this, 'out-of-page');
 
-            const container = document.createElement('div');
-            container.id = elementId;
-            this.appendChild(container);
+                const container = document.createElement('div');
+                container.id = elementId;
+                this.appendChild(container);
 
-            this.adslot = registerDoubleclickAdslot({
-                adunit,
-                outOfPage,
-                sizeMapping,
-                container,
-                slotElement: this
-            });
+                this.adslot = registerDoubleclickAdslot({
+                    adunit,
+                    outOfPage,
+                    sizeMapping,
+                    container,
+                    slotElement: this
+                });
 
-            this.adslot.onempty = () => setAttribute(this, 'empty', '');
-            this.adslot.onload = () => setAttribute(this, 'loaded', '');
-            this.adslot.onrefresh = () => {
-                removeAttribute(this, 'loaded');
-                removeAttribute(this, 'empty');
-            };
-        } },
-
-        detachedCallback: { value: function() {
-            if (this.adslot) {
-                this.adslot.destroy();
+                this.adslot.onempty = () => setAttribute(this, 'empty', '');
+                this.adslot.onload = () => setAttribute(this, 'loaded', '');
+                this.adslot.onrefresh = () => {
+                    removeAttribute(this, 'loaded');
+                    removeAttribute(this, 'empty');
+                };
             }
-        } },
+        },
 
-        refreshAdSlot: { value: function() {
-            if (this.adslot) {
-                this.adslot.refresh();
+        detachedCallback: {
+            value: function() {
+                if (this.adslot) {
+                    this.adslot.destroy();
+                }
             }
-        }},
+        },
+
+        refreshAdSlot: {
+            value: function() {
+                if (this.adslot) {
+                    this.adslot.refresh();
+                }
+            }
+        }
     });
 
     addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
