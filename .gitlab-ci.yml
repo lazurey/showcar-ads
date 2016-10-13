@@ -1,5 +1,8 @@
 image: bdadamas24/node-xvfb:latest
 
+variables:
+  GIT_STRATEGY: fetch
+
 stages:
   - build
   - deploy
@@ -18,7 +21,6 @@ build:
   artifacts:
     paths:
       - dist
-      - node_modules/
 
 deploy:
   stage: deploy
