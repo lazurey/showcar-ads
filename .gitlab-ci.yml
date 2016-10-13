@@ -12,7 +12,7 @@ build-deploy:
     - master
     - develop
   script:
-    - yarn --offline
+    - yarn
     - xvfb-run npm run test
     - npm run build
     - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
