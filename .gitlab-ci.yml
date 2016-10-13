@@ -1,18 +1,12 @@
 image: bdadamas24/node-xvfb:latest
 
-cache:
-  paths:
-    # - node_modules/
-    - _pkg/
-
 stages:
   - test
   - build
   - deploy
 
 before_script:
-  # - npm install -s
-  - yarn --packages-root _pkg --prefer-offline
+  - yarn
 
 test:
   stage: test
