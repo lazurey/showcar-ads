@@ -3,8 +3,7 @@ image: bdadamas24/node-xvfb:latest
 cache:
   paths:
     # - node_modules/
-    - _pkg
-    - deploy/node_modules/
+    - _pkg/
 
 stages:
   - test
@@ -13,7 +12,6 @@ stages:
 
 before_script:
   # - npm install -s
-  - npm i -g yarn
   - yarn --packages-root _pkg
 
 test:
