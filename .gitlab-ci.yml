@@ -16,6 +16,7 @@ build:
     - master
     - develop
   script:
+    - doesthisstopthejob?
     - xvfb-run npm run test
     - npm run build
   artifacts:
