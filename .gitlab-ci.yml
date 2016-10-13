@@ -1,20 +1,11 @@
 image: bdadamas24/node-xvfb:latest
 
 stages:
-  - test
   - build
   - deploy
 
 before_script:
   - yarn
-
-test:
-  stage: test
-  only:
-    - master
-    - develop
-  script:
-    - xvfb-run npm run test
 
 build:
   stage: build
@@ -22,6 +13,7 @@ build:
     - master
     - develop
   script:
+    - xvfb-run npm run test
     - npm run build
   artifacts:
     paths:
