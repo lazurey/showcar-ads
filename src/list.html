@@ -286,7 +286,15 @@
             </li>
         </ul>
         <as24-ad-slot type="doubleclick" out-of-page size-map-728x300="1x1" ad-unit="/4467/as24_at/Listpage"></as24-ad-slot>
+        <as24-ad-slot type="doubleclick" id="immediate-ad" immediate size-map-728x300="728x90" ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content4"></as24-ad-slot>
+        <script>
+            document.querySelector('#immediate-ad').addEventListener('ad-slot-empty', e => {
+                console.log('ad-slot-empty', e);
+            });
+        </script>
     </main>
+    <footer style="height: 200px; background-color: #eee;">
+    </footer>
     <script>
         document.querySelector('#btn-reload').addEventListener('click', function(e) {
             const listContainer = document.querySelector('ul');

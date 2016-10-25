@@ -18,7 +18,7 @@ const refreshAdSlotById = id => {
     }
 };
 
-const register = ({ adunit, container, outOfPage, sizeMapping, slotElement }) => {
+const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, immediate }) => {
     const id = uuid();
 
     const ret = {
@@ -42,6 +42,8 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement }) =>
 
         slotsCache[id].slot = slot;
         slotsCache[id].outOfPage = outOfPage;
+        slotsCache[id].immediate = immediate;
+
         refreshAdSlotById(id);
     });
 
@@ -56,7 +58,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
     Object.keys(slotsCache).forEach(id => {
         const x = slotsCache[id];
 
-        if (x.waitsForRefresh && (x.outOfPage || isElementInViewport(x.slotElement))) {
+        if (x.waitsForRefresh && (x.outOfPage || isElementInViewport(x.slotElement) || x.immediate)) {
             slotsToRefresh.push(x.slot);
             x.waitsForRefresh = false;
             x.ret.onrefresh && x.ret.onrefresh();
