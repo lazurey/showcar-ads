@@ -126,6 +126,11 @@ agrees with this. In this case a "cookie-consent-given" event has to be triggere
 window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
 ```
 
+### Events
+
+* `ad-slot-empty`: is fired when there is no ad to show in the slot
+* `ad-slot-loaded`: is fired when an ad is loaded in the slot
+
 ## Changelog / History
 
 See [History.md](History.md)

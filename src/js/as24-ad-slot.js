@@ -25,6 +25,7 @@ const registerElement = (name = 'as24-ad-slot') => {
                 const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
                 const adunit = getAttribute(this, 'ad-unit');
                 const outOfPage = hasAttribute(this, 'out-of-page');
+                const immediate = hasAttribute(this, 'immediate');
 
                 const container = document.createElement('div');
                 container.id = elementId;
@@ -35,11 +36,20 @@ const registerElement = (name = 'as24-ad-slot') => {
                     outOfPage,
                     sizeMapping,
                     container,
-                    slotElement: this
+                    slotElement: this,
+                    immediate
                 });
 
-                this.adslot.onempty = () => setAttribute(this, 'empty', '');
-                this.adslot.onload = () => setAttribute(this, 'loaded', '');
+                this.adslot.onempty = () => {
+                    setAttribute(this, 'empty', '');
+                    this.dispatchEvent(new Event('ad-slot-empty'), { bubbles: true });
+                };
+
+                this.adslot.onload = () => {
+                    setAttribute(this, 'loaded', '');
+                    this.dispatchEvent(new Event('ad-slot-loaded'), { bubbles: true });
+                };
+
                 this.adslot.onrefresh = () => {
                     removeAttribute(this, 'loaded');
                     removeAttribute(this, 'empty');

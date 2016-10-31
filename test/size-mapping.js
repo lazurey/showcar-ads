@@ -118,4 +118,18 @@ describe('Size mapping', () => {
         expect(getEligibleSizesForResolution(mapping1, resolutionSmall)).to.deep.equal([[300, 100], [300, 50]]);
         expect(getEligibleSizesForResolution(mapping1, resolutionMedium)).to.deep.equal([]);
     });
+
+    it('"fluid" size should be supported', () => {
+        const attributes = [
+            createAttribute('size-map-0x0', '300x100, 300x50'),
+            createAttribute('size-map-1024x768', '600x300, 600x100, fluid'),
+            createAttribute('size-map-728x200', '')
+        ];
+
+        expect(parseAttributesIntoValidMapping(attributes)).to.deep.equal([
+            [[1024, 768], [[600, 300], [600, 100], 'fluid']],
+            [[728, 200], []],
+            [[0, 0], [[300, 100], [300, 50]]]
+        ]);
+    });
 });

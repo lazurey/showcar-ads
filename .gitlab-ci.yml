@@ -1,45 +1,25 @@
 image: bdadamas24/node-xvfb:latest
 
-cache:
-  paths:
-    - node_modules/
-    - deploy/node_modules/
+variables:
+  GIT_STRATEGY: fetch
 
 stages:
-  - test
-  - build
   - deploy
 
-before_script:
-  - npm install -s
-
-test:
-  stage: test
-  only:
-    - master
-    - develop
-  script:
-    - xvfb-run npm run test
-
-build:
-  stage: build
-  only:
-    - master
-    - develop
-  script:
-    - npm run build
-  artifacts:
-    paths:
-      - dist
-
-deploy:
+build-deploy:
   stage: deploy
   only:
     - master
     - develop
   script:
+    - yarn
+    - xvfb-run npm run test
+    - npm run build
     - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
     - node deploy/deploy_to_s3.js "dist/index.js" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
     - node deploy/deploy_to_s3.js "dist/index.js.map" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
     - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/latest
     - node deploy/deploy_to_s3.js "src/showcar-ads-fragment.html" showcar-ads
+  artifacts:
+    paths:
+      - dist

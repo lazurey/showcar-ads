@@ -2,6 +2,10 @@ import first from 'lodash/first';
 import last from 'lodash/last';
 
 const parseResolution = str => {
+    if (/fluid/.test(str)) {
+        return 'fluid';
+    }
+
     const matches = str.replace(/[\s]/g, '').match(/([\d]+)x([\d]+)/i);
 
     if (matches && matches[2]) {
@@ -18,7 +22,7 @@ export const parseAttributes = attributes => {
     }).map(x => {
         return [
             parseResolution(x.nodeName),
-            x.value.split(',').map(parseResolution).filter(x => Array.isArray(x) && x.length === 2)
+            x.value.split(',').map(parseResolution).filter(x => x === 'fluid' || (Array.isArray(x) && x.length === 2))
         ];
     });
 };
@@ -44,7 +48,7 @@ export const consolidateSizeMapping = mapping => {
 };
 
 export const getEligibleSizesForResolution = (mapping, resolution) => {
-    const fe =  first(mapping.filter(x => x[0][0] <= resolution.x && x[0][1] <= resolution.y));
+    const fe =  first(mapping.filter(x => (x === 'fluid') || (x[0][0] <= resolution.x && x[0][1] <= resolution.y)));
     return (fe && fe[1]) || [];
 };
 
