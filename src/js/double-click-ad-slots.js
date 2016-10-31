@@ -121,7 +121,9 @@ export const gptinit = () => {
     googletag().cmd.push(() => {
         const pubads = googletag().pubads();
         pubads.enableSingleRequest();
-        pubads.collapseEmptyDivs(true);
+        if (location.hash.indexOf('ads-dont-collapse-divs=true') < 0) {
+            pubads.collapseEmptyDivs(true);
+        }
         pubads.disableInitialLoad();
         // pubads.enableAsyncRendering(); // TODO: check this
         googletag().enableServices();

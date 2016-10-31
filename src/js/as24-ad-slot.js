@@ -74,7 +74,10 @@ const registerElement = (name = 'as24-ad-slot') => {
         }
     });
 
-    addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
+    if (location.hash.indexOf('ads-dont-collapse-divs=true') < 0) {
+        addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
+    }
+
     document.registerElement(name, { prototype: AS24AdSlotPrototype });
 };
 
