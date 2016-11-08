@@ -20,7 +20,12 @@ const registerElement = (name = 'as24-ad-slot') => {
                 setAttribute(this, 'size-mapping', JSON.stringify(sizeMapping));
                 setAttribute(this, 'sizes', JSON.stringify(eligibleSizes));
 
-                if (!hasEligibleSizes) { return; }
+                if (!hasEligibleSizes) {
+                    setAttribute(this, 'empty', '');
+                    this.dispatchEvent(new Event('ad-slot-empty'), { bubbles: true });
+                    
+                    return;
+                }
 
                 const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
                 const adunit = getAttribute(this, 'ad-unit');
