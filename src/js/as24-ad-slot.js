@@ -20,7 +20,12 @@ const registerElement = (name = 'as24-ad-slot') => {
                 setAttribute(this, 'size-mapping', JSON.stringify(sizeMapping));
                 setAttribute(this, 'sizes', JSON.stringify(eligibleSizes));
 
-                if (!hasEligibleSizes) { return; }
+                if (!hasEligibleSizes) {
+                    setAttribute(this, 'empty', '');
+                    this.dispatchEvent(new Event('ad-slot-empty'), { bubbles: true });
+                    
+                    return;
+                }
 
                 const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
                 const adunit = getAttribute(this, 'ad-unit');
@@ -74,7 +79,10 @@ const registerElement = (name = 'as24-ad-slot') => {
         }
     });
 
-    addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
+    if (location.hash.indexOf('ads-dont-collapse-divs=true') < 0) {
+        addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
+    }
+
     document.registerElement(name, { prototype: AS24AdSlotPrototype });
 };
 
