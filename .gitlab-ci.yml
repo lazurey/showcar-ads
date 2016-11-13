@@ -20,6 +20,9 @@ build-deploy:
     - node deploy/deploy_to_s3.js "dist/index.js.map" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
     - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/latest
     - node deploy/deploy_to_s3.js "src/showcar-ads-fragment.html" showcar-ads
+
+    # Sending data to datadog
+    - DATADOG_API_KEY=$DATADOG_API_KEY node deploy/send_to_datadog.js
   artifacts:
     paths:
       - dist
