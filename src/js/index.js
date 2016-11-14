@@ -10,6 +10,8 @@ waitUntilAdsCanBeLoaded()
         const tld = location.hostname.split('.').pop();
         const useOpenX = tld === 'de' || tld === 'at' || location.hash.indexOf('ads-use-openx') >= 0;
         const getOpenxUrl = tld => {
+            // TODO: for OpenX use ad config instead of hard-coding values
+            // <as24-ad-config openx-src="https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout" use-openx="true"></as24-ad-config>
             const urls = {
                 de: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout',
                 at: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-at'
@@ -29,7 +31,7 @@ waitUntilAdsCanBeLoaded()
 
             if (useOpenX) {
                 const convertSizes = sizes => {
-                    return JSON.parse(sizes).map(x => x.join('x'));
+                    return JSON.parse(sizes).filter(x => Array.isArray(x) && x.length === 2).map(x => x.join('x'));
                 };
 
                 const activeSlots = Array.from(document.querySelectorAll('as24-ad-slot[sizes]:not([sizes="[]"]):not([out-of-page])'));
