@@ -52,7 +52,7 @@ const registerElement = (name = 'as24-ad-slot') => {
 
                 this.adslot.onload = () => {
                     setAttribute(this, 'loaded', '');
-                    this.className += `rnd-${ (Math.random() * 10000) | 0 }`; // this causes redraw in IE, because attribute change doesn't
+                    this.className += ` rnd-${ (Math.random() * 10000) | 0 }`; // this causes redraw in IE, because attribute change doesn't
                     this.dispatchEvent(new Event('ad-slot-loaded'), { bubbles: true });
                 };
 
