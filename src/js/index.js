@@ -48,4 +48,7 @@ waitUntilAdsCanBeLoaded()
                 window.OX_dfp_options = { callback: oxCallback };
             }
         });
+    })
+    .catch(e => {
+        console.warn(e);
     });
