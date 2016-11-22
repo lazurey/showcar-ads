@@ -1,36 +1,44 @@
 'use strict';
 
 const gulp = require('gulp');
+const scgulp = require('showcar-gulp')(gulp);
+
+scgulp.registerTasks({
+    clean: {
+        files: ['dist/**/*']
+    },
+    eslint: {
+        files: 'src/**/*.js'
+    },
+    js: {
+        dependencies: ['eslint'],
+        entry: 'src/js/index.js',
+        out: 'dist/index.js',
+        watch: 'src/**/*.js',
+        sourceMappingURLPrefix: process.env.CI_BUILD_REF_NAME ? `/assets/external/showcar-ads/${process.env.CI_BUILD_REF_NAME}/${process.env.CI_BUILD_REF}` : ''
+    },
+    serve: {
+        dir: 'dist'
+    }
+});
+
+
 const plugins = require('gulp-load-plugins')();
-const browserSync = require('browser-sync').create();
 
 var shouldWatch = false;
-
-const options = {
-    js: {
-        entry: 'src/js/index.js',
-        out: `dist/index.js`
-    },
-    env: {
-        production: true
-    }
-};
 
 const loadTask = name => {
     const task = require(`./gulptasks/${name}`);
     return () => task(gulp, plugins, options);
 };
 
-gulp.task('set-dev', () => options.env.production = false);
-gulp.task('js', loadTask('rollup'));
+gulp.task('set-dev', () => {
+    scgulp.config.devmode = true;
+});
 
 gulp.task('watch', () => {
-
     shouldWatch = true;
-
-    gulp.watch('src/**/*.js', ['js', 'html']);
     gulp.watch("src/**/*.html", ['html']);
-    gulp.watch("dist/**/*").on('change', browserSync.reload);
 });
 
 gulp.task('test', function (done) {
@@ -52,15 +60,6 @@ gulp.task('html', ['js'], () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('serve', ['html', 'js'], () => {
-    browserSync.init({
-        open: false,
-        server: {
-            baseDir: "./dist"
-        }
-    });
-});
-
 gulp.task('build', ['js', 'html']);
-gulp.task('dev', ['set-dev', 'watch', 'js', 'html', 'test', 'serve']);
+gulp.task('dev', ['set-dev', 'watch', 'js:watch', 'html', 'test', 'serve']);
 gulp.task('default', ['serve']);
