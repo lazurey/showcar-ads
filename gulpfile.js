@@ -19,14 +19,38 @@ scgulp.registerTasks({
     },
     serve: {
         dir: 'dist'
+    },
+    jstest: {
+        type: 'js',
+        entry: 'test/index.spec.js',
+        out: 'dist/index.spec.js',
+        watch: ['src/**/*.js', 'test/**/*.js'],
+    },
+    karma: {
+        dependencies: ['jstest'],
+        files: ['dist/index.spec.js']
     }
 });
 
+// // scgulp.
+// gulp.task('name', ['dep1', 'dep2'], () => {
+//     // task
+// });
+//
+// gulp.task('set-dev', () => scgulp.config.devmode = true);
+// gulp.task('js', ['eslint'], scgulp.tasks.js({
+//     entry: 'src/js/index.js',
+//     out: 'dist/index.js',
+//     // watch: 'src/**/*.js',
+// }));
+//
+// gulp.task('js:watch', ['js'], () => {
+//     gulp.watch('**/*.js', ['js']);
+//     gulp.watch('**/*.scss', ['scss', 'scss:docs']);
+// });
+
 
 const plugins = require('gulp-load-plugins')();
-
-var shouldWatch = false;
-
 const loadTask = name => {
     const task = require(`./gulptasks/${name}`);
     return () => task(gulp, plugins, options);
@@ -34,19 +58,6 @@ const loadTask = name => {
 
 gulp.task('set-dev', () => {
     scgulp.config.devmode = true;
-});
-
-gulp.task('watch', () => {
-    shouldWatch = true;
-    gulp.watch("src/**/*.html", ['html']);
-});
-
-gulp.task('test', function (done) {
-    const Server = require('karma').Server;
-    new Server({
-        configFile: __dirname + '/karma.conf.js',
-        singleRun: !shouldWatch
-    }, done).start();
 });
 
 gulp.task('html', ['js'], () => {
@@ -60,6 +71,10 @@ gulp.task('html', ['js'], () => {
     .pipe(gulp.dest('dist'));
 });
 
-gulp.task('build', ['js', 'html']);
-gulp.task('dev', ['set-dev', 'watch', 'js:watch', 'html', 'test', 'serve']);
-gulp.task('default', ['serve']);
+gulp.task('html:watch', ['html'], () => {
+    gulp.watch("src/**/*.html", ['html']);
+});
+
+gulp.task('build', ['js', 'jstest', 'karma', 'html']);
+gulp.task('dev', ['set-dev', 'js:watch', 'jstest:watch', 'karma', 'html', 'serve']);
+gulp.task('default', ['dev']);

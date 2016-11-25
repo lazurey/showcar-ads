@@ -1,3 +1,6 @@
+import chaiAsPromised from 'chai-as-promised';
+chai.use(chaiAsPromised);
+
 import waitUntilAdsCanBeLoaded from '../src/js/ads-can-be-loaded';
 
 describe('Loading ads', () => {
