@@ -4,9 +4,7 @@
   "description": "Ad library for DoubleClick (GPT) and other ad servers",
   "main": "index.js",
   "scripts": {
-    "build": "gulp build",
-    "test": "gulp test",
-    "test2": "electron-mocha ./test"
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",

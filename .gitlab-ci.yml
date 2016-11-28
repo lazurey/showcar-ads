@@ -13,8 +13,8 @@ build-deploy:
     - develop
   script:
     - yarn
-    - xvfb-run npm run test
     - npm run build
+
     - node deploy/deploy_to_s3.js "dist/showcar-ads.html" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
     - node deploy/deploy_to_s3.js "dist/index.js" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
     - node deploy/deploy_to_s3.js "dist/index.js.map" showcar-ads/$CI_BUILD_REF_NAME/$CI_BUILD_REF
