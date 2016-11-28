@@ -36,6 +36,10 @@ const registerElement = (name = 'as24-ad-slot') => {
                 container.id = elementId;
                 this.appendChild(container);
 
+                const minHeight = Math.min(...(eligibleSizes.filter(s => s !== 'fluid').map(s => s[1])));
+
+                this.style.minHeight = `${minHeight}px`;
+
                 this.adslot = registerDoubleclickAdslot({
                     adunit,
                     outOfPage,
@@ -54,6 +58,10 @@ const registerElement = (name = 'as24-ad-slot') => {
                     setAttribute(this, 'loaded', '');
                     this.className += ` rnd-${ (Math.random() * 10000) | 0 }`; // this causes redraw in IE, because attribute change doesn't
                     this.dispatchEvent(new Event('ad-slot-loaded'), { bubbles: true });
+
+                    const oldMinHeight = parseInt(this.style.minHeight, 10);
+                    const height = this.clientHeight;
+                    this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
                 };
 
                 this.adslot.onrefresh = () => {
