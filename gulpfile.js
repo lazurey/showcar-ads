@@ -25,6 +25,10 @@ scgulp.registerTasks({
         entry: 'test/index.spec.js',
         out: 'dist/index.spec.js',
         watch: ['src/**/*.js', 'test/**/*.js'],
+        rollupConfig: {
+            moduleName: 'showcarads',
+            format: 'iife'
+        }
     },
     karma: {
         dependencies: ['jstest'],
