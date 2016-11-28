@@ -5158,9 +5158,9 @@ shelljs@^0.7.5:
     interpret "^1.0.0"
     rechoir "^0.6.2"
 
-showcar-gulp@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/showcar-gulp/-/showcar-gulp-0.8.4.tgz#7ec7793cd837f432e52a599f69541297f38fcfba"
+showcar-gulp:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/showcar-gulp/-/showcar-gulp-0.9.1.tgz#bf8fe97cd7a7aaa7aebf7a3e681c286a6dab26fe"
   dependencies:
     browser-sync "^2.18.2"
     chai "^3.5.0"

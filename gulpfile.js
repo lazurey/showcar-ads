@@ -24,11 +24,7 @@ scgulp.registerTasks({
         type: 'js',
         entry: 'test/index.spec.js',
         out: 'dist/index.spec.js',
-        watch: ['src/**/*.js', 'test/**/*.js'],
-        rollupConfig: {
-            moduleName: 'showcarads',
-            format: 'iife'
-        }
+        watch: ['src/**/*.js', 'test/**/*.js']
     },
     karma: {
         dependencies: ['jstest'],
@@ -52,13 +48,6 @@ scgulp.registerTasks({
 //     gulp.watch('**/*.js', ['js']);
 //     gulp.watch('**/*.scss', ['scss', 'scss:docs']);
 // });
-
-
-const plugins = require('gulp-load-plugins')();
-const loadTask = name => {
-    const task = require(`./gulptasks/${name}`);
-    return () => task(gulp, plugins, options);
-};
 
 gulp.task('set-dev', () => {
     scgulp.config.devmode = true;
