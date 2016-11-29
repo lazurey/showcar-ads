@@ -64,9 +64,9 @@ const registerElement = (name = 'as24-ad-slot') => {
                     this.dispatchEvent(new Event('ad-slot-loaded'), { bubbles: true });
 
                     const oldMinHeight = parseInt(this.style.minHeight, 10);
-                    const height = this.clientHeight;
+                    const height = container.clientHeight;
                     const oldMinWidth = parseInt(this.style.minWidth, 10);
-                    const width = this.clientWidth;
+                    const width = container.clientWidth;
                     container.style.minHeight = this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
                     container.style.minWidth = this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
                 };

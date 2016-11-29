@@ -29,22 +29,26 @@ as24-ad-slot[out-of-page],
   background-image: none;
 }
 
-.sc-ads-silent-placeholder > div{
+.sc-ads-silent-placeholder > div {
   box-shadow: inset 0 0 1px #cdcdcd;
 }
 
-[ad-unit="/4467/as24_at/Listpage/Top"] {
+.sc-ads-silent-placeholder[loaded]:not([empty]) > div {
+  box-shadow: none;
+}
+
+[ad-unit="/4467/as24_de/Listpage/Top"], [ad-unit="/4467/as24_at/Listpage/Top"] {
   & > div {
     box-shadow: inset 0 0 1px #cdcdcd;
   }
-  
+
   background-image: none !important;
 }
 
-[ad-unit="/4467/as24_at/Listpage/SkyLeft"] {
+[ad-unit="/4467/as24_de/Listpage/SkyLeft"], [ad-unit="/4467/as24_at/Listpage/SkyLeft"] {
   background-image: none !important;
 }
 
-[ad-unit="/4467/as24_at/Listpage/SkyRight"] {
+[ad-unit="/4467/as24_de/Listpage/SkyRight"], [ad-unit="/4467/as24_at/Listpage/SkyRight"] {
   background-image: none !important;
 }
