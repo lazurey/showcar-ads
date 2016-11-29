@@ -28,6 +28,9 @@
             font-family: sans-serif;
             color: #333;
         }
+        body {
+            background-color: #f4f4f4;
+        }
         h1 {
             line-height: 80px;
             text-align: center;
@@ -43,10 +46,6 @@
         }
         as24-ad-slot > div {
             text-align: center;
-        }
-        as24-ad-slot > div > div {
-            box-sizing: content-box;
-            padding: 12px 0;
         }
         ul {
             list-style-type: none;
@@ -78,17 +77,18 @@
         <h1>List Page</h1>
     </header>
     <main>
-        <div style="position: fixed; left: 0; top: 0; background-color: limegreen;">
+        <!--div style="position: fixed; left: 0; top: 0; background-color: limegreen;">
             <as24-ad-slot
                 ad-unit="/4467/AS24_MOBILEWEBSITE_DE/listpage_content1"
                 size-map-0x0="300x100, 300x250, 320x50, 320x100, 320x240"
                 size-map-728x600="728x300"
                 size-map-728x300="728x90"
             ></as24-ad-slot>
-        </div>
-        <as24-ad-slot id="flickerslot" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_1" size-map-1024x0="728x90,728x300"></as24-ad-slot>
-        <as24-ad-slot id="flickerslot" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_2" size-map-1024x0="728x90,728x300"></as24-ad-slot>
+        </div-->
+        <as24-ad-slot class="sc-ads-silent-placeholder" id="flickerslot1" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_1" size-map-1024x0="728x90,728x300"></as24-ad-slot>
+        <as24-ad-slot class="sc-ads-no-placeholder" id="flickerslot2" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_2" size-map-1024x0="728x90,728x300"></as24-ad-slot>
         <as24-ad-slot
+            class="sc-ads-silent-placeholder"
             id="testadslot2"
             type="doubleclick"
             size-map-0x0="300x100, 300x50, 320x50, 320x100"

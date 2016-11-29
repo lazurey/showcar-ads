@@ -397,6 +397,12 @@ babel-plugin-transform-es2015-classes@^6.9.0:
     babel-traverse "^6.18.0"
     babel-types "^6.18.0"
 
+"babel-plugin-transform-runtime@>= 6.8.0":
+  version "6.15.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-transform-runtime/-/babel-plugin-transform-runtime-6.15.0.tgz#3d75b4d949ad81af157570273846fb59aeb0d57c"
+  dependencies:
+    babel-runtime "^6.9.0"
+
 babel-register@^6.18.0:
   version "6.18.0"
   resolved "https://registry.yarnpkg.com/babel-register/-/babel-register-6.18.0.tgz#892e2e03865078dd90ad2c715111ec4449b32a68"
@@ -1521,8 +1527,8 @@ electron-download@^3.0.1:
     sumchecker "^1.2.0"
 
 electron@^1.3.5, electron@^1.4.8:
-  version "1.4.8"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.4.8.tgz#5ac8cfa465f9ff4957a8da9974fa7c460c89d918"
+  version "1.4.10"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.4.10.tgz#11492d82eb1d92fa36006c2376404d13a790f393"
   dependencies:
     electron-download "^3.0.1"
     extract-zip "^1.0.3"
@@ -1724,8 +1730,8 @@ escope@^3.6.0:
     estraverse "^4.1.1"
 
 eslint@^3.0.0, eslint@^3.4.0:
-  version "3.11.0"
-  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.11.0.tgz#41d34f8b3e69949beee5c097ff4e75ad13ba2d00"
+  version "3.11.1"
+  resolved "https://registry.yarnpkg.com/eslint/-/eslint-3.11.1.tgz#408be581041385cba947cd8d1cd2227782b55dbf"
   dependencies:
     babel-code-frame "^6.16.0"
     chalk "^1.1.3"
@@ -3919,14 +3925,14 @@ node-gyp@^3.3.1:
     which "1"
 
 node-pre-gyp@^0.6.29:
-  version "0.6.31"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.31.tgz#d8a00ddaa301a940615dbcc8caad4024d58f6017"
+  version "0.6.32"
+  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.6.32.tgz#fc452b376e7319b3d255f5f34853ef6fd8fe1fd5"
   dependencies:
     mkdirp "~0.5.1"
     nopt "~3.0.6"
-    npmlog "^4.0.0"
+    npmlog "^4.0.1"
     rc "~1.1.6"
-    request "^2.75.0"
+    request "^2.79.0"
     rimraf "~2.5.4"
     semver "~5.3.0"
     tar "~2.2.1"
@@ -3943,7 +3949,7 @@ node-sass-import@^1.1.1:
     resolve "^1.1.7"
     yargs "^3.15.0"
 
-node-sass@^3.4.2:
+node-sass@^3.4.2, "node-sass@>= 3.8.0":
   version "3.13.0"
   resolved "https://registry.yarnpkg.com/node-sass/-/node-sass-3.13.0.tgz#d08b95bdebf40941571bd2c16a9334b980f8924f"
   dependencies:
@@ -4014,7 +4020,7 @@ normalize-selector@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/normalize-selector/-/normalize-selector-0.2.0.tgz#d0b145eb691189c63a78d201dc4fdb1293ef0c03"
 
-npmlog@^4.0.0:
+npmlog@^4.0.0, npmlog@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.0.1.tgz#d14f503b4cd79710375553004ba96e6662fbc0b8"
   dependencies:
@@ -4784,7 +4790,7 @@ replace-ext@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/replace-ext/-/replace-ext-0.0.1.tgz#29bbd92078a739f0bcce2b4ee41e837953522924"
 
-request@^2.45.0, request@^2.61.0, request@^2.75.0, request@2:
+request@^2.45.0, request@^2.61.0, request@^2.79.0, request@2:
   version "2.79.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.79.0.tgz#4dfe5bf6be8b8cdc37fcf93e04b65577722710de"
   dependencies:
@@ -5010,13 +5016,22 @@ rollup-plugin-node-resolve@^2.0.0:
     builtin-modules "^1.1.0"
     resolve "^1.1.6"
 
+rollup-plugin-sass@^0.4.8:
+  version "0.4.8"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sass/-/rollup-plugin-sass-0.4.8.tgz#c5163def2ebfc5dc2302cfb1cf8af81e48b7e166"
+  dependencies:
+    babel-plugin-transform-runtime ">= 6.8.0"
+    fs-extra "^0.30.0"
+    node-sass ">= 3.8.0"
+    rollup-pluginutils ">= 1.3.1"
+
 rollup-plugin-uglify@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/rollup-plugin-uglify/-/rollup-plugin-uglify-1.0.1.tgz#11d0b0c8bcd2d07e6908f74fd16b0152390b922a"
   dependencies:
     uglify-js "^2.6.1"
 
-rollup-pluginutils@^1.3.1, rollup-pluginutils@^1.5.0, rollup-pluginutils@^1.5.1, rollup-pluginutils@^1.5.2:
+rollup-pluginutils@^1.3.1, rollup-pluginutils@^1.5.0, rollup-pluginutils@^1.5.1, rollup-pluginutils@^1.5.2, "rollup-pluginutils@>= 1.3.1":
   version "1.5.2"
   resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-1.5.2.tgz#1e156e778f94b7255bfa1b3d0178be8f5c552408"
   dependencies:
@@ -5159,8 +5174,8 @@ shelljs@^0.7.5:
     rechoir "^0.6.2"
 
 showcar-gulp:
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/showcar-gulp/-/showcar-gulp-0.9.1.tgz#bf8fe97cd7a7aaa7aebf7a3e681c286a6dab26fe"
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/showcar-gulp/-/showcar-gulp-0.10.1.tgz#37aa692b8148c19409917a12eaa579b894dcaac9"
   dependencies:
     browser-sync "^2.18.2"
     chai "^3.5.0"
@@ -5191,6 +5206,7 @@ showcar-gulp:
     rollup-plugin-node-builtins "^2.0.0"
     rollup-plugin-node-globals "^1.1.0"
     rollup-plugin-node-resolve "^2.0.0"
+    rollup-plugin-sass "^0.4.8"
     rollup-plugin-uglify "^1.0.1"
     rollup-stream "^1.14.0"
     sinon "^1.17.6"
@@ -5669,8 +5685,8 @@ through2@^0.6.1, through2@^0.6.3, through2@~0.6.1, through2@~0.6.3:
     xtend ">=4.0.0 <4.1.0-0"
 
 through2@^2.0.0, through2@^2.0.2, through2@2.X:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.2.tgz#316d3a4f444af641496aa7f45a713be72576baf4"
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/through2/-/through2-2.0.3.tgz#0004569b37c7c74ba39c43f3ced78d1ad94140be"
   dependencies:
     readable-stream "^2.1.5"
     xtend "~4.0.1"
@@ -5871,8 +5887,8 @@ utils-merge@1.0.0:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.0.tgz#0294fb922bb9375153541c4f7096231f287c8af8"
 
 uuid@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.0.tgz#6728fc0459c450d796a99c31837569bdf672d728"
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/uuid/-/uuid-3.0.1.tgz#6544bba2dfda8c1cf17e629a3a305e2bb1fee6c1"
 
 v8flags@^2.0.2:
   version "2.0.11"

@@ -14,7 +14,7 @@ scgulp.registerTasks({
         dependencies: ['eslint'],
         entry: 'src/js/index.js',
         out: 'dist/index.js',
-        watch: 'src/**/*.js',
+        watch: 'src/**/*.{js,scss}',
         sourceMappingURLPrefix: process.env.CI_BUILD_REF_NAME ? `/assets/external/showcar-ads/${process.env.CI_BUILD_REF_NAME}/${process.env.CI_BUILD_REF}` : ''
     },
     serve: {
@@ -24,7 +24,7 @@ scgulp.registerTasks({
         type: 'js',
         entry: 'test/index.spec.js',
         out: 'dist/index.spec.js',
-        watch: ['src/**/*.js', 'test/**/*.js']
+        watch: ['src/**/*.{js,scss}', 'test/**/*.js']
     },
     karma: {
         dependencies: ['jstest'],
