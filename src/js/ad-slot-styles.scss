@@ -34,13 +34,17 @@ as24-ad-slot[out-of-page],
 }
 
 [ad-unit="/4467/as24_at/Listpage/Top"] {
-  @extend .sc-ads-silent-placeholder;
+  & > div {
+    box-shadow: inset 0 0 1px #cdcdcd;
+  }
+  
+  background-image: none !important;
 }
 
 [ad-unit="/4467/as24_at/Listpage/SkyLeft"] {
-  @extend .sc-ads-no-placeholder;
+  background-image: none !important;
 }
 
 [ad-unit="/4467/as24_at/Listpage/SkyRight"] {
-  @extend .sc-ads-no-placeholder;
+  background-image: none !important;
 }
