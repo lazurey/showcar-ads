@@ -21,11 +21,13 @@ as24-ad-slot {
   background-size: 70px 35px;
   background-position: center center;
   background-repeat: no-repeat;
+  // background-color: #f4f4f4;
 }
 
 as24-ad-slot[out-of-page],
 .sc-ads-no-placeholder,
-.sc-ads-silent-placeholder {
+.sc-ads-silent-placeholder,
+as24-ad-slot[loaded]:not([empty]) {
   background-image: none;
 }
 
