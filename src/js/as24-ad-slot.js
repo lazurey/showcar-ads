@@ -76,6 +76,13 @@ const registerElement = (name = 'as24-ad-slot') => {
                     removeAttribute(this, 'loaded');
                     removeAttribute(this, 'empty');
                 };
+
+                this.refreshAdSlot = () => {
+                    if (this.adslot) {
+                        container.innerHTML = '';
+                        this.adslot.refresh();
+                    }
+                }
             }
         },
 
@@ -87,13 +94,14 @@ const registerElement = (name = 'as24-ad-slot') => {
             }
         },
 
-        refreshAdSlot: {
-            value: function() {
-                if (this.adslot) {
-                    this.adslot.refresh();
-                }
-            }
-        }
+        // refreshAdSlot: {
+        //     value: function() {
+        //         if (this.adslot) {
+        //             container.innerHTML = '';
+        //             this.adslot.refresh();
+        //         }
+        //     }
+        // }
     });
 
     const stylesForCurrentTagName = styles.replace(/as24-ad-slot/g, name);
