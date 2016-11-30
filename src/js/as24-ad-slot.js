@@ -38,8 +38,9 @@ const registerElement = (name = 'as24-ad-slot') => {
                 container.id = elementId;
                 this.appendChild(container);
 
-                const minHeight = Math.min(...(eligibleSizes.filter(s => s !== 'fluid').map(s => s[1])));
-                const minWidth = Math.min(...(eligibleSizes.filter(s => s !== 'fluid').map(s => s[0])));
+                const sizes = eligibleSizes.filter(s => s !== 'fluid').sort((a, b) => a[1] - b[1]);
+                const minHeight = sizes[0][1];
+                const minWidth = sizes[0][0];
 
                 container.style.minHeight = this.style.minHeight = `${minHeight}px`;
                 container.style.minWidth = this.style.minWidth = `${minWidth}px`;
@@ -67,8 +68,8 @@ const registerElement = (name = 'as24-ad-slot') => {
                     const height = container.clientHeight;
                     const oldMinWidth = parseInt(this.style.minWidth, 10);
                     const width = container.clientWidth;
-                    container.style.minHeight = this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
-                    container.style.minWidth = this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
+                    this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
+                    this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
                 };
 
                 this.adslot.onrefresh = () => {
