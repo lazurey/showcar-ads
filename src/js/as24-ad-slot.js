@@ -92,16 +92,7 @@ const registerElement = (name = 'as24-ad-slot') => {
                     this.adslot.destroy();
                 }
             }
-        },
-
-        // refreshAdSlot: {
-        //     value: function() {
-        //         if (this.adslot) {
-        //             container.innerHTML = '';
-        //             this.adslot.refresh();
-        //         }
-        //     }
-        // }
+        }
     });
 
     const stylesForCurrentTagName = styles.replace(/as24-ad-slot/g, name);
