@@ -34,7 +34,7 @@ const registerElement = (name = 'as24-ad-slot') => {
                 const outOfPage = hasAttribute(this, 'out-of-page');
                 const immediate = hasAttribute(this, 'immediate');
 
-                const container = document.createElement('div');
+                const container = this.container = document.createElement('div');
                 container.id = elementId;
                 this.appendChild(container);
 
@@ -77,12 +77,6 @@ const registerElement = (name = 'as24-ad-slot') => {
                     removeAttribute(this, 'empty');
                 };
 
-                this.refreshAdSlot = () => {
-                    if (this.adslot) {
-                        container.innerHTML = '';
-                        this.adslot.refresh();
-                    }
-                }
             }
         },
 
@@ -90,6 +84,14 @@ const registerElement = (name = 'as24-ad-slot') => {
             value: function() {
                 if (this.adslot) {
                     this.adslot.destroy();
+                }
+            }
+        },
+        refreshAdSlot: {
+            value: function() {
+                if (this.adslot) {
+                    this.container.innerHTML = '';
+                    this.adslot.refresh();
                 }
             }
         }
