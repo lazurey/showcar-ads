@@ -3,6 +3,8 @@ import { getAttribute, setAttribute, hasAttribute, removeAttribute, addCss } fro
 import registerDoubleclickAdslot from './double-click-ad-slots';
 import { parseAttributesIntoValidMapping, getEligibleSizesForResolution } from './size-mapping';
 
+import styles from './ad-slot-styles.scss';
+
 const registerElement = (name = 'as24-ad-slot') => {
 
     const AS24AdSlotPrototype = Object.create(HTMLElement.prototype, {
@@ -36,6 +38,13 @@ const registerElement = (name = 'as24-ad-slot') => {
                 container.id = elementId;
                 this.appendChild(container);
 
+                const sizes = eligibleSizes.filter(s => s !== 'fluid').sort((a, b) => a[1] - b[1]);
+                const minHeight = sizes[0][1];
+                const minWidth = sizes[0][0];
+
+                container.style.minHeight = this.style.minHeight = `${minHeight}px`;
+                container.style.minWidth = this.style.minWidth = `${minWidth}px`;
+
                 this.adslot = registerDoubleclickAdslot({
                     adunit,
                     outOfPage,
@@ -54,6 +63,13 @@ const registerElement = (name = 'as24-ad-slot') => {
                     setAttribute(this, 'loaded', '');
                     this.className += ` rnd-${ (Math.random() * 10000) | 0 }`; // this causes redraw in IE, because attribute change doesn't
                     this.dispatchEvent(new Event('ad-slot-loaded'), { bubbles: true });
+
+                    const oldMinHeight = parseInt(this.style.minHeight, 10);
+                    const height = container.clientHeight;
+                    const oldMinWidth = parseInt(this.style.minWidth, 10);
+                    const width = container.clientWidth;
+                    this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
+                    this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
                 };
 
                 this.adslot.onrefresh = () => {
@@ -80,9 +96,8 @@ const registerElement = (name = 'as24-ad-slot') => {
         }
     });
 
-    if (location.hash.indexOf('ads-dont-collapse-divs=true') < 0) {
-        addCss(`${name}{display:block} ${name}:not([loaded]) div,${name}[empty] div{display:none;}`);
-    }
+    const stylesForCurrentTagName = styles.replace(/as24-ad-slot/g, name);
+    addCss(stylesForCurrentTagName);
 
     document.registerElement(name, { prototype: AS24AdSlotPrototype });
 };

@@ -97,15 +97,15 @@ const findXIdByGptSlot = slot => {
 
 googletag().cmd.push(() => {
     const pubads = googletag().pubads();
-    pubads.addEventListener('slotOnload', eventData => {
-        const x = findXIdByGptSlot(eventData.slot);
-        x && x.ret.onload && x.ret.onload();
-    });
 
     pubads.addEventListener('slotRenderEnded', eventData => {
+        const x = findXIdByGptSlot(eventData.slot);
+
         if (eventData.isEmpty) {
-            const x = findXIdByGptSlot(eventData.slot);
             x && x.ret.onempty && x.ret.onempty();
+        }
+        else {
+            x && x.ret.onload && x.ret.onload();
         }
     });
 });
@@ -121,11 +121,7 @@ export const gptinit = () => {
     googletag().cmd.push(() => {
         const pubads = googletag().pubads();
         pubads.enableSingleRequest();
-        if (location.hash.indexOf('ads-dont-collapse-divs=true') < 0) {
-            pubads.collapseEmptyDivs(true);
-        }
         pubads.disableInitialLoad();
-        // pubads.enableAsyncRendering(); // TODO: check this
         googletag().enableServices();
     });
 };
