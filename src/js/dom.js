@@ -21,12 +21,14 @@ export const loadScript = url => {
     s.parentNode.insertBefore(script, s);
 };
 
-export const ready = fn => {
-    if (document.readyState !== 'loading') {
-        return setTimeout(fn);
-    }
+export const ready = () => {
+    return new Promise(resolve => {
+        if (document.readyState !== 'loading') {
+            return resolve();
+        }
 
-    document.addEventListener('DOMContentLoaded', fn);
+        document.addEventListener('DOMContentLoaded', resolve);
+    });
 };
 
 export const isElementInViewport = element => {
