@@ -21,6 +21,7 @@ as24-ad-slot {
   background-size: 70px 35px;
   background-position: center center;
   background-repeat: no-repeat;
+  // position: relative;
   // background-color: #f4f4f4;
 }
 
@@ -38,3 +39,11 @@ as24-ad-slot[loaded]:not([empty]) {
 .sc-ads-silent-placeholder[loaded]:not([empty]) > div {
   box-shadow: none;
 }
+
+// as24-ad-slot[loaded][ad-label]:not([empty]):before {
+//   content: attr(ad-label);
+//   position: absolute;
+//   top: -17px;
+//   display: inline-block;
+//   font-size: 0.8125em;
+// }
