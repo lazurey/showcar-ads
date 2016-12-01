@@ -81,7 +81,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
                         window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
                         googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
                     };
-                    const to = setTimeout(onrefresh, 3000);
+                    const to = setTimeout(onrefresh, 1500);
 
                     window.OX.dfp_bidder.refresh(() => {
                         clearTimeout(to);
