@@ -69,12 +69,14 @@ const registerElement = (name = 'as24-ad-slot') => {
                     this.className += ` rnd-${ (Math.random() * 10000) | 0 }`; // this causes redraw in IE, because attribute change doesn't
                     this.dispatchEvent(new Event('ad-slot-loaded'), { bubbles: true });
 
-                    const oldMinHeight = parseInt(this.style.minHeight, 10);
-                    const height = container.clientHeight;
-                    const oldMinWidth = parseInt(this.style.minWidth, 10);
-                    const width = container.clientWidth;
-                    this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
-                    this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
+                    if (!collapseEmpty) {
+                        const oldMinHeight = parseInt(this.style.minHeight, 10);
+                        const height = container.clientHeight;
+                        const oldMinWidth = parseInt(this.style.minWidth, 10);
+                        const width = container.clientWidth;
+                        this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
+                        this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
+                    }
                 };
 
                 this.adslot.onrefresh = () => {
