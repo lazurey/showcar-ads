@@ -71,6 +71,7 @@
             padding: 20px;
         }
     </style>
+    <as24-ad-config openx-enabled="true"></as24-ad-config>
 </head>
 <body>
     <header id="site-header">
@@ -78,7 +79,7 @@
     </header>
     <main>
 
-        <as24-ad-slot type="doubleclick" class="cl-ad-billboard rnd-6844 sc-ads-silent-placeholder" data-suspendable="true" ad-unit="/4467/as24_de/Listpage/Top" element-id="ad-slot-billboard" size-map-730x0="728x90" size-map-972x0="728x90,800x250,970x250" size-map-1400x0="728x90,800x250,970x250,1000x250" size-map-1720x0="728x90,800x250,970x250,1000x250,1100x250" size-mapping="[[[1720,0],[[728,90],[800,250],[970,250],[1000,250],[1100,250]]],[[1400,0],[[728,90],[800,250],[970,250],[1000,250]]],[[972,0],[[728,90],[800,250],[970,250]]],[[730,0],[[728,90]]],[[0,0],[]]]" sizes="[[728,90],[800,250],[970,250],[1000,250],[1100,250]]"></as24-ad-slot>
+        <as24-ad-slot type="doubleclick" ad-label="anzeige" class="cl-ad-billboard rnd-6844 sc-ads-silent-placeholder" data-suspendable="true" ad-unit="/4467/as24_de/Listpage/Top" element-id="ad-slot-billboard" size-map-730x0="728x90" size-map-972x0="728x90,800x250,970x250" size-map-1400x0="728x90,800x250,970x250,1000x250" size-map-1720x0="728x90,800x250,970x250,1000x250,1100x250" size-mapping="[[[1720,0],[[728,90],[800,250],[970,250],[1000,250],[1100,250]]],[[1400,0],[[728,90],[800,250],[970,250],[1000,250]]],[[972,0],[[728,90],[800,250],[970,250]]],[[730,0],[[728,90]]],[[0,0],[]]]" sizes="[[728,90],[800,250],[970,250],[1000,250],[1100,250]]"></as24-ad-slot>
 
         <!--div style="position: fixed; left: 0; top: 0; background-color: limegreen;">
             <as24-ad-slot
@@ -89,9 +90,11 @@
             ></as24-ad-slot>
         </div-->
         <as24-ad-slot class="sc-ads-silent-placeholder" id="flickerslot1" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_1" size-map-1024x0="728x90,728x300"></as24-ad-slot>
-        <as24-ad-slot class="sc-ads-no-placeholder" id="flickerslot2" type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_2" size-map-1024x0="728x90,728x300"></as24-ad-slot>
+        <as24-ad-slot class="sc-ads-no-placeholder" id="flickerslot2"  type="doubleclick" ad-unit="/4467/as24_at/Listpage_Contentbanner_2" size-map-1024x0="728x90,728x300"></as24-ad-slot>
         <as24-ad-slot
+            ad-label="Anzeige"
             class="sc-ads-silent-placeholder"
+            collapse-empty
             id="testadslot2"
             type="doubleclick"
             size-map-0x0="300x100, 300x50, 320x50, 320x100"

@@ -1,6 +1,6 @@
 {
   "name": "showcar-ads",
-  "version": "6.6.0",
+  "version": "6.6.1",
   "description": "Ad library for DoubleClick (GPT) and other ad servers",
   "main": "index.js",
   "scripts": {
@@ -51,11 +51,10 @@
     "rollup-plugin-filesize": "^0.5.5",
     "rollup-plugin-node-resolve": "^2.0.0",
     "rollup-plugin-uglify": "^1.0.1",
-    "showcar-gulp": "^0.10.0",
+    "showcar-gulp": "^0.10.1",
     "sinon": "^1.17.4"
   },
   "dependencies": {
-    "datadog-metrics": "^0.3.0",
-    "showcar-gulp": "^0.10.1"
+    "datadog-metrics": "^0.3.0"
   }
 }
