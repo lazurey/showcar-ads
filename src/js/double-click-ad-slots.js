@@ -18,7 +18,7 @@ const refreshAdSlotById = id => {
     }
 };
 
-const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, immediate }) => {
+const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, immediate, collapseEmpty }) => {
     const id = uuid();
 
     const ret = {
@@ -35,8 +35,12 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, imme
     googletag().cmd.push(() => {
         const pubads = googletag().pubads();
         const slot = outOfPage
-        ? googletag().defineOutOfPageSlot(adunit, container.id).addService(pubads)
-        : googletag().defineSlot(adunit, [], container.id).defineSizeMapping(sizeMapping).addService(pubads);
+                        ? googletag().defineOutOfPageSlot(adunit, container.id).addService(pubads)
+                        : googletag().defineSlot(adunit, [], container.id).defineSizeMapping(sizeMapping).addService(pubads);
+
+        if(collapseEmpty) {
+            slot.setCollapseEmptyDiv(true);
+        }
 
         googletag().display(container.id);
 
@@ -45,6 +49,8 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, imme
         slotsCache[id].immediate = immediate;
 
         refreshAdSlotById(id);
+
+
     });
 
     return ret;

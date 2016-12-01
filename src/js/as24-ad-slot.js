@@ -33,17 +33,20 @@ const registerElement = (name = 'as24-ad-slot') => {
                 const adunit = getAttribute(this, 'ad-unit');
                 const outOfPage = hasAttribute(this, 'out-of-page');
                 const immediate = hasAttribute(this, 'immediate');
+                const collapseEmpty = hasAttribute(this, 'collapse-empty');
 
                 const container = this.container = document.createElement('div');
                 container.id = elementId;
                 this.appendChild(container);
 
-                const sizes = eligibleSizes.filter(s => s !== 'fluid').sort((a, b) => a[1] - b[1]);
-                const minHeight = sizes[0][1];
-                const minWidth = sizes[0][0];
+                if (!collapseEmpty) {
+                    const sizes = eligibleSizes.filter(s => s !== 'fluid').sort((a, b) => a[1] - b[1]);
+                    const minHeight = sizes[0][1];
+                    const minWidth = sizes[0][0];
 
-                container.style.minHeight = this.style.minHeight = `${minHeight}px`;
-                container.style.minWidth = this.style.minWidth = `${minWidth}px`;
+                    container.style.minHeight = this.style.minHeight = `${minHeight}px`;
+                    container.style.minWidth = this.style.minWidth = `${minWidth}px`;
+                }
 
                 this.adslot = registerDoubleclickAdslot({
                     adunit,
@@ -51,8 +54,10 @@ const registerElement = (name = 'as24-ad-slot') => {
                     sizeMapping,
                     container,
                     slotElement: this,
-                    immediate
+                    immediate,
+                    collapseEmpty
                 });
+
 
                 this.adslot.onempty = () => {
                     setAttribute(this, 'empty', '');
@@ -64,12 +69,14 @@ const registerElement = (name = 'as24-ad-slot') => {
                     this.className += ` rnd-${ (Math.random() * 10000) | 0 }`; // this causes redraw in IE, because attribute change doesn't
                     this.dispatchEvent(new Event('ad-slot-loaded'), { bubbles: true });
 
-                    const oldMinHeight = parseInt(this.style.minHeight, 10);
-                    const height = container.clientHeight;
-                    const oldMinWidth = parseInt(this.style.minWidth, 10);
-                    const width = container.clientWidth;
-                    this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
-                    this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
+                    if (!collapseEmpty) {
+                        const oldMinHeight = parseInt(this.style.minHeight, 10);
+                        const height = container.clientHeight;
+                        const oldMinWidth = parseInt(this.style.minWidth, 10);
+                        const width = container.clientWidth;
+                        this.style.minHeight = `${Math.max(oldMinHeight, height)}px`;
+                        this.style.minWidth = `${Math.max(oldMinWidth, width)}px`;
+                    }
                 };
 
                 this.adslot.onrefresh = () => {
