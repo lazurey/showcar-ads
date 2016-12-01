@@ -39,12 +39,14 @@ const registerElement = (name = 'as24-ad-slot') => {
                 container.id = elementId;
                 this.appendChild(container);
 
-                const sizes = eligibleSizes.filter(s => s !== 'fluid').sort((a, b) => a[1] - b[1]);
-                const minHeight = sizes[0][1];
-                const minWidth = sizes[0][0];
+                if (!collapseEmpty) {
+                    const sizes = eligibleSizes.filter(s => s !== 'fluid').sort((a, b) => a[1] - b[1]);
+                    const minHeight = sizes[0][1];
+                    const minWidth = sizes[0][0];
 
-                container.style.minHeight = this.style.minHeight = `${minHeight}px`;
-                container.style.minWidth = this.style.minWidth = `${minWidth}px`;
+                    container.style.minHeight = this.style.minHeight = `${minHeight}px`;
+                    container.style.minWidth = this.style.minWidth = `${minWidth}px`;
+                }
 
                 this.adslot = registerDoubleclickAdslot({
                     adunit,
@@ -55,6 +57,7 @@ const registerElement = (name = 'as24-ad-slot') => {
                     immediate,
                     collapseEmpty
                 });
+
 
                 this.adslot.onempty = () => {
                     setAttribute(this, 'empty', '');
