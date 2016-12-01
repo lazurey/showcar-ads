@@ -12,15 +12,15 @@ waitUntilAdsCanBeLoaded()
         registerAdSlotElement();
         registerAdTargetingElement();
     })
-    .then(() => {
-        const configElement = document.querySelector('as24-ad-config');
-        const config = {};
-        Array.from(configElement.attributes).forEach(x => {
-            config[x.nodeName] = x.nodeValue;
-        });
+    // .then(() => {
+    //     const configElement = document.querySelector('as24-ad-config');
+    //     const config = {};
+    //     Array.from(configElement.attributes).forEach(x => {
+    //         config[x.nodeName] = x.nodeValue;
+    //     });
 
-        return config;
-    })
+    //     return config;
+    // })
     .then(() => {
         const tld = location.hostname.split('.').pop();
         const useOpenX = tld === 'de' || tld === 'at' || location.hash.indexOf('ads-use-openx') >= 0;
