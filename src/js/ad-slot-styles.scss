@@ -40,7 +40,7 @@ as24-ad-slot[loaded]:not([empty]) {
   box-shadow: none;
 }
 
-as24-ad-slot[ad-label]:before {
+as24-ad-slot[loaded][ad-label]:not([empty]):before {
   content: attr(ad-label);
   position: absolute;
   top: -17px;
