@@ -86,7 +86,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
                         googletag().pubads().refresh(allSlotsToRefresh, { changeCorrelator: false });
                     };
 
-                    const to = setTimeout(() => { console.log('TO'); onrefresh(); }, 1500);
+                    const to = setTimeout(() => { onrefresh(); }, 1500);
 
                     window.OX.dfp_bidder.refresh(() => {
                         clearTimeout(to);
