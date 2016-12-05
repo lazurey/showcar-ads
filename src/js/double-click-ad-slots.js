@@ -18,7 +18,7 @@ const refreshAdSlotById = id => {
     }
 };
 
-const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, immediate, collapseEmpty }) => {
+const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, immediate, collapseEmpty, openxIgnore }) => {
     const id = uuid();
 
     const ret = {
@@ -47,6 +47,7 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, imme
         slotsCache[id].slot = slot;
         slotsCache[id].outOfPage = outOfPage;
         slotsCache[id].immediate = immediate;
+        slotsCache[id].openxIgnore = openxIgnore;
 
         refreshAdSlotById(id);
 
@@ -65,7 +66,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
         const x = slotsCache[id];
 
         if (x.waitsForRefresh && (x.outOfPage || isElementInViewport(x.slotElement) || x.immediate)) {
-            slotsToRefresh.push(x.slot);
+            slotsToRefresh.push(x);
             x.waitsForRefresh = false;
             x.ret.onrefresh && x.ret.onrefresh();
         }
@@ -75,26 +76,32 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
         googletag().cmd.push(() => {
             const usingOpenX = window.OX && window.OX.dfp_bidder && window.OX.dfp_bidder.refresh && window.OX.dfp_bidder.setOxTargeting;
 
+            const openxSlotsToRefresh = slotsToRefresh.filter(s => !s.openxIgnore).map(s => s.slot);
+            const allSlotsToRefresh = slotsToRefresh.map(s => s.slot);
+
             if (usingOpenX) {
                 if (refreshOxBids) {
                     const onrefresh = () => {
-                        window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
-                        googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+                        window.OX.dfp_bidder.setOxTargeting(openxSlotsToRefresh);
+                        googletag().pubads().refresh(allSlotsToRefresh, { changeCorrelator: false });
                     };
-                    const to = setTimeout(onrefresh, 1500);
+
+                    const to = setTimeout(() => { onrefresh(); }, 1500);
 
                     window.OX.dfp_bidder.refresh(() => {
                         clearTimeout(to);
                         onrefresh();
-                    }, slotsToRefresh);
+                    }, openxSlotsToRefresh);
                 } else {
                     refreshOxBids = true;
-                    window.OX.dfp_bidder.setOxTargeting(slotsToRefresh);
-                    googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+                    window.OX.dfp_bidder.setOxTargeting(openxSlotsToRefresh);
+                    googletag().pubads().refresh(allSlotsToRefresh, { changeCorrelator: false });
                 }
-            } else {
-                googletag().pubads().refresh(slotsToRefresh, { changeCorrelator: false });
+
+                return;
             }
+
+            googletag().pubads().refresh(allSlotsToRefresh, { changeCorrelator: false });
         });
     }
 }, 50);
