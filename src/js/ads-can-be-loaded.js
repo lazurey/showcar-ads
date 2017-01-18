@@ -3,9 +3,10 @@ export default () => {
         const loc = window.location;
         const cookie = document.cookie;
         const adsAreDisabled = loc.href.indexOf('ads-off=true') >= 0;
-        const isUserDealer = cookie.indexOf('CustomerType=D') > 0;
+        const isUserDealer = cookie.indexOf('CustomerType=D') >= 0;
+        const isTest = cookie.indexOf('testrun=true') >= 0;
 
-        if (adsAreDisabled || isUserDealer) {
+        if (adsAreDisabled || isUserDealer || isTest) {
             reject();
             return;
         }
