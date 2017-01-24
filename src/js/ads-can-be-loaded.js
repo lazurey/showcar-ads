@@ -5,8 +5,9 @@ export default () => {
         const adsAreDisabled = loc.href.indexOf('ads-off=true') >= 0;
         const isUserDealer = cookie.indexOf('CustomerType=D') >= 0;
         const isTest = cookie.indexOf('testrun=true') >= 0;
+        const onDetailPageDE = loc.host == 'www.autoscout24.de' && loc.href.indexOf('/angebote/') >= 0;
 
-        if (adsAreDisabled || isUserDealer || isTest) {
+        if (adsAreDisabled || (isUserDealer && !onDetailPageDE) || isTest) {
             reject();
             return;
         }
