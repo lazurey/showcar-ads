@@ -19,9 +19,9 @@ waitUntilAdsCanBeLoaded()
     //         config[x.nodeName] = x.nodeValue;
     //     });
 
-    //     return config;
-    // })
-    .then(() => {
+//     return config;
+// })
+.then(() => {
         const tld = location.hostname.split('.').pop();
         const useOpenX = tld === 'de' || tld === 'at' || location.hash.indexOf('ads-use-openx') >= 0;
         const getOpenxUrl = tld => {
@@ -60,3 +60,5 @@ waitUntilAdsCanBeLoaded()
     .catch(e => {
         console.warn(e);
     });
+
+window.__showcarAdsTest4567989 = 1;
