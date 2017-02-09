@@ -60,3 +60,5 @@ waitUntilAdsCanBeLoaded()
     .catch(e => {
         console.warn(e);
     });
+
+window.__temp__test__ads__ = 1;
