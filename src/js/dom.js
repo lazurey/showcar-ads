@@ -37,9 +37,9 @@ export const isElementInViewport = element => {
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-    return rect.top >= 0
+    return rect.bottom > 0
         && rect.top < windowHeight
-        && rect.left >= 0
+        && rect.right > 0
         && rect.left < windowWidth;
 };
 
