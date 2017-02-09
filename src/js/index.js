@@ -60,5 +60,3 @@ waitUntilAdsCanBeLoaded()
     .catch(e => {
         console.warn(e);
     });
-
-window.__showcarAdsTest4567989 = 1;
