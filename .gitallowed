@@ -1,0 +1,6 @@
+yarn\.lock
+.*\.html
+.*\.js
+.*\.s?css
+release_key\.enc
+\.travis\.yml
