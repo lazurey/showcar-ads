@@ -27,7 +27,8 @@ waitUntilAdsCanBeLoaded()
     const getOpenxUrl = tld => {
         const urls = {
             de: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout',
-            at: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-at'
+            at: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-at',
+            it: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-it'
         };
 
         return urls[tld] || urls['de'];
