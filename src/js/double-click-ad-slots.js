@@ -33,25 +33,25 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, imme
     };
 
     googletag().cmd.push(() => {
-        const pubads = googletag().pubads();
-        const slot = outOfPage
-                        ? googletag().defineOutOfPageSlot(adunit, container.id).addService(pubads)
-                        : googletag().defineSlot(adunit, [], container.id).defineSizeMapping(sizeMapping).addService(pubads);
+        setTimeout(() => {
+            const pubads = googletag().pubads();
+            const slot = outOfPage
+                            ? googletag().defineOutOfPageSlot(adunit, container.id).addService(pubads)
+                            : googletag().defineSlot(adunit, [], container.id).defineSizeMapping(sizeMapping).addService(pubads);
 
-        if(collapseEmpty) {
-            slot.setCollapseEmptyDiv(true);
-        }
+            if(collapseEmpty) {
+                slot.setCollapseEmptyDiv(true);
+            }
 
-        googletag().display(container.id);
+            googletag().display(container.id);
 
-        slotsCache[id].slot = slot;
-        slotsCache[id].outOfPage = outOfPage;
-        slotsCache[id].immediate = immediate;
-        slotsCache[id].openxIgnore = openxIgnore;
+            slotsCache[id].slot = slot;
+            slotsCache[id].outOfPage = outOfPage;
+            slotsCache[id].immediate = immediate;
+            slotsCache[id].openxIgnore = openxIgnore;
 
-        refreshAdSlotById(id);
-
-
+            refreshAdSlotById(id);
+        }, 20);
     });
 
     return ret;
