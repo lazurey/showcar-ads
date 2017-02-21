@@ -29,7 +29,7 @@ const registerElement = (name = 'as24-ad-slot') => {
                     return;
                 }
 
-                const elementId = getAttribute(this, 'element-id') || `ad-${uuid()}`;
+                const elementId = `ad-${uuid()}`;
                 const adunit = getAttribute(this, 'ad-unit');
                 const outOfPage = hasAttribute(this, 'out-of-page');
                 const immediate = hasAttribute(this, 'immediate');
