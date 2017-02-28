@@ -19,11 +19,7 @@ const registerElement = (name = 'as24-ad-targeting') => {
 
         refreshTargeting: {
             value: function() {
-                const targetingElements = Array.from(document.querySelectorAll(name) || []);
-                const targetingObjects = targetingElements.map(el => JSON.parse(el.innerHTML.trim() || '{}'));
-                const targeting = {};
-
-                targetingObjects.forEach(obj => Object.assign(targeting, obj));
+                const targeting = getTargetingData(name);
 
                 googletag.cmd.push(() => {
                     const pubads = googletag.pubads();
@@ -50,3 +46,13 @@ const registerElement = (name = 'as24-ad-targeting') => {
 };
 
 export default registerElement;
+
+export const getTargetingData = (tagName) => {
+    const targetingElements = Array.from(document.querySelectorAll(tagName) || []);
+    const targetingObjects = targetingElements.map(el => JSON.parse(el.innerHTML.trim() || '{}'));
+    const targeting = {};
+
+    targetingObjects.forEach(obj => Object.assign(targeting, obj));
+
+    return targeting;
+};
