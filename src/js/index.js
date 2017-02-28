@@ -1,7 +1,7 @@
 import waitUntilAdsCanBeLoaded from './ads-can-be-loaded';
 
 import registerAdSlotElement from './as24-ad-slot';
-import registerAdTargetingElement from './as24-ad-targeting';
+import  registerAdTargetingElement, { getTargetingData } from './as24-ad-targeting';
 import { gptinit } from './double-click-ad-slots';
 import { loadScript, ready as domready } from './dom';
 
@@ -46,6 +46,30 @@ waitUntilAdsCanBeLoaded()
         const activeSlots = Array.from(document.querySelectorAll('as24-ad-slot[sizes]:not([sizes="[]"]):not([out-of-page]):not([immediate]):not([openx-ignore])'));
 
         window.OX_dfp_ads = activeSlots.map(element => [element.getAttribute('ad-unit'), convertSizes(element.getAttribute('sizes')), element.children[0].id]);
+
+        window.OX_cmds = window.OX_cmds || [];
+        window.OX_cmds.push(function () {
+            var oAR = (window.OX && window.OX.AdRequest);
+            if (oAR) {
+                window.OX.AdRequest = function () {
+                    var ret = oAR.apply(this, arguments);
+                    const targeting = getTargetingData('as24-ad-targeting');
+
+                    if (targeting.splz) {
+                        this.addVariable('splz', targeting.splz);
+                    }
+                    
+                    if (targeting.zip2) {
+                        this.addVariable('zip2', targeting.zip2);
+                    }
+
+                    return ret;
+                };
+
+                window.OX.prototype = oAR.prototype;
+            }
+        });
+
         loadScript(getOpenxUrl(tld));
 
         var oxTimeout;
