@@ -32,6 +32,7 @@ install:
 
 before_script:
   - npm install -g gulp
+  - npm i
 
 script:
   - npm run build
