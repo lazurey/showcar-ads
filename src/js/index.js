@@ -60,7 +60,7 @@ waitUntilAdsCanBeLoaded()
                     }
                     
                     if (targeting.zip2) {
-                        this.addVariable('zip2', targeting.zip2);
+                        this.addVariable('zipcode', targeting.zip2);
                     }
 
                     return ret;
