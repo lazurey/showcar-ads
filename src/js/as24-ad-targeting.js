@@ -3,41 +3,35 @@ import { addCss } from './dom';
 const registerElement = (name = 'as24-ad-targeting') => {
     const googletag = window.googletag || (window.googletag = { cmd: [] });
 
-    const AS24AdTargetingPrototype = Object.create(HTMLElement.prototype,  {
+    const refreshTargeting = () => {
+        const targeting = getTargetingData(name);
 
-        attachedCallback: {
-            value: function() {
-                this.refreshTargeting();
+        googletag.cmd.push(() => {
+            const pubads = googletag.pubads();
+            const oldTargetingKeys = pubads.getTargetingKeys();
+
+            oldTargetingKeys.forEach(key => pubads.clearTargeting(key));
+
+            for (let key in targeting) {
+                const value = `${targeting[key]}`.split(',');
+                pubads.setTargeting(key, value);
             }
+
+            if (window.Krux) {
+                pubads.setTargeting('ksg', window.Krux.segments);
+                pubads.setTargeting('kuid', window.Krux.user);
+            }
+        });
+    };
+
+
+    const AS24AdTargetingPrototype = Object.create(HTMLElement.prototype,  {
+        attachedCallback: {
+            value: refreshTargeting
         },
 
         detachedCallback: {
-            value: function() {
-                this.refreshTargeting();
-            }
-        },
-
-        refreshTargeting: {
-            value: function() {
-                const targeting = getTargetingData(name);
-
-                googletag.cmd.push(() => {
-                    const pubads = googletag.pubads();
-                    const oldTargetingKeys = pubads.getTargetingKeys();
-
-                    oldTargetingKeys.forEach(key => pubads.clearTargeting(key));
-
-                    for (let key in targeting) {
-                        const value = `${targeting[key]}`.split(',');
-                        pubads.setTargeting(key, value);
-                    }
-
-                    if (window.Krux) {
-                        pubads.setTargeting('ksg', window.Krux.segments);
-                        pubads.setTargeting('kuid', window.Krux.user);
-                    }
-                });
-            }
+            value: refreshTargeting
         }
     });
 
