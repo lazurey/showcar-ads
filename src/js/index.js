@@ -23,12 +23,13 @@ waitUntilAdsCanBeLoaded()
 // })
 .then(() => {
     const tld = location.hostname.split('.').pop();
-    const useOpenX = tld === 'de' || tld === 'at' || location.hash.indexOf('ads-use-openx') >= 0;
+    const useOpenX = tld === 'de' || tld === 'at' || tld === 'it' || location.hash.indexOf('ads-use-openx') >= 0;
     const getOpenxUrl = tld => {
         const urls = {
             de: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout',
             at: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-at',
-            it: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-it'
+            it: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-it',
+            nl: 'https://scout24-d.openx.net/w/1.0/jstag?nc=4467-autoscout-nl'
         };
 
         return urls[tld] || urls['de'];
