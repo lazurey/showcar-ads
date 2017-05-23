@@ -11,6 +11,10 @@ waitUntilAdsCanBeLoaded()
         gptinit();
         registerAdSlotElement();
         registerAdTargetingElement();
+
+        if (location.search.includes('contentbinder=1')) {
+            loadScript('https://s0.2mdn.net/ads/richmedia/studio/mu/templates/backdrop/resources/content_binder.js');
+        }
     })
     // .then(() => {
     //     const configElement = document.querySelector('as24-ad-config');
