@@ -35,6 +35,7 @@ const registerElement = (name = 'as24-ad-slot') => {
                 const immediate = hasAttribute(this, 'immediate');
                 const collapseEmpty = hasAttribute(this, 'collapse-empty');
                 const openxIgnore = hasAttribute(this, 'openx-ignore');
+                const preload = getAttribute(this, 'preload') | 0;
 
                 const container = this.container = document.createElement('div');
                 container.id = elementId;
@@ -57,7 +58,8 @@ const registerElement = (name = 'as24-ad-slot') => {
                     slotElement: this,
                     immediate,
                     collapseEmpty,
-                    openxIgnore
+                    openxIgnore,
+                    preload
                 });
 
 

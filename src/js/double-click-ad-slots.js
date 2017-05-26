@@ -18,7 +18,7 @@ const refreshAdSlotById = id => {
     }
 };
 
-const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, immediate, collapseEmpty, openxIgnore }) => {
+const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, immediate, collapseEmpty, openxIgnore, preload = 0 }) => {
     const id = uuid();
 
     const ret = {
@@ -29,7 +29,8 @@ const register = ({ adunit, container, outOfPage, sizeMapping, slotElement, imme
     slotsCache[id] = {
         ret,
         container,
-        slotElement
+        slotElement,
+        preload
     };
 
     googletag().cmd.push(() => {
@@ -64,7 +65,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
     Object.keys(slotsCache).forEach(id => {
         const x = slotsCache[id];
 
-        if (x.waitsForRefresh && (x.outOfPage || isElementInViewport(x.slotElement) || x.immediate)) {
+        if (x.waitsForRefresh && (x.outOfPage || isElementInViewport(x.slotElement, x.preload) || x.immediate)) {
             slotsToRefresh.push(x);
             x.waitsForRefresh = false;
             x.ret.onrefresh && x.ret.onrefresh();
