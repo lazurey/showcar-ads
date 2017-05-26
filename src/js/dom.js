@@ -31,16 +31,16 @@ export const ready = () => {
     });
 };
 
-export const isElementInViewport = element => {
+export const isElementInViewport = (element, preload = 0) => {
     if (!element || !document.body.contains(element)) { return false; }
     const rect = element.getBoundingClientRect();
     const windowHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     const windowWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
 
-    return rect.bottom > 0
-        && rect.top < windowHeight
-        && rect.right > 0
-        && rect.left < windowWidth;
+    return rect.bottom > 0 - preload
+        && rect.top < windowHeight + preload
+        && rect.right > 0 - preload
+        && rect.left < windowWidth + preload;
 };
 
 export const addCss = ruleText => {
