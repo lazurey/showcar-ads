@@ -12,7 +12,7 @@ waitUntilAdsCanBeLoaded()
         registerAdSlotElement();
         registerAdTargetingElement();
 
-        if (location.search.includes('contentbinder=1')) {
+        if (location.search.indexOf('contentbinder=1') >= 0) {
             loadScript('https://s0.2mdn.net/ads/richmedia/studio/mu/templates/backdrop/resources/content_binder.js');
         }
     })
