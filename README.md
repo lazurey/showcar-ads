@@ -133,6 +133,26 @@ window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
 
 ### Other attributes on as24-ad-slot tags
 
+##### preload
+The ad will be loaded when it nears the viewport (and not just after being in the viewport). The value of the attribute defines the distance how near the ad should be to the viewport to start loading it.
+
+```html
+<as24-ad-slot
+        ad-label="Anzeige"
+        ad-unit="/1234/path-to-some/adunit"
+        size-map-0x0="300x50, 320x100"
+        preload="300">
+</as24-ad-slot>
+
+##### collapse-empty
+If no ad can be delivered the slot is collapsed. This can cause the page to jump so use it sparingly. It can be acceptable in some cases.
+
+##### immediate
+The is loaded immediately. We do not wait until the user scrolls to them.
+
+##### openx-ignore
+The ad slot is not included in the OpenX bidding.
+
 ##### out-of-page
 Defines an out of page ad
 
