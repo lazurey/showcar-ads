@@ -131,6 +131,59 @@ window.dispatchEvent(new Event('cookie-consent-given', { bubbles: true }))
 * `ad-slot-empty`: is fired when there is no ad to show in the slot
 * `ad-slot-loaded`: is fired when an ad is loaded in the slot
 
+### Other attributes on as24-ad-slot tags
+
+##### out-of-page
+Defines an out of page ad
+
+```html
+<as24-ad-slot
+        ad-unit="/1234/path-to-some/adunit"
+        out-of-page
+        size-map-728x300="1x1"
+        size-map-0x0="">
+</as24-ad-slot>
+```
+
+##### ad-label
+Adds an extra label next to the ad slot to explicitely mark it as an ad. Mostly used on German pages when ads are inside content. By law we are required to visually mark ads as ads.
+ 
+```html
+<as24-ad-slot
+        ad-label="Anzeige"
+        ad-unit="/1234/path-to-some/adunit"
+        size-map-0x0="300x50, 320x100">
+</as24-ad-slot>
+```
+
+### Refreshing ads
+
+Each adslot defines a custom `refresh()` method. Refresh calls among multiple adslots are collected and called together in a time frame of ca. 50 milliseconds.
+
+```js
+document.querySelector('as24-ad-slot').refresh();
+```
+
+### Placeholders
+
+Each ad slot automatically receives an AutoScout24 logo as placeholder. This can be overridden by adding one of these classes:
+- .sc-ads-silent-placeholder - Instead of logo the adslot gets a border
+- .sc-ads-no-placeholder - no placeholder
+
+```html
+<as24-ad-slot
+        class="sc-ads-silent-placeholder"
+        ad-unit="/1234/path-to-some/adunit"
+        size-map-0x0="300x50, 320x100">
+</as24-ad-slot>
+
+<as24-ad-slot
+        class="sc-ads-no-placeholder"
+        ad-unit="/1234/path-to-some/adunit"
+        size-map-0x0="300x50, 320x100">
+</as24-ad-slot>
+```
+
 ## Changelog / History
 
 See [History.md](History.md)
