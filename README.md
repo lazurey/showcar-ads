@@ -203,7 +203,3 @@ Each ad slot automatically receives an AutoScout24 logo as placeholder. This can
         size-map-0x0="300x50, 320x100">
 </as24-ad-slot>
 ```
-
-## Changelog / History
-
-See [History.md](History.md)
