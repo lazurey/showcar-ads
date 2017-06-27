@@ -12,7 +12,7 @@ scgulp.registerTasks({
         files: 'src/**/*.js'
     },
     js: {
-        dependencies: ['eslint'],
+        //dependencies: ['eslint'],
         entry: 'src/js/index.js',
         out: 'dist/index.js',
         watch: 'src/**/*.{js,scss}',
