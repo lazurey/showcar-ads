@@ -68,7 +68,7 @@ gulp.task('html:watch', ['html'], () => {
     gulp.watch("src/**/*.html", ['html']);
 });
 
-gulp.task('build', ['js', 'karma', 'html']);
+gulp.task('build', ['set-dev', 'js', 'karma', 'html']);
 gulp.task('dev', ['set-dev', 'js:watch', 'jstest:watch', 'html:watch', 'karma', 'html', 'serve']);
 gulp.task('default', ['dev']);
 gulp.task('test', ['karma']);
