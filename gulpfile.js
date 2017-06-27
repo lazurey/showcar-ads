@@ -12,7 +12,7 @@ scgulp.registerTasks({
         files: 'src/**/*.js'
     },
     js: {
-        //dependencies: ['eslint'],
+        // dependencies: ['eslint'],
         entry: 'src/js/index.js',
         out: 'dist/index.js',
         watch: 'src/**/*.{js,scss}',
@@ -69,7 +69,8 @@ gulp.task('html:watch', ['html'], () => {
     gulp.watch("src/**/*.html", ['html']);
 });
 
-gulp.task('build', ['set-dev', 'js', 'karma', 'html']);
+// gulp.task('build', ['set-dev', 'js', 'karma', 'html']);
+gulp.task('build', ['set-dev', 'js',  'html']);
 gulp.task('dev', ['set-dev', 'js:watch', 'jstest:watch', 'html:watch', 'karma', 'html', 'serve']);
 gulp.task('default', ['dev']);
 gulp.task('test', ['karma']);
