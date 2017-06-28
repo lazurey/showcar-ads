@@ -2,6 +2,7 @@ import debounce from 'lodash/debounce';
 import uuid from './uuid';
 import { isElementInViewport } from './dom';
 import googletag from './googletag';
+import { once } from './helpers';
 
 const slotsCache = {};
 
@@ -81,10 +82,10 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
 
             if (usingOpenX) {
                 if (refreshOxBids) {
-                    const onrefresh = () => {
+                    const onrefresh = once(() => {
                         window.OX.dfp_bidder.setOxTargeting(openxSlotsToRefresh);
                         googletag().pubads().refresh(allSlotsToRefresh, { changeCorrelator: false });
-                    };
+                    });
 
                     const to = setTimeout(() => { onrefresh(); }, 1500);
 
