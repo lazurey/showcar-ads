@@ -101,6 +101,7 @@ const refreshAdslotsWaitingToBeRefreshed = debounce(() => {
                 return;
             }
 
+            window.console.log('Ad slots to refresh: ', allSlotsToRefresh.map(x => x.getAdUnitPath()));
             googletag().pubads().refresh(allSlotsToRefresh, { changeCorrelator: false });
         });
     }
