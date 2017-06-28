@@ -20,7 +20,6 @@ git checkout $TARGET_BRANCH
 cp -r ../dist .
 cp ../package.json .
 cp -r ../src .
-cp ../History.md .
 
 git add . -A
 git commit -am "Release"
