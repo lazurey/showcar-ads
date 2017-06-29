@@ -94,7 +94,6 @@ const registerElement = (name = 'as24-ad-slot') => {
         detachedCallback: {
             value: function() {
                 if (this.adslot) {
-                    window.console.log('detachedCallback', this.adslot.adunit);
                     this.adslot.destroy();
                 }
             }
@@ -104,7 +103,6 @@ const registerElement = (name = 'as24-ad-slot') => {
                 if (this.adslot) {
                     this.container.innerHTML = '';
                     this.adslot.refresh();
-                    window.console.log('refreshAdSlot', this.adslot.adunit);
                 }
             }
         }
