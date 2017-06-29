@@ -63,7 +63,7 @@ waitUntilAdsCanBeLoaded()
                     if (targeting.splz) {
                         this.addVariable('splz', targeting.splz);
                     }
-                    
+
                     if (targeting.zip2) {
                         this.addVariable('zipcode', targeting.zip2);
                     }
@@ -88,7 +88,7 @@ waitUntilAdsCanBeLoaded()
     }
 })
 .catch(e => {
-    console.warn(e);
+    window.console.warn(e);
 });
 
 window.__temp__test__ads__ = 1;
