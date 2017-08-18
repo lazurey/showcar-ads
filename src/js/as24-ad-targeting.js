@@ -24,7 +24,6 @@ const registerElement = (name = 'as24-ad-targeting') => {
         });
     };
 
-
     const AS24AdTargetingPrototype = Object.create(HTMLElement.prototype,  {
         attachedCallback: {
             value: refreshTargeting
