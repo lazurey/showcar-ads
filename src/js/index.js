@@ -4,10 +4,12 @@ import registerAdSlotElement from './as24-ad-slot';
 import  registerAdTargetingElement, { getTargetingData } from './as24-ad-targeting';
 import { gptinit } from './double-click-ad-slots';
 import { loadScript, ready as domready } from './dom';
+import { loadIndexExchange } from './indexexchange';
 
 waitUntilAdsCanBeLoaded()
     .then(domready)
     .then(() => {
+        loadIndexExchange();
         gptinit();
         registerAdSlotElement();
         registerAdTargetingElement();
