@@ -21,15 +21,6 @@ waitUntilAdsCanBeLoaded()
             loadScript('https://s0.2mdn.net/ads/richmedia/studio/mu/templates/backdrop/resources/content_binder.js');
         }
     })
-    // .then(() => {
-    //     const configElement = document.querySelector('as24-ad-config');
-    //     const config = {};
-    //     Array.from(configElement.attributes).forEach(x => {
-    //         config[x.nodeName] = x.nodeValue;
-    //     });
-
-//     return config;
-// })
 .then(() => {
     const tld = location.hostname.split('.').pop();
     const useOpenX = tld === 'de' || tld === 'at' || tld === 'it' || location.hash.indexOf('ads-use-openx') >= 0;
