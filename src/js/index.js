@@ -9,7 +9,10 @@ import { loadIndexExchange } from './indexexchange';
 waitUntilAdsCanBeLoaded()
     .then(domready)
     .then(() => {
+        if (location.search.indexOf('indexexchange=1') >= 0 || document.cookie.indexOf('indexexchange=1') >= 0) {
         loadIndexExchange();
+        }
+
         gptinit();
         registerAdSlotElement();
         registerAdTargetingElement();
