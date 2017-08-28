@@ -16,10 +16,6 @@ waitUntilAdsCanBeLoaded()
         gptinit();
         registerAdSlotElement();
         registerAdTargetingElement();
-
-        if (location.search.indexOf('contentbinder=1') >= 0) {
-            loadScript('https://s0.2mdn.net/ads/richmedia/studio/mu/templates/backdrop/resources/content_binder.js');
-        }
     })
 .then(() => {
     const tld = location.hostname.split('.').pop();
