@@ -9,7 +9,9 @@ import { loadIndexExchange } from './indexexchange';
 waitUntilAdsCanBeLoaded()
     .then(domready)
     .then(() => {
-        if (location.search.indexOf('indexexchange=1') >= 0 || document.cookie.indexOf('indexexchange=1') >= 0) {
+        const tld = location.hostname.split('.').pop();
+        
+        if (tld === 'de' || location.search.indexOf('indexexchange=1') >= 0 || document.cookie.indexOf('indexexchange=1') >= 0) {
             loadIndexExchange();
         }
 
