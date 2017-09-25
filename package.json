@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "gulp build",
-    "runBeforeRelease": "build",
+    "runBeforeRelease": "npm run build"
   },
   "repository": {
     "type": "git",
